@@ -1,4 +1,4 @@
-import {API_URL, API_VERSION} from 'config/rest.js';
+import {API_URL, API_VERSION} from 'config.json';
 
 export const fetchApi = (path = '/', method = 'GET', params = {}, accessToken = null, version = API_VERSION) => {
 	
