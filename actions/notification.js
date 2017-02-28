@@ -1,5 +1,5 @@
-import {NOTIFICATION_ANIMATION_DURATION}	from 'constants/animation';
-import {COLOR_FAILURE}						from 'constants/color';
+import {NOTIFICATION_ANIMATION_DURATION}	from '../constants/animation.js';
+import {COLOR_FAILURE}						from '../constants/color.js';
 
 const addNotification_ = (notification) => {
 	return {

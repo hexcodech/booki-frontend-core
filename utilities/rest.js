@@ -1,5 +1,5 @@
-import {API_VERSION}			from 'constants/rest';
-import {API_URL}				from 'config/rest';
+import {API_VERSION}			from '../constants/rest.js';
+import {API_URL}				from '../config/rest.js';
 
 export const fetchApi = (path = '/', method = 'GET', params = {}, accessToken = null, version = API_VERSION) => {
 	

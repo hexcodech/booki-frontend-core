@@ -1,4 +1,4 @@
-import {fetchApi}		from 'utilities/rest';
+import {fetchApi}		from '../utilities/rest.js';
 
 const receiveAccessToken = (accessToken) => {
 	return {

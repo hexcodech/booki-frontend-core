@@ -1,5 +1,5 @@
 import debounce				from 'lodash/debounce';
-import {fetchApi}			from 'utilities/rest';
+import {fetchApi}			from '../utilities/rest.js';
 
 import {addErrorNotification}
 							from 'actions/notification';
