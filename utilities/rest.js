@@ -1,5 +1,4 @@
-import {API_VERSION}			from 'booki-frontend-core/constants/rest.js';
-import {API_URL}				from 'booki-frontend-core/config/rest.js';
+import {API_URL, API_VERSION} from 'config/rest.js';
 
 export const fetchApi = (path = '/', method = 'GET', params = {}, accessToken = null, version = API_VERSION) => {
 	

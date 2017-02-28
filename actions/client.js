@@ -2,7 +2,7 @@ import debounce				from 'lodash/debounce';
 import {fetchApi}			from 'booki-frontend-core/utilities/rest.js';
 
 import {addErrorNotification}
-							from 'actions/notification';
+							from 'booki-frontend-core/actions/notification';
 
 export const invalidateClients = () => {
 	return {
