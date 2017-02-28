@@ -1,0 +1,11 @@
+{
+  "name": "booki-frontend-core",
+  "version": "1.0.0",
+  "description": "The core functions (action creators, reducers, ...) of the booki frontend and dashboard",
+  "main": "core.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "booki.me",
+  "license": "UNLICENSED"
+}
