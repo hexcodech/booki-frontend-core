@@ -1,5 +1,5 @@
-import {NOTIFICATION_ANIMATION_DURATION}	from '../constants/animation.js';
-import {COLOR_FAILURE}						from '../constants/color.js';
+import {NOTIFICATION_ANIMATION_DURATION}	from 'booki-frontend-core/constants/animation.js';
+import {COLOR_FAILURE}						from 'booki-frontend-core/constants/color.js';
 
 const addNotification_ = (notification) => {
 	return {
