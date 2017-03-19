@@ -55,14 +55,9 @@ export const fetchAuthUser = (accessToken) => {
 		return fetchApi('user/me', 'GET', {}, accessToken)
 		.then((user) => {
 
-			if(user.permissions.indexOf('admin') !== -1){
-				dispatch(
-					receiveAuthUser(user, Date.now())
-				);
-
-			}else{
-				throw new Error('The user isn\'t allowed to access the dashboard');
-			}
+			dispatch(
+				receiveAuthUser(user, Date.now())
+			);
 
 		}).catch((error) => {
 
