@@ -45,7 +45,7 @@ const receiveAuthUser = (user, receivedAt) => {
 	};
 }
 
-export const fetchUser = (accessToken) => {
+export const fetchAuthUser = (accessToken) => {
 	return (dispatch) => {
 
 		dispatch(
