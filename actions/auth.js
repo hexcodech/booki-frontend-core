@@ -64,8 +64,7 @@ export const fetchAuthUser = (accessToken) => {
 			dispatch(
 				failAuthUserRequest(error)
 			);
-
-			dispatch(push('/'));
+			
 		});
 	};
 }
