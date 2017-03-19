@@ -49,7 +49,7 @@ export const fetchAuthUser = (accessToken) => {
 	return (dispatch) => {
 
 		dispatch(
-			requestUser(accessToken)
+			requestAuthUser(accessToken)
 		);
 
 		return fetchApi('user/me', 'GET', {}, accessToken)
@@ -57,7 +57,7 @@ export const fetchAuthUser = (accessToken) => {
 
 			if(user.permissions.indexOf('admin') !== -1){
 				dispatch(
-					receiveUser(user, Date.now())
+					receiveAuthUser(user, Date.now())
 				);
 
 			}else{
@@ -67,7 +67,7 @@ export const fetchAuthUser = (accessToken) => {
 		}).catch((error) => {
 
 			dispatch(
-				failUserRequest(error)
+				failAuthUserRequest(error)
 			);
 
 			dispatch(push('/'));
