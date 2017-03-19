@@ -1,6 +1,6 @@
-import {fetchApi}		from 'booki-frontend-core/utilities/rest.js';
+import {fetchApi} from 'booki-frontend-core/utilities/rest.js';
 
-const receiveAccessToken = (accessToken) => {
+export const receiveAccessToken = (accessToken) => {
 	return {
 		type: 'RECEIVE_ACCESS_TOKEN',
 		accessToken
@@ -47,29 +47,29 @@ const receiveAuthUser = (user, receivedAt) => {
 
 export const fetchUser = (accessToken) => {
 	return (dispatch) => {
-		
+
 		dispatch(
 			requestUser(accessToken)
 		);
-		
+
 		return fetchApi('user/me', 'GET', {}, accessToken)
 		.then((user) => {
-			
+
 			if(user.permissions.indexOf('admin') !== -1){
 				dispatch(
 					receiveUser(user, Date.now())
 				);
-				
+
 			}else{
 				throw new Error('The user isn\'t allowed to access the dashboard');
 			}
-			
+
 		}).catch((error) => {
-			
+
 			dispatch(
 				failUserRequest(error)
 			);
-			
+
 			dispatch(push('/'));
 		});
 	};
