@@ -59,12 +59,14 @@ export const fetchAuthUser = (accessToken) => {
 				receiveAuthUser(user, Date.now())
 			);
 
+			return user;
+
 		}).catch((error) => {
 
 			dispatch(
 				failAuthUserRequest(error)
 			);
-			
+
 		});
 	};
 }
