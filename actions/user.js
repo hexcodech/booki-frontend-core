@@ -1,8 +1,10 @@
-import debounce				from 'lodash/debounce';
-import {fetchApi}			from 'booki-frontend-core/utilities/rest.js';
+import debounce
+       from 'lodash/debounce';
+import {fetchApi}
+       from 'booki-frontend-core/utilities/rest.js';
 
 import {addErrorNotification}
-							from 'booki-frontend-core/actions/notification';
+       from 'booki-frontend-core/actions/notification';
 
 export const invalidateUsers = () => {
 	return {
@@ -34,51 +36,51 @@ const receiveUsers = (users, receivedAt) => {
 
 const fetchUsers = (accessToken) => {
 	return (dispatch) => {
-		
+
 		dispatch(
 			requestUsers(accessToken)
 		);
-		
+
 		return fetchApi('user', 'GET', {filter: {}}, accessToken)
 		.then((users) => {
-			
+
 			dispatch(
 				receiveUsers(users, Date.now())
 			);
-			
+
 		}).catch((error) => {
-			
+
 			dispatch(
 				failUsersRequest(error)
 			);
-			
+
 			dispatch(
 				addErrorNotification(error)
 			);
-			
+
 		});
 	};
 }
 
 const shouldFetchUsers = (state) => {
 	const users = state.app.users;
-	
+
 	for(let i=0;i<users.length;i++){
-		
+
 		if(users[i].isFetching){
 			return false;
 		}
-		
+
 		if(users[i].didInvalidate || users[i].lastUpdated === 0){
 			return true; //if at least one invalidated and shouldFetchUsers is called -> update all
 		}
 	}
-	
+
 	return users.length === 0;
 }
 
 export const fetchUsersIfNeeded = (accessToken) => {
-	
+
 	return (dispatch, getState) => {
 		if(shouldFetchUsers(getState())){
 			// Dispatch a thunk from thunk!
@@ -137,34 +139,34 @@ const receiveUser = (user, receivedAt) => {
 
 const fetchUser = (user, accessToken) => {
 	return (dispatch) => {
-		
+
 		dispatch(
 			requestUser(user)
 		);
-		
+
 		return fetchApi('user/' + user._id, 'GET', {}, accessToken)
 		.then((refreshedUser) => {
-			
+
 			dispatch(
 				receiveUser(refreshedUser, Date.now())
 			);
-			
+
 		}).catch((error) => {
-			
+
 			dispatch(
 				failUsersRequest(error)
 			);
-			
+
 			dispatch(
 				addErrorNotification(error)
 			);
-			
+
 		});
 	};
 };
 
 const shouldFetchUser = (state, user) => {
-	
+
 	if(user.isFetching){
 		return false;
 	}else if(!user || !user.lastUpdated || user.lastUpdated === 0){
@@ -175,7 +177,7 @@ const shouldFetchUser = (state, user) => {
 }
 
 export const fetchUserIfNeeded = (user, accessToken) => {
-	
+
 	return (dispatch, getState) => {
 		if(shouldFetchUser(getState(), user)){
 			// Dispatch a thunk from thunk!
@@ -203,39 +205,39 @@ const failUserPut = (error, user) => {
 }
 
 const debouncedPut = debounce((dispatch, user, accessToken) => {
-	
+
 	return fetchApi('user/' + user._id, 'PUT', {user}, accessToken)
 	.then((updatedUser) => {
-		
+
 		dispatch(
 			receiveUser(updatedUser, Date.now())
 		);
-		
+
 		return updatedUser;
-		
+
 	}).catch((error) => {
-		
+
 		dispatch(
 			failUserPut(error, user)
 		);
-		
+
 		dispatch(
 			addErrorNotification(error)
 		);
-		
+
 	});
-	
+
 }, 1000);
 
 export const putUser = (user, accessToken) => {
 	return (dispatch) => {
-		
+
 		dispatch(
 			putUser_(user)
 		);
-		
+
 		debouncedPut(dispatch, user, accessToken);
-		
+
 	};
 }
 
@@ -256,30 +258,30 @@ const failUserPost = (error, user) => {
 
 export const postUser = (user, accessToken) => {
 	return (dispatch) => {
-		
+
 		dispatch(
 			postUser_(user)
 		);
-		
+
 		return fetchApi('user', 'POST', {user}, accessToken)
 		.then((savedUser) => {
-			
+
 			dispatch(
 				receiveUser(savedUser, Date.now())
 			);
-			
+
 			return savedUser;
-			
+
 		}).catch((error) => {
-			
+
 			dispatch(
 				failUserPost(error, user)
 			);
-			
+
 			dispatch(
 				addErrorNotification(error)
 			);
-			
+
 		});
 	};
 }
@@ -309,34 +311,34 @@ const deletedUser = (user, success) => {
 
 export const deleteUser = (user, accessToken) => {
 	return (dispatch) => {
-		
+
 		dispatch(
 			deleteUser_(user)
 		);
-		
+
 		return fetchApi('user/' + user._id, 'DELETE', {}, accessToken)
 		.then((response) => {
-			
+
 			dispatch(
 				deletedUser(user, response.success)
 			);
-			
+
 			if(!response.success){
 				failUserDelete('The API couldn\'t delete the user!', user)
 			}
-			
+
 			return response.success;
-			
+
 		}).catch((error) => {
-			
+
 			dispatch(
 				failUserDelete(error, user)
 			);
-			
+
 			dispatch(
 				addErrorNotification(error)
 			);
-			
+
 		});
 	};
 }

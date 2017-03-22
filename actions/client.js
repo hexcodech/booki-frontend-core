@@ -1,8 +1,10 @@
-import debounce				from 'lodash/debounce';
-import {fetchApi}			from 'booki-frontend-core/utilities/rest.js';
+import debounce
+       from 'lodash/debounce';
+import {fetchApi}
+       from 'booki-frontend-core/utilities/rest.js';
 
 import {addErrorNotification}
-							from 'booki-frontend-core/actions/notification';
+       from 'booki-frontend-core/actions/notification';
 
 export const invalidateClients = () => {
 	return {
@@ -34,51 +36,51 @@ const receiveClients = (clients, receivedAt) => {
 
 const fetchClients = (accessToken) => {
 	return (dispatch) => {
-		
+
 		dispatch(
 			requestClients(accessToken)
 		);
-		
+
 		return fetchApi('oauth2/client', 'GET', {filter: {}}, accessToken)
 		.then((clients) => {
-			
+
 			dispatch(
 				receiveClients(clients, Date.now())
 			);
-			
+
 		}).catch((error) => {
-			
+
 			dispatch(
 				failClientsRequest(error)
 			);
-			
+
 			dispatch(
 				addErrorNotification(error)
 			);
-			
+
 		});
 	};
 }
 
 const shouldFetchClients = (state) => {
 	const clients = state.app.clients;
-	
+
 	for(let i=0;i<clients.length;i++){
-		
+
 		if(clients[i].isFetching){
 			return false;
 		}
-		
+
 		if(clients[i].didInvalidate || clients[i].lastUpdated === 0){
 			return true; //if at least one invalidated or wasn't loaded yet, shouldFetchClients is called -> update all
 		}
 	}
-	
+
 	return clients.length === 0;
 }
 
 export const fetchClientsIfNeeded = (accessToken) => {
-	
+
 	return (dispatch, getState) => {
 		if(shouldFetchClients(getState())){
 			// Dispatch a thunk from thunk!
@@ -136,34 +138,34 @@ const receiveClient = (client, receivedAt) => {
 
 const fetchClient = (client, accessToken) => {
 	return (dispatch) => {
-		
+
 		dispatch(
 			requestClient(client)
 		);
-		
+
 		return fetchApi('oauth2/client/' + client._id, 'GET', {}, accessToken)
 		.then((refreshedClient) => {
-			
+
 			dispatch(
 				receiveClient(refreshedClient, Date.now())
 			);
-			
+
 		}).catch((error) => {
-			
+
 			dispatch(
 				failClientRequest(error)
 			);
-			
+
 			dispatch(
 				addErrorNotification(error)
 			);
-			
+
 		});
 	};
 };
 
 const shouldFetchClient = (state, client) => {
-	
+
 	if(client.isFetching){
 		return false;
 	}else if(!client || !client.lastUpdated || client.lastUpdated === 0){
@@ -174,7 +176,7 @@ const shouldFetchClient = (state, client) => {
 }
 
 export const fetchClientIfNeeded = (client, accessToken) => {
-	
+
 	return (dispatch, getState) => {
 		if(shouldFetchClient(getState(), client)){
 			// Dispatch a thunk from thunk!
@@ -203,39 +205,39 @@ const failClientPut = (error, client) => {
 }
 
 const debouncedPut = debounce((dispatch, client, accessToken) => {
-	
+
 	return fetchApi('oauth2/client/' + client._id, 'PUT', {client}, accessToken)
 	.then((updatedClient) => {
-		
+
 		dispatch(
 			receiveClient(updatedClient, Date.now())
 		);
-		
+
 		return updatedClient;
-		
+
 	}).catch((error) => {
-		
+
 		dispatch(
 			failClientPut(error, client)
 		);
-		
+
 		dispatch(
 			addErrorNotification(error)
 		);
-		
+
 	});
-	
+
 }, 1000);
 
 export const putClient = (client, accessToken) => {
 	return (dispatch) => {
-		
+
 		dispatch(
 			putClient_(client)
 		);
-		
+
 		debouncedPut(dispatch, client, accessToken);
-		
+
 	};
 }
 
@@ -257,30 +259,30 @@ const failClientPost = (error, client) => {
 
 export const postClient = (client, accessToken) => {
 	return (dispatch) => {
-		
+
 		dispatch(
 			postClient_(client)
 		);
-		
+
 		return fetchApi('oauth2/client', 'POST', {client}, accessToken)
 		.then((savedClient) => {
-			
+
 			dispatch(
 				receiveClient(savedClient, Date.now())
 			);
-			
+
 			return savedClient;
-			
+
 		}).catch((error) => {
-			
+
 			dispatch(
 				failClientPost(error, client)
 			);
-			
+
 			dispatch(
 				addErrorNotification(error)
 			);
-			
+
 		});
 	};
 }
@@ -310,34 +312,34 @@ const deletedClient = (client, success) => {
 
 export const deleteClient = (client, accessToken) => {
 	return (dispatch) => {
-		
+
 		dispatch(
 			deleteClient_(client)
 		);
-		
+
 		return fetchApi('oauth2/client/' + client._id, 'DELETE', {}, accessToken)
 		.then((response) => {
-			
+
 			dispatch(
 				deletedClient(client, response.success)
 			);
-			
+
 			if(!response.success){
 				failClientDelete('The API couldn\'t delete the client!', client)
 			}
-			
+
 			return response.success;
-			
+
 		}).catch((error) => {
-			
+
 			dispatch(
 				failClientDelete(error, client)
 			);
-			
+
 			dispatch(
 				addErrorNotification(error)
 			);
-			
+
 		});
 	};
 }

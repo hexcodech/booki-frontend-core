@@ -1,8 +1,10 @@
-import debounce				from 'lodash/debounce';
-import {fetchApi}			from 'booki-frontend-core/utilities/rest.js';
+import debounce
+       from 'lodash/debounce';
+import {fetchApi}
+       from 'booki-frontend-core/utilities/rest.js';
 
 import {addErrorNotification}
-							from 'booki-frontend-core/actions/notification';
+       from 'booki-frontend-core/actions/notification';
 
 export const invalidateBooks = () => {
 	return {
@@ -34,51 +36,51 @@ const receiveBooks = (books, receivedAt) => {
 
 const fetchBooks = (accessToken) => {
 	return (dispatch) => {
-		
+
 		dispatch(
 			requestBooks(accessToken)
 		);
-		
+
 		return Utilities.fetchApi('book', 'GET', {filter: {}}, accessToken)
 		.then((books) => {
-			
+
 			dispatch(
 				receiveBooks(books, Date.now())
 			);
-			
+
 		}).catch((error) => {
-			
+
 			dispatch(
 				failBooksRequest(error)
 			);
-			
+
 			dispatch(
 				addErrorNotification(error)
 			);
-			
+
 		});
 	};
 }
 
 const shouldFetchBooks = (state) => {
 	const books = state.app.books;
-	
+
 	for(let i=0;i<books.length;i++){
-		
+
 		if(books[i].isFetching){
 			return false;
 		}
-		
+
 		if(books[i].didInvalidate || books[i].lastUpdated === 0){
 			return true; //if at least one invalidated or wasn't loaded yet, shouldFetchBooks is called -> update all
 		}
 	}
-	
+
 	return books.length === 0;
 }
 
 export const fetchBooksIfNeeded = (accessToken) => {
-	
+
 	return (dispatch, getState) => {
 		if(shouldFetchBooks(getState())){
 			// Dispatch a thunk from thunk!
@@ -135,34 +137,34 @@ const receiveBook = (book, receivedAt) => {
 
 const fetchBook = (book, accessToken) => {
 	return (dispatch) => {
-		
+
 		dispatch(
 			requestBook(book)
 		);
-		
+
 		return Utilities.fetchApi('book/' + book._id, 'GET', {}, accessToken)
 		.then((refreshedBook) => {
-			
+
 			dispatch(
 				receiveBook(refreshedBook, Date.now())
 			);
-			
+
 		}).catch((error) => {
-			
+
 			dispatch(
 				failBookRequest(error)
 			);
-			
+
 			dispatch(
 				addErrorNotification(error)
 			);
-			
+
 		});
 	};
 };
 
 const shouldFetchBook = (state, book) => {
-	
+
 	if(book.isFetching){
 		return false;
 	}else if(!book || !book.lastUpdated || book.lastUpdated === 0){
@@ -173,7 +175,7 @@ const shouldFetchBook = (state, book) => {
 }
 
 export const fetchBookIfNeeded = (book, accessToken) => {
-	
+
 	return (dispatch, getState) => {
 		if(shouldFetchBook(getState(), book)){
 			// Dispatch a thunk from thunk!
@@ -202,39 +204,39 @@ const failBookPut = (error, book) => {
 }
 
 const debouncedPut = debounce((dispatch, book, accessToken) => {
-	
+
 	return Utilities.fetchApi('book/' + book._id, 'PUT', {book}, accessToken)
 	.then((updatedBook) => {
-		
+
 		dispatch(
 			receiveBook(updatedBook, Date.now())
 		);
-		
+
 		return updatedBook;
-		
+
 	}).catch((error) => {
-		
+
 		dispatch(
 			failBookPut(error, book)
 		);
-		
+
 		dispatch(
 			addErrorNotification(error)
 		);
-		
+
 	});
-	
+
 }, 1000);
 
 export const putBook = (book, accessToken) => {
 	return (dispatch) => {
-		
+
 		dispatch(
 			putBook_(book)
 		);
-		
+
 		debouncedPut(dispatch, book, accessToken);
-		
+
 	};
 }
 
@@ -255,30 +257,30 @@ const failBookPost = (error, book) => {
 
 export const postBook = (book, accessToken) => {
 	return (dispatch) => {
-		
+
 		dispatch(
 			postBook_(book)
 		);
-		
+
 		return Utilities.fetchApi('book', 'POST', {book}, accessToken)
 		.then((savedBook) => {
-			
+
 			dispatch(
 				receiveBook(savedBook, Date.now())
 			);
-			
+
 			return savedBook;
-			
+
 		}).catch((error) => {
-			
+
 			dispatch(
 				failBookPost(error, book)
 			);
-			
+
 			dispatch(
 				addErrorNotification(error)
 			);
-			
+
 		});
 	};
 }
@@ -308,34 +310,34 @@ const failBookDelete = (error, book) => {
 
 export const deleteBook = (book, accessToken) => {
 	return (dispatch) => {
-		
+
 		dispatch(
 			deleteBook_(book)
 		);
-		
+
 		return Utilities.fetchApi('book/' + book._id, 'DELETE', {}, accessToken)
 		.then((response) => {
-			
+
 			dispatch(
 				deletedBook(book, response.success)
 			);
-			
+
 			if(!response.success){
 				failBookDelete('The API couldn\'t delete the book!', book)
 			}
-			
+
 			return response.success;
-			
+
 		}).catch((error) => {
-			
+
 			dispatch(
 				failBookDelete(error, book)
 			);
-			
+
 			dispatch(
 				addErrorNotification(error)
 			);
-			
+
 		});
 	};
 }
@@ -363,31 +365,31 @@ const lookedUpBooks = (books) => {
 
 export const lookUpBooks = (field, value, accessToken) => {
 	return (dispatch, getState) => {
-		
+
 		dispatch(
 			lookUpBooks_()
 		);
-		
+
 		//http specs don't allow bodies in get requests, where can i get my day back?
 		return Utilities.fetchApi('book/lookup?' + field + '=' + value, 'GET', {}, accessToken)
 		.then((books) => {
-			
+
 			dispatch(
 				lookedUpBooks(books)
 			);
-			
+
 			return books;
-			
+
 		}).catch((error) => {
-			
+
 			dispatch(
 				failBookLookup(error)
 			);
-			
+
 			dispatch(
 				addErrorNotification(error)
 			);
-			
+
 		});
 	};
 };

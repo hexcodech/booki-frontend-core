@@ -1,7 +1,8 @@
-import {combineReducers}	from 'redux';
+import {combineReducers}
+       from 'redux';
 
 const newUser = (state = {}, action) => {
-		
+
 	switch(action.type){
 		case 'CLEAR_NEW_USER':
 			return {};
@@ -14,16 +15,16 @@ const newUser = (state = {}, action) => {
 				didInvalidate: false
 			};
 		case 'FAIL_USER_POST':
-			
+
 			return {
 				...state,
 				isFetching: false,
 				didInvalidate: false
 			};
-			
+
 		default:
 			return state;
-		
+
 	};
 };
 

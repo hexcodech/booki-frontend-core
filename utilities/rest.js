@@ -1,4 +1,5 @@
-import {API_URL, API_VERSION} from 'config.json';
+import {API_URL, API_VERSION}
+       from 'config.json'; //should be created in the main project folder
 
 export const fetchApi = (
 	path = '/',

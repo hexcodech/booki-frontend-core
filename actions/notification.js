@@ -1,5 +1,7 @@
-import {NOTIFICATION_ANIMATION_DURATION}	from 'booki-frontend-core/constants/animation.js';
-import {COLOR_FAILURE}						from 'booki-frontend-core/constants/color.js';
+import {NOTIFICATION_ANIMATION_DURATION}
+       from 'booki-frontend-core/constants/animation.js';
+import {COLOR_FAILURE}
+       from 'booki-frontend-core/constants/color.js';
 
 const addNotification_ = (notification) => {
 	return {
@@ -24,17 +26,17 @@ const removeNotification_ = (uuid) => {
 
 export const addNotification = (notification = {hideDelay: 2500}) => {
 	return (dispatch) => {
-		
+
 		if(!notification.uuid){
 			notification.uuid = Date.now() + '/' + Math.random();
 		}
 		notification.timestamp = Date.now();
-		
+
 		//default actions
 		if(!notification.actions){
 			notification.actions = [];
 		}
-		
+
 		notification.hide = () => {
 			dispatch(
 				updateNotification({
@@ -42,18 +44,18 @@ export const addNotification = (notification = {hideDelay: 2500}) => {
 					fadeOut: true
 				})
 			);
-			
+
 			//Removal
-			
+
 			setTimeout(() => {
 				dispatch(
 					removeNotification_(notification.uuid)
 				);
 			}, NOTIFICATION_ANIMATION_DURATION);
 		}
-		
+
 		if(notification.hideAction !== false){
-			
+
 			notification.actions.unshift({
 				text: 'Hide',
 				color: COLOR_FAILURE,
@@ -61,24 +63,24 @@ export const addNotification = (notification = {hideDelay: 2500}) => {
 					notification.hide();
 				}
 			});
-			
+
 		}
-		
+
 		dispatch(
 			addNotification_({
 				...notification,
 				fadeIn: true
 			})
 		);
-		
+
 		//set timeout
-		
+
 		if(notification.hideDelay){
-			
+
 			notification.hideDelay = Math.max(notification.hideDelay, 2500);
-			
+
 			//FadeIn
-			
+
 			setTimeout(() => {
 				dispatch(
 					updateNotification({
@@ -86,11 +88,11 @@ export const addNotification = (notification = {hideDelay: 2500}) => {
 						fadeIn: false
 					})
 				);
-				
+
 			}, NOTIFICATION_ANIMATION_DURATION);
-			
+
 			//FadeOut
-			
+
 			setTimeout(() => {
 				dispatch(
 					updateNotification({
@@ -98,21 +100,21 @@ export const addNotification = (notification = {hideDelay: 2500}) => {
 						fadeOut: true
 					})
 				);
-				
+
 			}, notification.hideDelay - NOTIFICATION_ANIMATION_DURATION);
-			
+
 			//Removal
-			
+
 			setTimeout(() => {
 				dispatch(
 					removeNotification_(notification.uuid)
 				);
 			}, notification.hideDelay);
-			
+
 		}
 
-		
-		
+
+
 	};
 }
 

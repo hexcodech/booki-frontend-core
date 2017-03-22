@@ -1,4 +1,5 @@
-import {combineReducers}	from 'redux';
+import {combineReducers}
+       from 'redux';
 
 const user = (state =
 {
@@ -9,14 +10,14 @@ const user = (state =
 	},
 	email : '',
 	profilePictureUrl : 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&s=512',
-	
+
 	lastUpdated: 0,
-	
+
 	isFetching: false,
 	didInvalidate: false
-	
+
 }, action) => {
-		
+
 	switch(action.type){
 		case 'UPDATE_AUTH_USER':
 			return action.user;
@@ -32,9 +33,9 @@ const user = (state =
 				didInvalidate: false
 			};
 		case 'FAIL_AUTH_USER_REQUEST':
-			
+
 			console.log(action.error);
-		
+
 			return {
 				...state,
 				isFetching: false
@@ -43,9 +44,9 @@ const user = (state =
 			return {
 				...state,
 				...action.user,
-				
+
 				lastUpdated: action.receivedAt,
-				
+
 				isFetching: false,
 				didInvalidate: false
 			};
@@ -54,9 +55,9 @@ const user = (state =
 				return {
 					...state,
 					...action.user,
-					
+
 					lastUpdated: action.receivedAt,
-					
+
 					isFetching: false,
 					didInvalidate: false
 				};
@@ -65,7 +66,7 @@ const user = (state =
 			}
 		default:
 			return state;
-		
+
 	};
 };
 
@@ -75,7 +76,7 @@ const accessToken = (state = {
 	userId: '',
 	expires: ''
 }, action) => {
-	
+
 	switch(action.type){
 		case 'RECEIVE_ACCESS_TOKEN':
 			return {

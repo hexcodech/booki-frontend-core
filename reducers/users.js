@@ -1,7 +1,8 @@
-import {combineReducers}	from 'redux';
+import {combineReducers}
+       from 'redux';
 
 const users = (state = [], action) => {
-		
+
 	switch(action.type){
 		case 'INVALIDATE_USERS':
 			return state.map((user) => {
@@ -19,7 +20,7 @@ const users = (state = [], action) => {
 				}
 			});
 		case 'FAIL_USERS_REQUEST':
-			
+
 			return state.map((user) => {
 				return {
 					...user,
@@ -27,12 +28,12 @@ const users = (state = [], action) => {
 				}
 			});
 		case 'RECEIVE_USERS':
-			
+
 			return action.users.map((user) => {
 				return {
 					...user,
 					lastUpdated: action.receivedAt,
-				
+
 					isFetching: false,
 					didInvalidate: false
 				}
@@ -44,7 +45,7 @@ const users = (state = [], action) => {
 					...action.user,
 					didInvalidate: true
 				}];
-		
+
 		case 'REQUEST_USER':
 		case 'PUT_USER':
 			return [...state.filter((user) => { //filter updated user out and insert the new one
@@ -54,30 +55,30 @@ const users = (state = [], action) => {
 					isFetching: true,
 					didInvalidate: false
 				}];
-				
+
 		case 'DELETE_USER':
 			return [...state.filter((user) => { //filter updated user out and insert the new one
 					return user._id !== action.user._id;
 				})];
-			
+
 		case 'FAIL_USER_REQUEST':
 		case 'FAIL_USER_PUT':
-		
+
 			return [...state.filter((user) => { //filter updated user out and insert the new one
 					return user._id !== action.user._id;
 				}), {
 					...action.user,
 					isFetching: false
 				}];
-				
+
 		case 'FAIL_USER_DELETE':
-			
+
 			return [...state, {
 				...action.user,
 				isFetching: false,
 				didInvalidate: false
 			}];
-			
+
 		case 'RECEIVE_USER':
 			return [...state.filter((user) => { //filter updated user out and insert the new one
 					return user._id !== action.user._id;
@@ -87,14 +88,14 @@ const users = (state = [], action) => {
 					didInvalidate: false,
 					lastUpdated: action.receivedAt
 				}];
-				
+
 		case 'DELETED_USER':
-		
+
 			return state; //we already deleted the user in the 'DELETE_USER' event ^^
-		
+
 		default:
 			return state;
-		
+
 	};
 };
 
