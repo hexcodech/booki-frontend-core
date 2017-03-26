@@ -20,7 +20,7 @@ export const COLOR_FAILURE           = '#e74c3c';
 export const JSONTreeTheme	= {
 	scheme: 'booki',
 	author: 'booki',
-	base00: '#FFFFFF', //background
+	base00: 'rgba(0,0,0,0)', //background
 	base01: '#FF0000',
 	base02: '#FF0000',
 	base03: '#FFA176', //item string color (expanded)

@@ -12,21 +12,21 @@ export const invalidateClients = () => {
 	};
 }
 
-const requestClients = (accessToken) => {
+const requestClients = (accessToken = {}) => {
 	return {
 		type: 'REQUEST_CLIENTS',
 		accessToken
 	};
 }
 
-const failClientsRequest = (error) => {
+const failClientsRequest = (error = {}) => {
 	return {
 		type: 'FAIL_CLIENTS_REQUEST',
 		error
 	}
 }
 
-const receiveClients = (clients, receivedAt) => {
+const receiveClients = (clients = [], receivedAt = 0) => {
 	return {
 		type: 'RECEIVE_CLIENTS',
 		clients,
@@ -34,7 +34,7 @@ const receiveClients = (clients, receivedAt) => {
 	};
 }
 
-const fetchClients = (accessToken) => {
+const fetchClients = (accessToken = {}) => {
 	return (dispatch) => {
 
 		dispatch(
@@ -62,7 +62,7 @@ const fetchClients = (accessToken) => {
 	};
 }
 
-const shouldFetchClients = (state) => {
+const shouldFetchClients = (state = {}) => {
 	const clients = state.app.clients;
 
 	for(let i=0;i<clients.length;i++){
@@ -79,7 +79,7 @@ const shouldFetchClients = (state) => {
 	return clients.length === 0;
 }
 
-export const fetchClientsIfNeeded = (accessToken) => {
+export const fetchClientsIfNeeded = (accessToken = {}) => {
 
 	return (dispatch, getState) => {
 		if(shouldFetchClients(getState())){
@@ -92,7 +92,7 @@ export const fetchClientsIfNeeded = (accessToken) => {
 	}
 }
 
-export const invalidateClient = (client) => {
+export const invalidateClient = (client = {}) => {
 	return {
 		type: 'INVALIDATE_CLIENT',
 		client
@@ -105,21 +105,21 @@ export const clearNewClient = () => {
 	};
 }
 
-export const updateNewClient = (client) => {
+export const updateNewClient = (client = {}) => {
 	return {
 		type: 'UPDATE_NEW_CLIENT',
 		client
 	};
 }
 
-const requestClient = (client) => {
+const requestClient = (client = {}) => {
 	return {
 		type: 'REQUEST_CLIENT',
 		client
 	};
 }
 
-const failClientRequest = (error, client) => {
+const failClientRequest = (error = {}, client = {}) => {
 	return {
 		type: 'FAIL_CLIENT_REQUEST',
 		error,
@@ -127,7 +127,7 @@ const failClientRequest = (error, client) => {
 	};
 }
 
-const receiveClient = (client, receivedAt) => {
+const receiveClient = (client = {}, receivedAt = 0) => {
 	return {
 		type: 'RECEIVE_CLIENT',
 		client,
@@ -136,7 +136,7 @@ const receiveClient = (client, receivedAt) => {
 }
 
 
-const fetchClient = (client, accessToken) => {
+const fetchClient = (client = {}, accessToken = {}) => {
 	return (dispatch) => {
 
 		dispatch(
@@ -164,7 +164,7 @@ const fetchClient = (client, accessToken) => {
 	};
 };
 
-const shouldFetchClient = (state, client) => {
+const shouldFetchClient = (state = {}, client = {}) => {
 
 	if(client.isFetching){
 		return false;
@@ -175,7 +175,7 @@ const shouldFetchClient = (state, client) => {
 	}
 }
 
-export const fetchClientIfNeeded = (client, accessToken) => {
+export const fetchClientIfNeeded = (client = {}, accessToken = {}) => {
 
 	return (dispatch, getState) => {
 		if(shouldFetchClient(getState(), client)){
@@ -189,14 +189,14 @@ export const fetchClientIfNeeded = (client, accessToken) => {
 }
 
 
-const putClient_ = (client) => {
+const putClient_ = (client = {}) => {
 	return {
 		type: 'PUT_CLIENT',
 		client
 	};
 }
 
-const failClientPut = (error, client) => {
+const failClientPut = (error = {}, client = {}) => {
 	return {
 		type: 'FAIL_CLIENT_PUT',
 		error,
@@ -204,7 +204,7 @@ const failClientPut = (error, client) => {
 	};
 }
 
-const debouncedPut = debounce((dispatch, client, accessToken) => {
+const debouncedPut = debounce((dispatch, client = {}, accessToken = {}) => {
 
 	return fetchApi('oauth2/client/' + client._id, 'PUT', {client}, accessToken)
 	.then((updatedClient) => {
@@ -229,7 +229,7 @@ const debouncedPut = debounce((dispatch, client, accessToken) => {
 
 }, 1000);
 
-export const putClient = (client, accessToken) => {
+export const putClient = (client = {}, accessToken = {}) => {
 	return (dispatch) => {
 
 		dispatch(
@@ -241,7 +241,7 @@ export const putClient = (client, accessToken) => {
 	};
 }
 
-const postClient_ = (client) => {
+const postClient_ = (client = {}) => {
 	return {
 		type: 'POST_CLIENT',
 		client
@@ -249,7 +249,7 @@ const postClient_ = (client) => {
 }
 
 
-const failClientPost = (error, client) => {
+const failClientPost = (error = {}, client = {}) => {
 	return {
 		type: 'FAIL_CLIENT_POST',
 		error,
@@ -257,7 +257,7 @@ const failClientPost = (error, client) => {
 	};
 }
 
-export const postClient = (client, accessToken) => {
+export const postClient = (client = {}, accessToken = {}) => {
 	return (dispatch) => {
 
 		dispatch(
@@ -287,14 +287,14 @@ export const postClient = (client, accessToken) => {
 	};
 }
 
-const deleteClient_ = (client) => {
+const deleteClient_ = (client = {}) => {
 	return {
 		type: 'DELETE_CLIENT',
 		client
 	};
 }
 
-const failClientDelete = (error, client) => {
+const failClientDelete = (error = {}, client = {}) => {
 	return {
 		type: 'FAIL_CLIENT_DELETE',
 		error,
@@ -302,7 +302,7 @@ const failClientDelete = (error, client) => {
 	};
 }
 
-const deletedClient = (client, success) => {
+const deletedClient = (client = {}, success = false) => {
 	return {
 		type: 'DELETED_CLIENT',
 		client,
@@ -310,7 +310,7 @@ const deletedClient = (client, success) => {
 	};
 }
 
-export const deleteClient = (client, accessToken) => {
+export const deleteClient = (client = {}, accessToken = {}) => {
 	return (dispatch) => {
 
 		dispatch(

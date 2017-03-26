@@ -12,21 +12,21 @@ export const invalidateBooks = () => {
 	};
 }
 
-const requestBooks = (accessToken) => {
+const requestBooks = (accessToken = {}) => {
 	return {
 		type: 'REQUEST_BOOKS',
 		accessToken
 	};
 }
 
-const failBooksRequest = (error) => {
+const failBooksRequest = (error = {}) => {
 	return {
 		type: 'FAIL_BOOKS_REQUEST',
 		error
 	}
 }
 
-const receiveBooks = (books, receivedAt) => {
+const receiveBooks = (books = [], receivedAt = {}) => {
 	return {
 		type: 'RECEIVE_BOOKS',
 		books,
@@ -34,7 +34,7 @@ const receiveBooks = (books, receivedAt) => {
 	};
 }
 
-const fetchBooks = (accessToken) => {
+const fetchBooks = (accessToken = {}) => {
 	return (dispatch) => {
 
 		dispatch(
@@ -62,7 +62,7 @@ const fetchBooks = (accessToken) => {
 	};
 }
 
-const shouldFetchBooks = (state) => {
+const shouldFetchBooks = (state = {}) => {
 	const books = state.app.books;
 
 	for(let i=0;i<books.length;i++){
@@ -79,7 +79,7 @@ const shouldFetchBooks = (state) => {
 	return books.length === 0;
 }
 
-export const fetchBooksIfNeeded = (accessToken) => {
+export const fetchBooksIfNeeded = (accessToken = {}) => {
 
 	return (dispatch, getState) => {
 		if(shouldFetchBooks(getState())){
@@ -92,7 +92,7 @@ export const fetchBooksIfNeeded = (accessToken) => {
 	}
 }
 
-export const invalidateBook = (book) => {
+export const invalidateBook = (book = {}) => {
 	return {
 		type: 'INVALIDATE_BOOK',
 		book
@@ -105,21 +105,21 @@ export const clearNewBook = () => {
 	};
 }
 
-export const updateNewBook = (book) => {
+export const updateNewBook = (book = {}) => {
 	return {
 		type: 'UPDATE_NEW_BOOK',
 		book
 	};
 }
 
-const requestBook = (book) => {
+const requestBook = (book = {}) => {
 	return {
 		type: 'REQUEST_BOOK',
 		book
 	};
 }
 
-const failBookRequest = (error, book) => {
+const failBookRequest = (error = {}, book = {}) => {
 	return {
 		type: 'FAIL_BOOK_REQUEST',
 		error,
@@ -127,7 +127,7 @@ const failBookRequest = (error, book) => {
 	};
 }
 
-const receiveBook = (book, receivedAt) => {
+const receiveBook = (book = {}, receivedAt = 0) => {
 	return {
 		type: 'RECEIVE_BOOK',
 		book,
@@ -135,7 +135,7 @@ const receiveBook = (book, receivedAt) => {
 	};
 }
 
-const fetchBook = (book, accessToken) => {
+const fetchBook = (book = {}, accessToken = 0) => {
 	return (dispatch) => {
 
 		dispatch(
@@ -163,7 +163,7 @@ const fetchBook = (book, accessToken) => {
 	};
 };
 
-const shouldFetchBook = (state, book) => {
+const shouldFetchBook = (state = {}, book = {}) => {
 
 	if(book.isFetching){
 		return false;
@@ -174,7 +174,7 @@ const shouldFetchBook = (state, book) => {
 	}
 }
 
-export const fetchBookIfNeeded = (book, accessToken) => {
+export const fetchBookIfNeeded = (book = {}, accessToken = {}) => {
 
 	return (dispatch, getState) => {
 		if(shouldFetchBook(getState(), book)){
@@ -188,14 +188,14 @@ export const fetchBookIfNeeded = (book, accessToken) => {
 }
 
 
-const putBook_ = (book) => {
+const putBook_ = (book = {}) => {
 	return {
 		type: 'PUT_BOOK',
 		book
 	};
 }
 
-const failBookPut = (error, book) => {
+const failBookPut = (error = {}, book = {}) => {
 	return {
 		type: 'FAIL_BOOK_PUT',
 		error,
@@ -203,7 +203,7 @@ const failBookPut = (error, book) => {
 	};
 }
 
-const debouncedPut = debounce((dispatch, book, accessToken) => {
+const debouncedPut = debounce((dispatch, book = {}, accessToken = {}) => {
 
 	return Utilities.fetchApi('book/' + book._id, 'PUT', {book}, accessToken)
 	.then((updatedBook) => {
@@ -228,7 +228,7 @@ const debouncedPut = debounce((dispatch, book, accessToken) => {
 
 }, 1000);
 
-export const putBook = (book, accessToken) => {
+export const putBook = (book = {}, accessToken = {}) => {
 	return (dispatch) => {
 
 		dispatch(
@@ -240,14 +240,14 @@ export const putBook = (book, accessToken) => {
 	};
 }
 
-const postBook_ = (book) => {
+const postBook_ = (book = {}) => {
 	return {
 		type: 'POST_BOOK',
 		book
 	};
 }
 
-const failBookPost = (error, book) => {
+const failBookPost = (error = {}, book = {}) => {
 	return {
 		type: 'FAIL_BOOK_POST',
 		error,
@@ -255,7 +255,7 @@ const failBookPost = (error, book) => {
 	};
 }
 
-export const postBook = (book, accessToken) => {
+export const postBook = (book = {}, accessToken = {}) => {
 	return (dispatch) => {
 
 		dispatch(
@@ -285,14 +285,14 @@ export const postBook = (book, accessToken) => {
 	};
 }
 
-const deleteBook_ = (book) => {
+const deleteBook_ = (book = {}) => {
 	return {
 		type: 'DELETE_BOOK',
 		book
 	};
 }
 
-const deletedBook = (book, success) => {
+const deletedBook = (book = {}, success = false) => {
 	return {
 		type: 'DELETED_BOOK',
 		book,
@@ -300,7 +300,7 @@ const deletedBook = (book, success) => {
 	};
 }
 
-const failBookDelete = (error, book) => {
+const failBookDelete = (error = {}, book = {}) => {
 	return {
 		type: 'FAIL_BOOK_DELETE',
 		error,
@@ -308,7 +308,7 @@ const failBookDelete = (error, book) => {
 	};
 }
 
-export const deleteBook = (book, accessToken) => {
+export const deleteBook = (book = {}, accessToken = {}) => {
 	return (dispatch) => {
 
 		dispatch(
@@ -348,14 +348,14 @@ const lookUpBooks_ = () => {
 	};
 };
 
-const failBookLookup = (error) => {
+const failBookLookup = (error = {}) => {
 	return {
 		type: 'FAIL_BOOK_LOOKUP',
 		error
 	};
 };
 
-const lookedUpBooks = (books) => {
+const lookedUpBooks = (books = []) => {
 	return {
 		type: 'LOOKED_UP_BOOKS',
 		books
@@ -363,15 +363,20 @@ const lookedUpBooks = (books) => {
 };
 
 
-export const lookUpBooks = (field, value, accessToken) => {
+export const lookUpBooks = (field = '', value = '', accessToken = {}) => {
 	return (dispatch, getState) => {
 
 		dispatch(
 			lookUpBooks_()
 		);
 
-		//http specs don't allow bodies in get requests, where can i get my day back?
-		return Utilities.fetchApi('book/lookup?' + field + '=' + value, 'GET', {}, accessToken)
+		//http specs don't allow bodies in get requests
+		return Utilities.fetchApi(
+      'book/lookup?' + field + '=' + value,
+      'GET',
+      {},
+      accessToken
+    )
 		.then((books) => {
 
 			dispatch(

@@ -12,21 +12,21 @@ export const invalidateUsers = () => {
 	};
 }
 
-const requestUsers = (accessToken) => {
+const requestUsers = (accessToken = {}) => {
 	return {
 		type: 'REQUEST_USERS',
 		accessToken
 	};
 }
 
-const failUsersRequest = (error) => {
+const failUsersRequest = (error = {}) => {
 	return {
 		type: 'FAIL_USERS_REQUEST',
 		error
 	}
 }
 
-const receiveUsers = (users, receivedAt) => {
+const receiveUsers = (users = [], receivedAt = 0) => {
 	return {
 		type: 'RECEIVE_USERS',
 		users,
@@ -34,7 +34,7 @@ const receiveUsers = (users, receivedAt) => {
 	};
 }
 
-const fetchUsers = (accessToken) => {
+const fetchUsers = (accessToken = {}) => {
 	return (dispatch) => {
 
 		dispatch(
@@ -62,7 +62,7 @@ const fetchUsers = (accessToken) => {
 	};
 }
 
-const shouldFetchUsers = (state) => {
+const shouldFetchUsers = (state = {}) => {
 	const users = state.app.users;
 
 	for(let i=0;i<users.length;i++){
@@ -79,7 +79,7 @@ const shouldFetchUsers = (state) => {
 	return users.length === 0;
 }
 
-export const fetchUsersIfNeeded = (accessToken) => {
+export const fetchUsersIfNeeded = (accessToken = {}) => {
 
 	return (dispatch, getState) => {
 		if(shouldFetchUsers(getState())){
@@ -92,7 +92,7 @@ export const fetchUsersIfNeeded = (accessToken) => {
 	}
 }
 
-export const invalidateUser = (user) => {
+export const invalidateUser = (user = {}) => {
 	return {
 		type: 'INVALIDATE_USER',
 		user
@@ -105,7 +105,7 @@ export const clearNewUser = () => {
 	};
 }
 
-export const updateNewUser = (user) => {
+export const updateNewUser = (user = {}) => {
 	return {
 		type: 'UPDATE_NEW_USER',
 		user
@@ -113,14 +113,14 @@ export const updateNewUser = (user) => {
 }
 
 
-const requestUser = (user) => {
+const requestUser = (user = {}) => {
 	return {
 		type: 'REQUEST_USER',
 		user
 	};
 }
 
-const failUserRequest = (error, user) => {
+const failUserRequest = (error = {}, user = {}) => {
 	return {
 		type: 'FAIL_USER_REQUEST',
 		error,
@@ -128,7 +128,7 @@ const failUserRequest = (error, user) => {
 	};
 }
 
-const receiveUser = (user, receivedAt) => {
+const receiveUser = (user = {}, receivedAt = 0) => {
 	return {
 		type: 'RECEIVE_USER',
 		user,
@@ -137,7 +137,7 @@ const receiveUser = (user, receivedAt) => {
 }
 
 
-const fetchUser = (user, accessToken) => {
+const fetchUser = (user = {}, accessToken = {}) => {
 	return (dispatch) => {
 
 		dispatch(
@@ -165,7 +165,7 @@ const fetchUser = (user, accessToken) => {
 	};
 };
 
-const shouldFetchUser = (state, user) => {
+const shouldFetchUser = (state = {}, user = {}) => {
 
 	if(user.isFetching){
 		return false;
@@ -176,7 +176,7 @@ const shouldFetchUser = (state, user) => {
 	}
 }
 
-export const fetchUserIfNeeded = (user, accessToken) => {
+export const fetchUserIfNeeded = (user = {}, accessToken = {}) => {
 
 	return (dispatch, getState) => {
 		if(shouldFetchUser(getState(), user)){
@@ -189,14 +189,14 @@ export const fetchUserIfNeeded = (user, accessToken) => {
 	}
 }
 
-const putUser_ = (user) => {
+const putUser_ = (user = {}) => {
 	return {
 		type: 'PUT_USER',
 		user
 	};
 }
 
-const failUserPut = (error, user) => {
+const failUserPut = (error = {}, user = {}) => {
 	return {
 		type: 'FAIL_USER_PUT',
 		error,
@@ -204,7 +204,7 @@ const failUserPut = (error, user) => {
 	};
 }
 
-const debouncedPut = debounce((dispatch, user, accessToken) => {
+const debouncedPut = debounce((dispatch, user = {}, accessToken = {}) => {
 
 	return fetchApi('user/' + user._id, 'PUT', {user}, accessToken)
 	.then((updatedUser) => {
@@ -229,7 +229,7 @@ const debouncedPut = debounce((dispatch, user, accessToken) => {
 
 }, 1000);
 
-export const putUser = (user, accessToken) => {
+export const putUser = (user = {}, accessToken = {}) => {
 	return (dispatch) => {
 
 		dispatch(
@@ -241,14 +241,14 @@ export const putUser = (user, accessToken) => {
 	};
 }
 
-const postUser_ = (user) => {
+const postUser_ = (user = {}) => {
 	return {
 		type: 'POST_USER',
 		user
 	};
 }
 
-const failUserPost = (error, user) => {
+const failUserPost = (error = {}, user = {}) => {
 	return {
 		type: 'FAIL_USER_POST',
 		error,
@@ -256,7 +256,7 @@ const failUserPost = (error, user) => {
 	};
 }
 
-export const postUser = (user, accessToken) => {
+export const postUser = (user = {}, accessToken = {}) => {
 	return (dispatch) => {
 
 		dispatch(
@@ -286,14 +286,14 @@ export const postUser = (user, accessToken) => {
 	};
 }
 
-const deleteUser_ = (user) => {
+const deleteUser_ = (user = {}) => {
 	return {
 		type: 'DELETE_USER',
 		user
 	};
 }
 
-const failUserDelete = (error, user) => {
+const failUserDelete = (error = {}, user = {}) => {
 	return {
 		type: 'FAIL_USER_DELETE',
 		error,
@@ -301,7 +301,7 @@ const failUserDelete = (error, user) => {
 	};
 }
 
-const deletedUser = (user, success) => {
+const deletedUser = (user = {}, success = {}) => {
 	return {
 		type: 'DELETED_USER',
 		user,
@@ -309,7 +309,7 @@ const deletedUser = (user, success) => {
 	};
 }
 
-export const deleteUser = (user, accessToken) => {
+export const deleteUser = (user = {}, accessToken = {}) => {
 	return (dispatch) => {
 
 		dispatch(

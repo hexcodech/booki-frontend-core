@@ -3,21 +3,21 @@ import {NOTIFICATION_ANIMATION_DURATION}
 import {COLOR_FAILURE}
        from 'booki-frontend-core/constants/color.js';
 
-const addNotification_ = (notification) => {
+const addNotification_ = (notification = {}) => {
 	return {
 		type: 'ADD_NOTIFICATION',
 		notification
 	};
 }
 
-export const updateNotification = (notification) => {
+export const updateNotification = (notification = {}) => {
 	return {
 		type: 'UPDATE_NOTIFICATION',
 		notification
 	};
 }
 
-const removeNotification_ = (uuid) => {
+const removeNotification_ = (uuid = 0) => {
 	return {
 		type: 'REMOVE_NOTIFICATION',
 		uuid
@@ -118,7 +118,7 @@ export const addNotification = (notification = {hideDelay: 2500}) => {
 	};
 }
 
-export const addErrorNotification = (error) => {
+export const addErrorNotification = (error = {}) => {
 	return addNotification({
 		title		: (error.statusText ? error.statusText : 'Error') + (error.status ? '(' + error.status + ')' : ''),
 		text		: 'Something went wrong',
