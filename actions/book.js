@@ -41,7 +41,7 @@ const fetchBooks = (accessToken = {}) => {
 			requestBooks(accessToken)
 		);
 
-		return Utilities.fetchApi('book', 'GET', {filter: {}}, accessToken)
+		return fetchApi('book', 'GET', {filter: {}}, accessToken)
 		.then((books) => {
 
 			dispatch(
@@ -142,7 +142,7 @@ const fetchBook = (book = {}, accessToken = 0) => {
 			requestBook(book)
 		);
 
-		return Utilities.fetchApi('book/' + book._id, 'GET', {}, accessToken)
+		return fetchApi('book/' + book._id, 'GET', {}, accessToken)
 		.then((refreshedBook) => {
 
 			dispatch(
@@ -205,7 +205,7 @@ const failBookPut = (error = {}, book = {}) => {
 
 const debouncedPut = debounce((dispatch, book = {}, accessToken = {}) => {
 
-	return Utilities.fetchApi('book/' + book._id, 'PUT', {book}, accessToken)
+	return fetchApi('book/' + book._id, 'PUT', {book}, accessToken)
 	.then((updatedBook) => {
 
 		dispatch(
@@ -262,7 +262,7 @@ export const postBook = (book = {}, accessToken = {}) => {
 			postBook_(book)
 		);
 
-		return Utilities.fetchApi('book', 'POST', {book}, accessToken)
+		return fetchApi('book', 'POST', {book}, accessToken)
 		.then((savedBook) => {
 
 			dispatch(
@@ -315,7 +315,7 @@ export const deleteBook = (book = {}, accessToken = {}) => {
 			deleteBook_(book)
 		);
 
-		return Utilities.fetchApi('book/' + book._id, 'DELETE', {}, accessToken)
+		return fetchApi('book/' + book._id, 'DELETE', {}, accessToken)
 		.then((response) => {
 
 			dispatch(
@@ -371,7 +371,7 @@ export const lookUpBooks = (field = '', value = '', accessToken = {}) => {
 		);
 
 		//http specs don't allow bodies in get requests
-		return Utilities.fetchApi(
+		return fetchApi(
       'book/lookup?' + field + '=' + value,
       'GET',
       {},
