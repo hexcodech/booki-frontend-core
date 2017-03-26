@@ -40,7 +40,7 @@ const books = (state = [], action) => {
 			});
 		case 'INVALIDATE_BOOK':
 			return [...state.filter((book) => { //filter updated book out and insert the new one
-					return book._id !== action.book._id;
+					return book.id !== action.book.id;
 				}), {
 					...action.book,
 					didInvalidate: true
@@ -49,7 +49,7 @@ const books = (state = [], action) => {
 		case 'REQUEST_BOOK':
 		case 'PUT_BOOK':
 			return [...state.filter((book) => { //filter updated book out and insert the new one
-					return book._id !== action.book._id;
+					return book.id !== action.book.id;
 				}), {
 					...action.book,
 					isFetching: true,
@@ -58,14 +58,14 @@ const books = (state = [], action) => {
 
 		case 'DELETE_BOOK':
 			return [...state.filter((book) => { //filter updated book out and insert the new one
-					return book._id !== action.book._id;
+					return book.id !== action.book.id;
 				})];
 
 		case 'FAIL_BOOK_REQUEST':
 		case 'FAIL_BOOK_PUT':
 
 			return [...state.filter((book) => { //filter updated book out and insert the new one
-					return book._id !== action.book._id;
+					return book.id !== action.book.id;
 				}), {
 					...action.book,
 					isFetching: false
@@ -81,7 +81,7 @@ const books = (state = [], action) => {
 
 		case 'RECEIVE_BOOK':
 			return [...state.filter((book) => { //filter updated book out and insert the new one
-					return book._id !== action.book._id;
+					return book.id !== action.book.id;
 				}), {
 					...action.book,
 					isFetching: false,
@@ -100,7 +100,7 @@ const books = (state = [], action) => {
 			//cascade delete related books
 
 			return state.filter((book)=>{
-				return book.createdBy !== action.user._id;
+				return book.createdBy !== action.user.id;
 			});*/
 
 		default:

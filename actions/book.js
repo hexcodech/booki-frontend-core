@@ -142,7 +142,7 @@ const fetchBook = (book = {}, accessToken = 0) => {
 			requestBook(book)
 		);
 
-		return fetchApi('book/' + book._id, 'GET', {}, accessToken)
+		return fetchApi('book/' + book.id, 'GET', {}, accessToken)
 		.then((refreshedBook) => {
 
 			dispatch(
@@ -205,7 +205,7 @@ const failBookPut = (error = {}, book = {}) => {
 
 const debouncedPut = debounce((dispatch, book = {}, accessToken = {}) => {
 
-	return fetchApi('book/' + book._id, 'PUT', {book}, accessToken)
+	return fetchApi('book/' + book.id, 'PUT', {book}, accessToken)
 	.then((updatedBook) => {
 
 		dispatch(
@@ -315,7 +315,7 @@ export const deleteBook = (book = {}, accessToken = {}) => {
 			deleteBook_(book)
 		);
 
-		return fetchApi('book/' + book._id, 'DELETE', {}, accessToken)
+		return fetchApi('book/' + book.id, 'DELETE', {}, accessToken)
 		.then((response) => {
 
 			dispatch(

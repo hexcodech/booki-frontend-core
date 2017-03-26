@@ -40,7 +40,7 @@ const clients = (state = [], action) => {
 			});
 		case 'INVALIDATE_CLIENT':
 			return [...state.filter((client) => { //filter updated client out and insert the new one
-					return client._id !== action.client._id;
+					return client.id !== action.client.id;
 				}), {
 					...action.client,
 					didInvalidate: true
@@ -49,7 +49,7 @@ const clients = (state = [], action) => {
 		case 'REQUEST_CLIENT':
 		case 'PUT_CLIENT':
 			return [...state.filter((client) => { //filter updated client out and insert the new one
-					return client._id !== action.client._id;
+					return client.id !== action.client.id;
 				}), {
 					...action.client,
 					isFetching: true,
@@ -58,14 +58,14 @@ const clients = (state = [], action) => {
 
 		case 'DELETE_CLIENT':
 			return [...state.filter((client) => { //filter updated client out and insert the new one
-					return client._id !== action.client._id;
+					return client.id !== action.client.id;
 				})];
 
 		case 'FAIL_CLIENT_REQUEST':
 		case 'FAIL_CLIENT_PUT':
 
 			return [...state.filter((client) => { //filter updated client out and insert the new one
-					return client._id !== action.client._id;
+					return client.id !== action.client.id;
 				}), {
 					...action.client,
 					isFetching: false
@@ -81,7 +81,7 @@ const clients = (state = [], action) => {
 
 		case 'RECEIVE_CLIENT':
 			return [...state.filter((client) => { //filter updated client out and insert the new one
-					return client._id !== action.client._id;
+					return client.id !== action.client.id;
 				}), {
 					...action.client,
 					isFetching: false,
@@ -100,7 +100,7 @@ const clients = (state = [], action) => {
 			//cascade delete related clients
 
 			return state.filter((client)=>{
-				return client.userId !== action.user._id;
+				return client.userId !== action.user.id;
 			});
 
 		default:

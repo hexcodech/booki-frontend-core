@@ -144,7 +144,7 @@ const fetchUser = (user = {}, accessToken = {}) => {
 			requestUser(user)
 		);
 
-		return fetchApi('user/' + user._id, 'GET', {}, accessToken)
+		return fetchApi('user/' + user.id, 'GET', {}, accessToken)
 		.then((refreshedUser) => {
 
 			dispatch(
@@ -206,7 +206,7 @@ const failUserPut = (error = {}, user = {}) => {
 
 const debouncedPut = debounce((dispatch, user = {}, accessToken = {}) => {
 
-	return fetchApi('user/' + user._id, 'PUT', {user}, accessToken)
+	return fetchApi('user/' + user.id, 'PUT', {user}, accessToken)
 	.then((updatedUser) => {
 
 		dispatch(
@@ -316,7 +316,7 @@ export const deleteUser = (user = {}, accessToken = {}) => {
 			deleteUser_(user)
 		);
 
-		return fetchApi('user/' + user._id, 'DELETE', {}, accessToken)
+		return fetchApi('user/' + user.id, 'DELETE', {}, accessToken)
 		.then((response) => {
 
 			dispatch(

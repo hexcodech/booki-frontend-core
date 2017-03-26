@@ -143,7 +143,7 @@ const fetchClient = (client = {}, accessToken = {}) => {
 			requestClient(client)
 		);
 
-		return fetchApi('oauth2/client/' + client._id, 'GET', {}, accessToken)
+		return fetchApi('oauth2/client/' + client.id, 'GET', {}, accessToken)
 		.then((refreshedClient) => {
 
 			dispatch(
@@ -206,7 +206,7 @@ const failClientPut = (error = {}, client = {}) => {
 
 const debouncedPut = debounce((dispatch, client = {}, accessToken = {}) => {
 
-	return fetchApi('oauth2/client/' + client._id, 'PUT', {client}, accessToken)
+	return fetchApi('oauth2/client/' + client.id, 'PUT', {client}, accessToken)
 	.then((updatedClient) => {
 
 		dispatch(
@@ -317,7 +317,7 @@ export const deleteClient = (client = {}, accessToken = {}) => {
 			deleteClient_(client)
 		);
 
-		return fetchApi('oauth2/client/' + client._id, 'DELETE', {}, accessToken)
+		return fetchApi('oauth2/client/' + client.id, 'DELETE', {}, accessToken)
 		.then((response) => {
 
 			dispatch(

@@ -40,7 +40,7 @@ const users = (state = [], action) => {
 			});
 		case 'INVALIDATE_USER':
 			return [...state.filter((user) => { //filter updated user out and insert the new one
-					return user._id !== action.user._id;
+					return user.id !== action.user.id;
 				}), {
 					...action.user,
 					didInvalidate: true
@@ -49,7 +49,7 @@ const users = (state = [], action) => {
 		case 'REQUEST_USER':
 		case 'PUT_USER':
 			return [...state.filter((user) => { //filter updated user out and insert the new one
-					return user._id !== action.user._id;
+					return user.id !== action.user.id;
 				}), {
 					...action.user,
 					isFetching: true,
@@ -58,14 +58,14 @@ const users = (state = [], action) => {
 
 		case 'DELETE_USER':
 			return [...state.filter((user) => { //filter updated user out and insert the new one
-					return user._id !== action.user._id;
+					return user.id !== action.user.id;
 				})];
 
 		case 'FAIL_USER_REQUEST':
 		case 'FAIL_USER_PUT':
 
 			return [...state.filter((user) => { //filter updated user out and insert the new one
-					return user._id !== action.user._id;
+					return user.id !== action.user.id;
 				}), {
 					...action.user,
 					isFetching: false
@@ -81,7 +81,7 @@ const users = (state = [], action) => {
 
 		case 'RECEIVE_USER':
 			return [...state.filter((user) => { //filter updated user out and insert the new one
-					return user._id !== action.user._id;
+					return user.id !== action.user.id;
 				}), {
 					...action.user,
 					isFetching: false,
