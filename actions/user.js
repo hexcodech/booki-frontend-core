@@ -72,7 +72,8 @@ const shouldFetchUsers = (state = {}) => {
 		}
 
 		if(users[i].didInvalidate || users[i].lastUpdated === 0){
-			return true; //if at least one invalidated and shouldFetchUsers is called -> update all
+       //if at least one invalidated and shouldFetchUsers is called -> update all
+			return true;
 		}
 	}
 
