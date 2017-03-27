@@ -4,7 +4,7 @@ const validation = (state = [], action) => {
 		case 'RECEIVE_VALIDATION_ERROR':
 			return [
 				...state,
-				action.error
+				...action.error.errors
 			];
 
 		case 'ADD_VALIDATION_ERRORS':
