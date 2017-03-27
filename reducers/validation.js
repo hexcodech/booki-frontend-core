@@ -1,13 +1,13 @@
 const validation = (state = [], action) => {
 
 	switch(action.type){
-		case 'RECEIVE_VALIDATION_ERROR':
+		case 'ADD_VALIDATION_ERROR':
 			return [
 				...state,
 				...action.error.errors
 			];
 
-		case 'ADD_VALIDATION_ERRORS':
+		case 'CLEAR_VALIDATION_ERRORS':
 			return [];
 
 		default:
