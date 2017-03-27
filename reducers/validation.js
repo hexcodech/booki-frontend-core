@@ -7,7 +7,7 @@ const validation = (state = [], action) => {
 				action.error
 			];
 
-		case 'CLEAR_VALIDATION_ERRORS':
+		case 'ADD_VALIDATION_ERRORS':
 			return [];
 
 		default:

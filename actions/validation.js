@@ -4,7 +4,7 @@ export const isValidationError = (error) => {
 
 export const addValidationError = (error) => {
 	return {
-		type: 'RECEIVE_VALIDATION_ERROR',
+		type: 'ADD_VALIDATION_ERROR',
 		error
 	};
 }
