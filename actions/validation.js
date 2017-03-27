@@ -2,7 +2,7 @@ export const isValidationError = (error) => {
   return (error.status == 400 && error.statusText == 'Bad Request');
 };
 
-export const receiveValidationError = (error) => {
+export const addValidationError = (error) => {
 	return {
 		type: 'RECEIVE_VALIDATION_ERROR',
 		error

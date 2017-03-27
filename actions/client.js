@@ -1,7 +1,10 @@
 import debounce
        from 'lodash/debounce';
 import {fetchApi}
-       from 'booki-frontend-core/utilities/rest.js';
+       from 'booki-frontend-core/utilities/rest';
+
+import {isValidationError, addValidationError}
+       from 'booki-frontend-core/actions/validation';
 
 import {addErrorNotification}
        from 'booki-frontend-core/actions/notification';
@@ -221,9 +224,15 @@ const debouncedPut = debounce((dispatch, client = {}, accessToken = {}) => {
 			failClientPut(error, client)
 		);
 
-		dispatch(
-			addErrorNotification(error)
-		);
+    if(isValidationError(error)){
+      dispatch(
+        addValidationError(error)
+      );
+    }else{
+      dispatch(
+        addErrorNotification(error)
+      );
+    }
 
 	});
 
@@ -279,9 +288,15 @@ export const postClient = (client = {}, accessToken = {}) => {
 				failClientPost(error, client)
 			);
 
-			dispatch(
-				addErrorNotification(error)
-			);
+      if(isValidationError(error)){
+        dispatch(
+          addValidationError(error)
+        );
+      }else{
+        dispatch(
+          addErrorNotification(error)
+        );
+      }
 
 		});
 	};

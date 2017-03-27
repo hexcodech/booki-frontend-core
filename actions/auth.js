@@ -1,5 +1,5 @@
 import {fetchApi}
-       from 'booki-frontend-core/utilities/rest.js';
+       from 'booki-frontend-core/utilities/rest';
 
 export const receiveAccessToken = (accessToken = {}) => {
 	return {
