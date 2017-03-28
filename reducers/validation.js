@@ -1,14 +1,23 @@
-const validation = (state = [], action) => {
+const validation = (state = {}, action) => {
 
 	switch(action.type){
 		case 'ADD_VALIDATION_ERROR':
-			return [
-				...state,
-				...action.error.errors
-			];
+			let newState = {...state};
+
+			action.error.errors.forEach((error) => {
+
+				if(newState[error.field]){
+					newState[error.field] = [...newState[error.field], ...error.messages];
+				}else{
+					newState[error.field] = error.messages;
+				}
+
+			});
+
+			return newState;
 
 		case 'CLEAR_VALIDATION_ERRORS':
-			return [];
+			return {};
 
 		default:
 			return state;
