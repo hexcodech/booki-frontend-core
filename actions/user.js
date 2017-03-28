@@ -3,7 +3,7 @@ import debounce
 import {fetchApi}
        from 'booki-frontend-core/utilities/rest';
 
-import {isValidationError, addValidationError}
+import {isValidationError, addValidationError, clearValidationErrors}
       from 'booki-frontend-core/actions/validation';
 
 import {addErrorNotification}
@@ -210,6 +210,10 @@ const failUserPut = (error = {}, user = {}) => {
 
 const debouncedPut = debounce((dispatch, user = {}, accessToken = {}) => {
 
+  dispatch(
+    clearValidationErrors()
+  );
+
 	return fetchApi('user/' + user.id, 'PUT', {user}, accessToken)
 	.then((updatedUser) => {
 
@@ -268,6 +272,10 @@ const failUserPost = (error = {}, user = {}) => {
 
 export const postUser = (user = {}, accessToken = {}) => {
 	return (dispatch) => {
+
+    dispatch(
+      clearValidationErrors()
+    );
 
 		dispatch(
 			postUser_(user)

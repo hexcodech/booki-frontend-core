@@ -3,7 +3,7 @@ import debounce
 import {fetchApi}
        from 'booki-frontend-core/utilities/rest';
 
-import {isValidationError, addValidationError}
+import {isValidationError, addValidationError, clearValidationErrors}
        from 'booki-frontend-core/actions/validation';
 
 import {addErrorNotification}
@@ -208,6 +208,10 @@ const failBookPut = (error = {}, book = {}) => {
 
 const debouncedPut = debounce((dispatch, book = {}, accessToken = {}) => {
 
+  dispatch(
+    clearValidationErrors()
+  );
+
 	return fetchApi('book/' + book.id, 'PUT', {book}, accessToken)
 	.then((updatedBook) => {
 
@@ -266,6 +270,10 @@ const failBookPost = (error = {}, book = {}) => {
 
 export const postBook = (book = {}, accessToken = {}) => {
 	return (dispatch) => {
+
+    dispatch(
+      clearValidationErrors()
+    );
 
 		dispatch(
 			postBook_(book)
