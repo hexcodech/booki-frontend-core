@@ -51,7 +51,7 @@ const user = (state =
 				didInvalidate: false
 			};
 		case 'RECEIVE_USER':
-			if(state._id === action.user._id){
+			if(state.id === action.user.id){
 				return {
 					...state,
 					...action.user,
