@@ -24,10 +24,7 @@ const validation = (state = {}, action) => {
 			return newState;
 
 		case 'CLEAR_VALIDATION_ERRORS':
-			let newState = {...state};
-			newState[action.key] = {};
-
-			return newState;
+			return set(JSON.parse(JSON.stringify(state)), action.key, {});
 
 		default:
 			return state;
