@@ -211,7 +211,7 @@ const failUserPut = (error = {}, user = {}) => {
 const debouncedPut = debounce((dispatch, user = {}, accessToken = {}) => {
 
   dispatch(
-    clearValidationErrors()
+    clearValidationErrors('user')
   );
 
 	return fetchApi('user/' + user.id, 'PUT', {user}, accessToken)
@@ -274,7 +274,7 @@ export const postUser = (user = {}, accessToken = {}) => {
 	return (dispatch) => {
 
     dispatch(
-      clearValidationErrors()
+      clearValidationErrors('user')
     );
 
 		dispatch(

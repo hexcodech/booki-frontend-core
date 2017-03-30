@@ -9,8 +9,9 @@ export const addValidationError = (error) => {
 	};
 }
 
-export const clearValidationErrors = () => {
+export const clearValidationErrors = (key) => {
 	return {
-		type: 'CLEAR_VALIDATION_ERRORS'
+		type: 'CLEAR_VALIDATION_ERRORS',
+    key
 	};
 }

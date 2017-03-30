@@ -210,7 +210,7 @@ const failClientPut = (error = {}, client = {}) => {
 const debouncedPut = debounce((dispatch, client = {}, accessToken = {}) => {
 
   dispatch(
-    clearValidationErrors()
+    clearValidationErrors('client')
   );
 
 	return fetchApi('oauth2/client/' + client.id, 'PUT', {client}, accessToken)
@@ -274,7 +274,7 @@ export const postClient = (client = {}, accessToken = {}) => {
 	return (dispatch) => {
 
     dispatch(
-      clearValidationErrors()
+      clearValidationErrors('client')
     );
 
 		dispatch(

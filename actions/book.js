@@ -209,7 +209,7 @@ const failBookPut = (error = {}, book = {}) => {
 const debouncedPut = debounce((dispatch, book = {}, accessToken = {}) => {
 
   dispatch(
-    clearValidationErrors()
+    clearValidationErrors('book')
   );
 
 	return fetchApi('book/' + book.id, 'PUT', {book}, accessToken)
@@ -272,7 +272,7 @@ export const postBook = (book = {}, accessToken = {}) => {
 	return (dispatch) => {
 
     dispatch(
-      clearValidationErrors()
+      clearValidationErrors('book')
     );
 
 		dispatch(

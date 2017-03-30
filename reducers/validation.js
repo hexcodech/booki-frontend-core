@@ -1,3 +1,5 @@
+import set from 'lodash/set';
+
 const validation = (state = {}, action) => {
 
 	switch(action.type){
@@ -7,9 +9,14 @@ const validation = (state = {}, action) => {
 			action.error.errors.forEach((error) => {
 
 				if(newState[error.field]){
-					newState[error.field] = [...newState[error.field], ...error.messages];
+
+					set(newState, error.field, [//error.field is a 'dotted' path
+						...newState[error.field],
+						...error.messages
+					]);
+
 				}else{
-					newState[error.field] = error.messages;
+					set(newState, error.field, error.messages);
 				}
 
 			});
@@ -17,7 +24,10 @@ const validation = (state = {}, action) => {
 			return newState;
 
 		case 'CLEAR_VALIDATION_ERRORS':
-			return {};
+			let newState = {...state};
+			newState[action.key] = {};
+
+			return newState;
 
 		default:
 			return state;
