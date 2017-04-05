@@ -393,7 +393,6 @@ export const lookUpBooks = (field = '', value = '', accessToken = {}) => {
 			lookUpBooks_()
 		);
 
-		//http specs don't allow bodies in get requests
 		return fetchApi(
       'book/lookup?' + field + '=' + value,
       'GET',
