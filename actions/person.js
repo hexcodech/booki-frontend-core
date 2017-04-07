@@ -1,12 +1,16 @@
+import debounce
+       from 'lodash/debounce';
+
 import {fetchApi}
        from 'booki-frontend-core/utilities/rest';
 
 import {addErrorNotification}
        from 'booki-frontend-core/actions/notification';
 
-const lookUpPeople_ = () => {
+const lookUpPeople_ = (name) => {
 	return {
-		type: 'LOOKUP_PEOPLE'
+		type: 'LOOKUP_PEOPLE',
+    name
 	};
 };
 
@@ -25,7 +29,7 @@ const lookedUpPeople = (people = []) => {
 };
 
 
-export const lookUpPeople = (name = '', accessToken = {}) => {
+export const lookUpPeople = debounce((name = '', accessToken = {}) => {
 	return (dispatch, getState) => {
 
 		dispatch(
@@ -59,4 +63,4 @@ export const lookUpPeople = (name = '', accessToken = {}) => {
 
 		});
 	};
-};
+}, 250);
