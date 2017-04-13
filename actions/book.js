@@ -419,6 +419,6 @@ const debouncedLookup = debounce((dispatch, search = '', accessToken = {}) => {
 
 export const lookUpBooks = (search = '', accessToken = {}) => {
 	return (dispatch) => {
-    debouncedLookup(dispatch, search, accessToken);
+    return debouncedLookup(dispatch, search, accessToken);
 	};
 };

@@ -64,6 +64,6 @@ export const debouncedLookup = debounce((dispatch, name, accessToken) => {
 
 export const lookUpPeople = (name = '', accessToken = {}) => {
   return (dispatch) => {
-    debouncedLookup(dispatch, name, accessToken);
-  }
+    return debouncedLookup(dispatch, name, accessToken);
+  };
 }
