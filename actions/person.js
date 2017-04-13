@@ -29,38 +29,41 @@ const lookedUpPeople = (people = []) => {
 };
 
 
-export const lookUpPeople = debounce((name = '', accessToken = {}) => {
-	return (dispatch, getState) => {
+export const debouncedLookup = debounce((dispatch, name, accessToken) => {
+  dispatch(
+    lookUpPeople_(name)
+  );
 
-		dispatch(
-			lookUpPeople_(name)
-		);
+  //http specs don't allow bodies in get requests
+  return fetchApi(
+    'person/lookup?name=' + name,
+    'GET',
+    {},
+    accessToken
+  )
+  .then((people) => {
 
-		//http specs don't allow bodies in get requests
-		return fetchApi(
-      'person/lookup?name=' + name,
-      'GET',
-      {},
-      accessToken
-    )
-		.then((people) => {
+    dispatch(
+      lookedUpPeople(people)
+    );
 
-			dispatch(
-				lookedUpPeople(people)
-			);
+    return people;
 
-			return people;
+  }).catch((error) => {
 
-		}).catch((error) => {
+    dispatch(
+      failPeopleLookup(error)
+    );
 
-			dispatch(
-				failPeopleLookup(error)
-			);
+    dispatch(
+      addErrorNotification(error)
+    );
 
-			dispatch(
-				addErrorNotification(error)
-			);
-
-		});
-	};
+  });
 }, 300);
+
+export const lookUpPeople = (name = '', accessToken = {}) => {
+  return (dispatch) => {
+    debouncedLookup(dispatch, name, accessToken);
+  }
+}
