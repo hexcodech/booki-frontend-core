@@ -385,38 +385,40 @@ const lookedUpBooks = (books = []) => {
 	};
 };
 
+const debouncedLookup = debounce((dispatch, search = '', accessToken = {}) => {
+  dispatch(
+    lookUpBooks_()
+  );
+
+  return fetchApi(
+    'book/lookup?search=' + search,
+    'GET',
+    {},
+    accessToken
+  )
+  .then((books) => {
+
+    dispatch(
+      lookedUpBooks(books)
+    );
+
+    return books;
+
+  }).catch((error) => {
+
+    dispatch(
+      failBookLookup(error)
+    );
+
+    dispatch(
+      addErrorNotification(error)
+    );
+
+  });
+}, 300);
 
 export const lookUpBooks = (search = '', accessToken = {}) => {
-	return (dispatch, getState) => {
-
-		dispatch(
-			lookUpBooks_()
-		);
-
-		return fetchApi(
-      'book/lookup?search=' + search,
-      'GET',
-      {},
-      accessToken
-    )
-		.then((books) => {
-
-			dispatch(
-				lookedUpBooks(books)
-			);
-
-			return books;
-
-		}).catch((error) => {
-
-			dispatch(
-				failBookLookup(error)
-			);
-
-			dispatch(
-				addErrorNotification(error)
-			);
-
-		});
+	return (dispatch) => {
+    debouncedLookup(dispatch, search, accessToken);
 	};
 };
