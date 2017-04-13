@@ -33,7 +33,7 @@ export const lookUpPeople = debounce((name = '', accessToken = {}) => {
 	return (dispatch, getState) => {
 
 		dispatch(
-			lookUpPeople_()
+			lookUpPeople_(name)
 		);
 
 		//http specs don't allow bodies in get requests
