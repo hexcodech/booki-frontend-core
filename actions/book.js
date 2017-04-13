@@ -386,7 +386,7 @@ const lookedUpBooks = (books = []) => {
 };
 
 
-export const lookUpBooks = (field = '', value = '', accessToken = {}) => {
+export const lookUpBooks = (search = '', accessToken = {}) => {
 	return (dispatch, getState) => {
 
 		dispatch(
@@ -394,7 +394,7 @@ export const lookUpBooks = (field = '', value = '', accessToken = {}) => {
 		);
 
 		return fetchApi(
-      'book/lookup?' + field + '=' + value,
+      'book/lookup?search=' + search,
       'GET',
       {},
       accessToken
