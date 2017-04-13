@@ -63,4 +63,4 @@ export const lookUpPeople = debounce((name = '', accessToken = {}) => {
 
 		});
 	};
-}, 250);
+}, 250, {leading: false, trailing: true});
