@@ -39,7 +39,7 @@ const books = (state = [], action) => {
 				}
 			});
 		case 'INVALIDATE_BOOK':
-			return [...state.filter((book) => { //filter updated book out and insert the new one
+			return [...state.filter((book) => {
 					return book.id !== action.book.id;
 				}), {
 					...action.book,
@@ -48,7 +48,7 @@ const books = (state = [], action) => {
 
 		case 'REQUEST_BOOK':
 		case 'PUT_BOOK':
-			return [...state.filter((book) => { //filter updated book out and insert the new one
+			return [...state.filter((book) => {
 					return book.id !== action.book.id;
 				}), {
 					...action.book,
@@ -57,14 +57,14 @@ const books = (state = [], action) => {
 				}];
 
 		case 'DELETE_BOOK':
-			return [...state.filter((book) => { //filter updated book out and insert the new one
+			return [...state.filter((book) => {
 					return book.id !== action.book.id;
 				})];
 
 		case 'FAIL_BOOK_REQUEST':
 		case 'FAIL_BOOK_PUT':
 
-			return [...state.filter((book) => { //filter updated book out and insert the new one
+			return [...state.filter((book) => {
 					return book.id !== action.book.id;
 				}), {
 					...action.book,
@@ -80,7 +80,7 @@ const books = (state = [], action) => {
 			}];
 
 		case 'RECEIVE_BOOK':
-			return [...state.filter((book) => { //filter updated book out and insert the new one
+			return [...state.filter((book) => {
 					return book.id !== action.book.id;
 				}), {
 					...action.book,
@@ -91,17 +91,8 @@ const books = (state = [], action) => {
 
 		case 'DELETED_BOOK':
 
-			return state; //we already deleted the book in the 'DELETE_BOOK' event
+			return state;
 
-
-
-
-		/*case 'DELETE_USER':
-			//cascade delete related books
-
-			return state.filter((book)=>{
-				return book.createdBy !== action.user.id;
-			});*/
 
 		default:
 			return state;

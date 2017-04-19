@@ -39,7 +39,7 @@ const users = (state = [], action) => {
 				}
 			});
 		case 'INVALIDATE_USER':
-			return [...state.filter((user) => { //filter updated user out and insert the new one
+			return [...state.filter((user) => {
 					return user.id !== action.user.id;
 				}), {
 					...action.user,
@@ -48,7 +48,7 @@ const users = (state = [], action) => {
 
 		case 'REQUEST_USER':
 		case 'PUT_USER':
-			return [...state.filter((user) => { //filter updated user out and insert the new one
+			return [...state.filter((user) => {
 					return user.id !== action.user.id;
 				}), {
 					...action.user,
@@ -57,14 +57,14 @@ const users = (state = [], action) => {
 				}];
 
 		case 'DELETE_USER':
-			return [...state.filter((user) => { //filter updated user out and insert the new one
+			return [...state.filter((user) => {
 					return user.id !== action.user.id;
 				})];
 
 		case 'FAIL_USER_REQUEST':
 		case 'FAIL_USER_PUT':
 
-			return [...state.filter((user) => { //filter updated user out and insert the new one
+			return [...state.filter((user) => {
 					return user.id !== action.user.id;
 				}), {
 					...action.user,
@@ -80,7 +80,7 @@ const users = (state = [], action) => {
 			}];
 
 		case 'RECEIVE_USER':
-			return [...state.filter((user) => { //filter updated user out and insert the new one
+			return [...state.filter((user) => {
 					return user.id !== action.user.id;
 				}), {
 					...action.user,
@@ -91,7 +91,7 @@ const users = (state = [], action) => {
 
 		case 'DELETED_USER':
 
-			return state; //we already deleted the user in the 'DELETE_USER' event ^^
+			return state;
 
 		default:
 			return state;

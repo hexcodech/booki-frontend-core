@@ -39,7 +39,7 @@ const clients = (state = [], action) => {
 				}
 			});
 		case 'INVALIDATE_CLIENT':
-			return [...state.filter((client) => { //filter updated client out and insert the new one
+			return [...state.filter((client) => {
 					return client.id !== action.client.id;
 				}), {
 					...action.client,
@@ -48,7 +48,7 @@ const clients = (state = [], action) => {
 
 		case 'REQUEST_CLIENT':
 		case 'PUT_CLIENT':
-			return [...state.filter((client) => { //filter updated client out and insert the new one
+			return [...state.filter((client) => {
 					return client.id !== action.client.id;
 				}), {
 					...action.client,
@@ -57,14 +57,14 @@ const clients = (state = [], action) => {
 				}];
 
 		case 'DELETE_CLIENT':
-			return [...state.filter((client) => { //filter updated client out and insert the new one
+			return [...state.filter((client) => {
 					return client.id !== action.client.id;
 				})];
 
 		case 'FAIL_CLIENT_REQUEST':
 		case 'FAIL_CLIENT_PUT':
 
-			return [...state.filter((client) => { //filter updated client out and insert the new one
+			return [...state.filter((client) => {
 					return client.id !== action.client.id;
 				}), {
 					...action.client,
@@ -80,7 +80,7 @@ const clients = (state = [], action) => {
 			}];
 
 		case 'RECEIVE_CLIENT':
-			return [...state.filter((client) => { //filter updated client out and insert the new one
+			return [...state.filter((client) => {
 					return client.id !== action.client.id;
 				}), {
 					...action.client,
@@ -91,7 +91,7 @@ const clients = (state = [], action) => {
 
 		case 'DELETED_CLIENT':
 
-			return state; //we already deleted the client in the 'DELETE_CLIENT' event ^^
+			return state;
 
 
 
