@@ -100,19 +100,6 @@ export const invalidateImage = (image = {}) => {
 	};
 }
 
-export const clearNewImage = () => {
-	return {
-		type: 'CLEAR_NEW_IMAGE'
-	};
-}
-
-export const updateNewImage = (image = {}) => {
-	return {
-		type: 'UPDATE_NEW_IMAGE',
-		image
-	};
-}
-
 //single images cannot be 'GET'ed, we're not a public image api ^^
 
 
@@ -204,7 +191,7 @@ export const postImage = (image = null, accessToken = {}) => {
 		dispatch(
 			postImage_(image)
 		);
-    
+
 		return uploadFile('image', 'POST', image, accessToken)
 		.then((savedImage) => {
 
