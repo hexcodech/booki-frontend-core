@@ -48,7 +48,7 @@ export const fetchApi = (
 
 export const uploadFile = (
 	path = '/',
-	method = 'GET',
+  method = 'POST',
 	formData = null,
 	accessToken = null,
 	version = API_VERSION

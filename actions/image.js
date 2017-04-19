@@ -102,6 +102,14 @@ export const invalidateImage = (image = {}) => {
 
 //single images cannot be 'GET'ed, we're not a public image api ^^
 
+const receiveImage = (images = [], receivedAt = 0) => {
+	return {
+		type: 'RECEIVE_IMAGE',
+		image,
+		receivedAt
+	};
+}
+
 
 const putImage_ = (image = {}) => {
 	return {
@@ -181,7 +189,7 @@ const failImagePost = (error = {}, image = {}) => {
 	};
 }
 
-export const postImage = (image = null, accessToken = {}) => {
+export const postImage = (image = {}, accessToken = {}) => {
 	return (dispatch) => {
 
     dispatch(
