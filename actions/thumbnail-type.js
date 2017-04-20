@@ -9,27 +9,27 @@ import {isValidationError, addValidationError, clearValidationErrors}
 import {addErrorNotification}
        from 'booki-frontend-core/actions/notification';
 
-export const invalidateConditions = () => {
+export const invalidateThumbnailTypes = () => {
 	return {
 		type: 'INVALIDATE_THUMBNAIL_TYPES'
 	};
 }
 
-const requestConditions = (accessToken = {}) => {
+const requestThumbnailTypes = (accessToken = {}) => {
 	return {
 		type: 'REQUEST_THUMBNAIL_TYPES',
 		accessToken
 	};
 }
 
-const failConditionsRequest = (error = {}) => {
+const failThumbnailTypesRequest = (error = {}) => {
 	return {
 		type: 'FAIL_THUMBNAIL_TYPES_REQUEST',
 		error
 	}
 }
 
-const receiveConditions = (thumbnailTypes = [], receivedAt = {}) => {
+const receiveThumbnailTypes = (thumbnailTypes = [], receivedAt = {}) => {
 	return {
 		type: 'RECEIVE_THUMBNAIL_TYPES',
 		thumbnailTypes,
@@ -37,24 +37,24 @@ const receiveConditions = (thumbnailTypes = [], receivedAt = {}) => {
 	};
 }
 
-const fetchConditions = (accessToken = {}) => {
+const fetchThumbnailTypes = (accessToken = {}) => {
 	return (dispatch) => {
 
 		dispatch(
-			requestConditions(accessToken)
+			requestThumbnailTypes(accessToken)
 		);
 
 		return fetchApi('thumbnail-type', 'GET', {filter: {}}, accessToken)
 		.then((thumbnailTypes) => {
 
 			dispatch(
-				receiveConditions(thumbnailTypes, Date.now())
+				receiveThumbnailTypes(thumbnailTypes, Date.now())
 			);
 
 		}).catch((error) => {
 
 			dispatch(
-				failConditionsRequest(error)
+				failThumbnailTypesRequest(error)
 			);
 
       dispatch(
@@ -65,7 +65,7 @@ const fetchConditions = (accessToken = {}) => {
 	};
 }
 
-const shouldFetchConditions = (state = {}) => {
+const shouldFetchThumbnailTypes = (state = {}) => {
 	const thumbnailTypes = state.app.thumbnailTypes;
 
 	for(let i=0;i<thumbnailTypes.length;i++){
@@ -82,45 +82,45 @@ const shouldFetchConditions = (state = {}) => {
 	return thumbnailTypes.length === 0;
 }
 
-export const fetchConditionsIfNeeded = (accessToken = {}) => {
+export const fetchThumbnailTypesIfNeeded = (accessToken = {}) => {
 
 	return (dispatch, getState) => {
-		if(shouldFetchConditions(getState())){
-			return dispatch(fetchConditions(accessToken));
+		if(shouldFetchThumbnailTypes(getState())){
+			return dispatch(fetchThumbnailTypes(accessToken));
 		}else{
 			return Promise.resolve();
 		}
 	}
 }
 
-export const invalidateCondition = (thumbnailType = {}) => {
+export const invalidateThumbnailType = (thumbnailType = {}) => {
 	return {
 		type: 'INVALIDATE_THUMBNAIL_TYPE',
 		thumbnailType
 	};
 }
 
-export const clearNewCondition = () => {
+export const clearNewThumbnailType = () => {
 	return {
 		type: 'CLEAR_NEW_THUMBNAIL_TYPE'
 	};
 }
 
-export const updateNewCondition = (thumbnailType = {}) => {
+export const updateNewThumbnailType = (thumbnailType = {}) => {
 	return {
 		type: 'UPDATE_NEW_THUMBNAIL_TYPE',
 		thumbnailType
 	};
 }
 
-const requestCondition = (thumbnailType = {}) => {
+const requestThumbnailType = (thumbnailType = {}) => {
 	return {
 		type: 'REQUEST_THUMBNAIL_TYPE',
 		thumbnailType
 	};
 }
 
-const failConditionRequest = (error = {}, thumbnailType = {}) => {
+const failThumbnailTypeRequest = (error = {}, thumbnailType = {}) => {
 	return {
 		type: 'FAIL_THUMBNAIL_TYPE_REQUEST',
 		error,
@@ -128,7 +128,7 @@ const failConditionRequest = (error = {}, thumbnailType = {}) => {
 	};
 }
 
-const receiveCondition = (thumbnailType = {}, receivedAt = 0) => {
+const receiveThumbnailType = (thumbnailType = {}, receivedAt = 0) => {
 	return {
 		type: 'RECEIVE_THUMBNAIL_TYPE',
 		thumbnailType,
@@ -136,24 +136,24 @@ const receiveCondition = (thumbnailType = {}, receivedAt = 0) => {
 	};
 }
 
-const fetchCondition = (thumbnailType = {}, accessToken = 0) => {
+const fetchThumbnailType = (thumbnailType = {}, accessToken = 0) => {
 	return (dispatch) => {
 
 		dispatch(
-			requestCondition(thumbnailType)
+			requestThumbnailType(thumbnailType)
 		);
 
 		return fetchApi('thumbnailType/' + thumbnailType.id, 'GET', {}, accessToken)
-		.then((refreshedCondition) => {
+		.then((refreshedThumbnailType) => {
 
 			dispatch(
-				receiveCondition(refreshedCondition, Date.now())
+				receiveThumbnailType(refreshedThumbnailType, Date.now())
 			);
 
 		}).catch((error) => {
 
 			dispatch(
-				failConditionRequest(error)
+				failThumbnailTypeRequest(error)
 			);
 
 			dispatch(
@@ -164,7 +164,7 @@ const fetchCondition = (thumbnailType = {}, accessToken = 0) => {
 	};
 };
 
-const shouldFetchCondition = (state = {}, thumbnailType = {}) => {
+const shouldFetchThumbnailType = (state = {}, thumbnailType = {}) => {
 
 	if(thumbnailType.isFetching){
 		return false;
@@ -175,11 +175,11 @@ const shouldFetchCondition = (state = {}, thumbnailType = {}) => {
 	}
 }
 
-export const fetchConditionIfNeeded = (thumbnailType = {}, accessToken = {}) => {
+export const fetchThumbnailTypeIfNeeded = (thumbnailType = {}, accessToken = {}) => {
 
 	return (dispatch, getState) => {
-		if(shouldFetchCondition(getState(), thumbnailType)){
-			return dispatch(fetchCondition(thumbnailType, accessToken));
+		if(shouldFetchThumbnailType(getState(), thumbnailType)){
+			return dispatch(fetchThumbnailType(thumbnailType, accessToken));
 		}else{
 			return Promise.resolve();
 		}
@@ -187,14 +187,14 @@ export const fetchConditionIfNeeded = (thumbnailType = {}, accessToken = {}) => 
 }
 
 
-const putCondition_ = (thumbnailType = {}) => {
+const putThumbnailType_ = (thumbnailType = {}) => {
 	return {
 		type: 'PUT_THUMBNAIL_TYPE',
 		thumbnailType
 	};
 }
 
-const failConditionPut = (error = {}, thumbnailType = {}) => {
+const failThumbnailTypePut = (error = {}, thumbnailType = {}) => {
 	return {
 		type: 'FAIL_THUMBNAIL_TYPE_PUT',
 		error,
@@ -209,18 +209,18 @@ const debouncedPut = debounce((dispatch, thumbnailType = {}, accessToken = {}) =
   );
 
 	return fetchApi('thumbnailType/' + thumbnailType.id, 'PUT', {thumbnailType}, accessToken)
-	.then((updatedCondition) => {
+	.then((updatedThumbnailType) => {
 
 		dispatch(
-			receiveCondition(updatedCondition, Date.now())
+			receiveThumbnailType(updatedThumbnailType, Date.now())
 		);
 
-		return updatedCondition;
+		return updatedThumbnailType;
 
 	}).catch((error) => {
 
 		dispatch(
-			failConditionPut(error, thumbnailType)
+			failThumbnailTypePut(error, thumbnailType)
 		);
 
     if(isValidationError(error)){
@@ -237,11 +237,11 @@ const debouncedPut = debounce((dispatch, thumbnailType = {}, accessToken = {}) =
 
 }, 1000);
 
-export const putCondition = (thumbnailType = {}, accessToken = {}) => {
+export const putThumbnailType = (thumbnailType = {}, accessToken = {}) => {
 	return (dispatch) => {
 
 		dispatch(
-			putCondition_(thumbnailType)
+			putThumbnailType_(thumbnailType)
 		);
 
 		debouncedPut(dispatch, thumbnailType, accessToken);
@@ -249,14 +249,14 @@ export const putCondition = (thumbnailType = {}, accessToken = {}) => {
 	};
 }
 
-const postCondition_ = (thumbnailType = {}) => {
+const postThumbnailType_ = (thumbnailType = {}) => {
 	return {
 		type: 'POST_THUMBNAIL_TYPE',
 		thumbnailType
 	};
 }
 
-const failConditionPost = (error = {}, thumbnailType = {}) => {
+const failThumbnailTypePost = (error = {}, thumbnailType = {}) => {
 	return {
 		type: 'FAIL_THUMBNAIL_TYPE_POST',
 		error,
@@ -264,7 +264,7 @@ const failConditionPost = (error = {}, thumbnailType = {}) => {
 	};
 }
 
-export const postCondition = (thumbnailType = {}, accessToken = {}) => {
+export const postThumbnailType = (thumbnailType = {}, accessToken = {}) => {
 	return (dispatch) => {
 
     dispatch(
@@ -272,22 +272,22 @@ export const postCondition = (thumbnailType = {}, accessToken = {}) => {
     );
 
 		dispatch(
-			postCondition_(thumbnailType)
+			postThumbnailType_(thumbnailType)
 		);
 
 		return fetchApi('thumbnail-type', 'POST', {thumbnailType}, accessToken)
-		.then((savedCondition) => {
+		.then((savedThumbnailType) => {
 
 			dispatch(
-				receiveCondition(savedCondition, Date.now())
+				receiveThumbnailType(savedThumbnailType, Date.now())
 			);
 
-			return savedCondition;
+			return savedThumbnailType;
 
 		}).catch((error) => {
 
 			dispatch(
-				failConditionPost(error, thumbnailType)
+				failThumbnailTypePost(error, thumbnailType)
 			);
 
       if(isValidationError(error)){
@@ -304,14 +304,14 @@ export const postCondition = (thumbnailType = {}, accessToken = {}) => {
 	};
 }
 
-const deleteCondition_ = (thumbnailType = {}) => {
+const deleteThumbnailType_ = (thumbnailType = {}) => {
 	return {
 		type: 'DELETE_THUMBNAIL_TYPE',
 		thumbnailType
 	};
 }
 
-const deletedCondition = (thumbnailType = {}, success = false) => {
+const deletedThumbnailType = (thumbnailType = {}, success = false) => {
 	return {
 		type: 'DELETED_THUMBNAIL_TYPE',
 		thumbnailType,
@@ -319,7 +319,7 @@ const deletedCondition = (thumbnailType = {}, success = false) => {
 	};
 }
 
-const failConditionDelete = (error = {}, thumbnailType = {}) => {
+const failThumbnailTypeDelete = (error = {}, thumbnailType = {}) => {
 	return {
 		type: 'FAIL_THUMBNAIL_TYPE_DELETE',
 		error,
@@ -327,22 +327,22 @@ const failConditionDelete = (error = {}, thumbnailType = {}) => {
 	};
 }
 
-export const deleteCondition = (thumbnailType = {}, accessToken = {}) => {
+export const deleteThumbnailType = (thumbnailType = {}, accessToken = {}) => {
 	return (dispatch) => {
 
 		dispatch(
-			deleteCondition_(thumbnailType)
+			deleteThumbnailType_(thumbnailType)
 		);
 
 		return fetchApi('thumbnailType/' + thumbnailType.id, 'DELETE', {}, accessToken)
 		.then((response) => {
 
 			dispatch(
-				deletedCondition(thumbnailType, response.success)
+				deletedThumbnailType(thumbnailType, response.success)
 			);
 
 			if(!response.success){
-				failConditionDelete('The API couldn\'t delete the thumbnailType!', thumbnailType)
+				failThumbnailTypeDelete('The API couldn\'t delete the thumbnailType!', thumbnailType)
 			}
 
 			return response.success;
@@ -350,7 +350,7 @@ export const deleteCondition = (thumbnailType = {}, accessToken = {}) => {
 		}).catch((error) => {
 
 			dispatch(
-				failConditionDelete(error, thumbnailType)
+				failThumbnailTypeDelete(error, thumbnailType)
 			);
 
 			dispatch(
