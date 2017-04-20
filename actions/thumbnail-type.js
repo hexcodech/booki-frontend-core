@@ -143,7 +143,7 @@ const fetchThumbnailType = (thumbnailType = {}, accessToken = 0) => {
 			requestThumbnailType(thumbnailType)
 		);
 
-		return fetchApi('thumbnailType/' + thumbnailType.id, 'GET', {}, accessToken)
+		return fetchApi('thumbnail-type/' + thumbnailType.id, 'GET', {}, accessToken)
 		.then((refreshedThumbnailType) => {
 
 			dispatch(
@@ -208,7 +208,7 @@ const debouncedPut = debounce((dispatch, thumbnailType = {}, accessToken = {}) =
     clearValidationErrors('thumbnailType')
   );
 
-	return fetchApi('thumbnailType/' + thumbnailType.id, 'PUT', {thumbnailType}, accessToken)
+	return fetchApi('thumbnail-type/' + thumbnailType.id, 'PUT', {thumbnailType}, accessToken)
 	.then((updatedThumbnailType) => {
 
 		dispatch(
@@ -334,7 +334,7 @@ export const deleteThumbnailType = (thumbnailType = {}, accessToken = {}) => {
 			deleteThumbnailType_(thumbnailType)
 		);
 
-		return fetchApi('thumbnailType/' + thumbnailType.id, 'DELETE', {}, accessToken)
+		return fetchApi('thumbnail-type/' + thumbnailType.id, 'DELETE', {}, accessToken)
 		.then((response) => {
 
 			dispatch(
