@@ -75,7 +75,7 @@ const shouldFetchOffers = (state = {}) => {
 		}
 
 		if(offers[i].didInvalidate || offers[i].lastUpdated === 0){
-			return true; //if at least one invalidated or wasn't loaded yet, shouldFetchOffers is called -> update all
+			return true;
 		}
 	}
 
@@ -86,10 +86,8 @@ export const fetchOffersIfNeeded = (accessToken = {}) => {
 
 	return (dispatch, getState) => {
 		if(shouldFetchOffers(getState())){
-			// Dispatch a thunk from thunk!
 			return dispatch(fetchOffers(accessToken));
 		}else{
-			// Let the calling code know there's nothing to wait for.
 			return Promise.resolve();
 		}
 	}
@@ -181,10 +179,8 @@ export const fetchOfferIfNeeded = (offer = {}, accessToken = {}) => {
 
 	return (dispatch, getState) => {
 		if(shouldFetchOffer(getState(), offer)){
-			// Dispatch a thunk from thunk!
 			return dispatch(fetchOffer(offer, accessToken));
 		}else{
-			// Let the calling code know there's nothing to wait for.
 			return Promise.resolve();
 		}
 	}

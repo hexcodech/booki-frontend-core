@@ -75,7 +75,7 @@ const shouldFetchClients = (state = {}) => {
 		}
 
 		if(clients[i].didInvalidate || clients[i].lastUpdated === 0){
-			return true; //if at least one invalidated or wasn't loaded yet, shouldFetchClients is called -> update all
+			return true;
 		}
 	}
 
@@ -86,10 +86,8 @@ export const fetchClientsIfNeeded = (accessToken = {}) => {
 
 	return (dispatch, getState) => {
 		if(shouldFetchClients(getState())){
-			// Dispatch a thunk from thunk!
 			return dispatch(fetchClients(accessToken));
 		}else{
-			// Let the calling code know there's nothing to wait for.
 			return Promise.resolve();
 		}
 	}
@@ -182,10 +180,8 @@ export const fetchClientIfNeeded = (client = {}, accessToken = {}) => {
 
 	return (dispatch, getState) => {
 		if(shouldFetchClient(getState(), client)){
-			// Dispatch a thunk from thunk!
 			return dispatch(fetchClient(client, accessToken));
 		}else{
-			// Let the calling code know there's nothing to wait for.
 			return Promise.resolve();
 		}
 	}

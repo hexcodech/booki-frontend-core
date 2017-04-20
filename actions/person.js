@@ -34,7 +34,6 @@ export const debouncedLookup = debounce((dispatch, name, accessToken) => {
     lookUpPeople_(name)
   );
 
-  //http specs don't allow bodies in get requests
   return fetchApi(
     'person/lookup?search=' + name,
     'GET',

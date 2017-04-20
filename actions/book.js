@@ -365,33 +365,38 @@ export const deleteBook = (book = {}, accessToken = {}) => {
 	};
 }
 
-const lookUpBooks_ = () => {
+const lookUpBooks_ = (external = false) => {
 	return {
-		type: 'LOOKUP_BOOKS'
+		type: 'LOOKUP_BOOKS',
+    external
 	};
 };
 
-const failBookLookup = (error = {}) => {
+const failBookLookup = (error = {}, external = false) => {
 	return {
 		type: 'FAIL_BOOK_LOOKUP',
-		error
+		error,
+    external
 	};
 };
 
-const lookedUpBooks = (books = []) => {
+const lookedUpBooks = (books = [], external = false) => {
 	return {
 		type: 'LOOKED_UP_BOOKS',
-		books
+		books,
+    external
 	};
 };
 
-const debouncedLookup = debounce((dispatch, search = '', accessToken = {}) => {
+const debouncedLookup = debounce((
+  dispatch, search = '', external = false, accessToken = {}
+) => {
   dispatch(
-    lookUpBooks_()
+    lookUpBooks_(external)
   );
 
   return fetchApi(
-    'book/lookup?search=' + search,
+    'book/lookup' + (external ? '/external' : '') + '?search=' + search,
     'GET',
     {},
     accessToken
@@ -399,7 +404,7 @@ const debouncedLookup = debounce((dispatch, search = '', accessToken = {}) => {
   .then((books) => {
 
     dispatch(
-      lookedUpBooks(books)
+      lookedUpBooks(books, external)
     );
 
     return books;
@@ -407,7 +412,7 @@ const debouncedLookup = debounce((dispatch, search = '', accessToken = {}) => {
   }).catch((error) => {
 
     dispatch(
-      failBookLookup(error)
+      failBookLookup(error, external)
     );
 
     dispatch(
@@ -417,8 +422,10 @@ const debouncedLookup = debounce((dispatch, search = '', accessToken = {}) => {
   });
 }, 300);
 
-export const lookUpBooks = (search = '', accessToken = {}) => {
+export const lookUpBooks = (
+  search = '', external = false, accessToken = {}
+) => {
 	return (dispatch) => {
-    return debouncedLookup(dispatch, search, accessToken);
+    return debouncedLookup(dispatch, search, external, accessToken);
 	};
 };

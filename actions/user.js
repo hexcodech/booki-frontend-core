@@ -75,7 +75,6 @@ const shouldFetchUsers = (state = {}) => {
 		}
 
 		if(users[i].didInvalidate || users[i].lastUpdated === 0){
-       //if at least one invalidated and shouldFetchUsers is called -> update all
 			return true;
 		}
 	}
@@ -87,10 +86,8 @@ export const fetchUsersIfNeeded = (accessToken = {}) => {
 
 	return (dispatch, getState) => {
 		if(shouldFetchUsers(getState())){
-			// Dispatch a thunk from thunk!
 			return dispatch(fetchUsers(accessToken));
 		}else{
-			// Let the calling code know there's nothing to wait for.
 			return Promise.resolve();
 		}
 	}
@@ -184,10 +181,8 @@ export const fetchUserIfNeeded = (user = {}, accessToken = {}) => {
 
 	return (dispatch, getState) => {
 		if(shouldFetchUser(getState(), user)){
-			// Dispatch a thunk from thunk!
 			return dispatch(fetchUser(user, accessToken));
 		}else{
-			// Let the calling code know there's nothing to wait for.
 			return Promise.resolve();
 		}
 	}
