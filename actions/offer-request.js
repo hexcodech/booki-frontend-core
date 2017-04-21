@@ -15,7 +15,7 @@ export const invalidateOfferRequests = () => {
 	};
 }
 
-const requestOfferRequests = (accessToken = {}) => {
+const requestOfferRequests = (accessToken = '') => {
 	return {
 		type: 'REQUEST_OFFER_REQUESTS',
 		accessToken
@@ -37,7 +37,7 @@ const receiveOfferRequests = (offerRequests = [], receivedAt = {}) => {
 	};
 }
 
-const fetchOfferRequests = (accessToken = {}) => {
+const fetchOfferRequests = (accessToken = '') => {
 	return (dispatch) => {
 
 		dispatch(
@@ -82,7 +82,7 @@ const shouldFetchOfferRequests = (state = {}) => {
 	return offerRequests.length === 0;
 }
 
-export const fetchOfferRequestsIfNeeded = (accessToken = {}) => {
+export const fetchOfferRequestsIfNeeded = (accessToken = '') => {
 
 	return (dispatch, getState) => {
 		if(shouldFetchOfferRequests(getState())){
@@ -175,7 +175,7 @@ const shouldFetchOfferRequest = (state = {}, offerRequest = {}) => {
 	}
 }
 
-export const fetchOfferRequestIfNeeded = (offerRequest = {}, accessToken = {}) => {
+export const fetchOfferRequestIfNeeded = (offerRequest = {}, accessToken = '') => {
 
 	return (dispatch, getState) => {
 		if(shouldFetchOfferRequest(getState(), offerRequest)){
@@ -202,7 +202,7 @@ const failOfferRequestPut = (error = {}, offerRequest = {}) => {
 	};
 }
 
-const debouncedPut = debounce((dispatch, offerRequest = {}, accessToken = {}) => {
+const debouncedPut = debounce((dispatch, offerRequest = {}, accessToken = '') => {
 
   dispatch(
     clearValidationErrors('offerRequest')
@@ -237,7 +237,7 @@ const debouncedPut = debounce((dispatch, offerRequest = {}, accessToken = {}) =>
 
 }, 1000);
 
-export const putOfferRequest = (offerRequest = {}, accessToken = {}) => {
+export const putOfferRequest = (offerRequest = {}, accessToken = '') => {
 	return (dispatch) => {
 
 		dispatch(
@@ -264,7 +264,7 @@ const failOfferRequestPost = (error = {}, offerRequest = {}) => {
 	};
 }
 
-export const postOfferRequest = (offerRequest = {}, accessToken = {}) => {
+export const postOfferRequest = (offerRequest = {}, accessToken = '') => {
 	return (dispatch) => {
 
     dispatch(
@@ -327,7 +327,7 @@ const failOfferRequestDelete = (error = {}, offerRequest = {}) => {
 	};
 }
 
-export const deleteOfferRequest = (offerRequest = {}, accessToken = {}) => {
+export const deleteOfferRequest = (offerRequest = {}, accessToken = '') => {
 	return (dispatch) => {
 
 		dispatch(

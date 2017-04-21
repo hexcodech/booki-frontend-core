@@ -15,7 +15,7 @@ export const invalidateClients = () => {
 	};
 }
 
-const requestClients = (accessToken = {}) => {
+const requestClients = (accessToken = '') => {
 	return {
 		type: 'REQUEST_CLIENTS',
 		accessToken
@@ -37,7 +37,7 @@ const receiveClients = (clients = [], receivedAt = 0) => {
 	};
 }
 
-const fetchClients = (accessToken = {}) => {
+const fetchClients = (accessToken = '') => {
 	return (dispatch) => {
 
 		dispatch(
@@ -82,7 +82,7 @@ const shouldFetchClients = (state = {}) => {
 	return clients.length === 0;
 }
 
-export const fetchClientsIfNeeded = (accessToken = {}) => {
+export const fetchClientsIfNeeded = (accessToken = '') => {
 
 	return (dispatch, getState) => {
 		if(shouldFetchClients(getState())){
@@ -137,7 +137,7 @@ const receiveClient = (client = {}, receivedAt = 0) => {
 }
 
 
-const fetchClient = (client = {}, accessToken = {}) => {
+const fetchClient = (client = {}, accessToken = '') => {
 	return (dispatch) => {
 
 		dispatch(
@@ -176,7 +176,7 @@ const shouldFetchClient = (state = {}, client = {}) => {
 	}
 }
 
-export const fetchClientIfNeeded = (client = {}, accessToken = {}) => {
+export const fetchClientIfNeeded = (client = {}, accessToken = '') => {
 
 	return (dispatch, getState) => {
 		if(shouldFetchClient(getState(), client)){
@@ -203,7 +203,7 @@ const failClientPut = (error = {}, client = {}) => {
 	};
 }
 
-const debouncedPut = debounce((dispatch, client = {}, accessToken = {}) => {
+const debouncedPut = debounce((dispatch, client = {}, accessToken = '') => {
 
   dispatch(
     clearValidationErrors('client')
@@ -238,7 +238,7 @@ const debouncedPut = debounce((dispatch, client = {}, accessToken = {}) => {
 
 }, 1000);
 
-export const putClient = (client = {}, accessToken = {}) => {
+export const putClient = (client = {}, accessToken = '') => {
 	return (dispatch) => {
 
 		dispatch(
@@ -266,7 +266,7 @@ const failClientPost = (error = {}, client = {}) => {
 	};
 }
 
-export const postClient = (client = {}, accessToken = {}) => {
+export const postClient = (client = {}, accessToken = '') => {
 	return (dispatch) => {
 
     dispatch(
@@ -329,7 +329,7 @@ const deletedClient = (client = {}, success = false) => {
 	};
 }
 
-export const deleteClient = (client = {}, accessToken = {}) => {
+export const deleteClient = (client = {}, accessToken = '') => {
 	return (dispatch) => {
 
 		dispatch(

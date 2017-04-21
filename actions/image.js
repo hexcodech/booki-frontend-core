@@ -15,7 +15,7 @@ export const invalidateImages = () => {
 	};
 }
 
-const requestImages = (accessToken = {}) => {
+const requestImages = (accessToken = '') => {
 	return {
 		type: 'REQUEST_Images',
 		accessToken
@@ -37,7 +37,7 @@ const receiveImages = (images = [], receivedAt = 0) => {
 	};
 }
 
-const fetchImages = (accessToken = {}) => {
+const fetchImages = (accessToken = '') => {
 	return (dispatch) => {
 
 		dispatch(
@@ -82,7 +82,7 @@ const shouldFetchImages = (state = {}) => {
 	return images.length === 0;
 }
 
-export const fetchImagesIfNeeded = (accessToken = {}) => {
+export const fetchImagesIfNeeded = (accessToken = '') => {
 
 	return (dispatch, getState) => {
 		if(shouldFetchImages(getState())){
@@ -126,7 +126,7 @@ const failImagePut = (error = {}, image = {}) => {
 	};
 }
 
-const debouncedPut = debounce((dispatch, imageFile = null, accessToken = {}) => {
+const debouncedPut = debounce((dispatch, imageFile = null, accessToken = '') => {
 
   dispatch(
     clearValidationErrors('image')
@@ -161,7 +161,7 @@ const debouncedPut = debounce((dispatch, imageFile = null, accessToken = {}) => 
 
 }, 1000);
 
-export const putImage = (image = {}, accessToken = {}) => {
+export const putImage = (image = {}, accessToken = '') => {
 	return (dispatch) => {
 
 		dispatch(
@@ -189,7 +189,7 @@ const failImagePost = (error = {}, image = {}) => {
 	};
 }
 
-export const postImage = (image = {}, accessToken = {}) => {
+export const postImage = (image = {}, accessToken = '') => {
 	return (dispatch) => {
 
     dispatch(
@@ -252,7 +252,7 @@ const deletedImage = (image = {}, success = false) => {
 	};
 }
 
-export const deleteImage = (image = {}, accessToken = {}) => {
+export const deleteImage = (image = {}, accessToken = '') => {
 	return (dispatch) => {
 
 		dispatch(

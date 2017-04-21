@@ -15,7 +15,7 @@ export const invalidateConditions = () => {
 	};
 }
 
-const requestConditions = (accessToken = {}) => {
+const requestConditions = (accessToken = '') => {
 	return {
 		type: 'REQUEST_CONDITIONS',
 		accessToken
@@ -37,7 +37,7 @@ const receiveConditions = (conditions = [], receivedAt = {}) => {
 	};
 }
 
-const fetchConditions = (accessToken = {}) => {
+const fetchConditions = (accessToken = '') => {
 	return (dispatch) => {
 
 		dispatch(
@@ -82,7 +82,7 @@ const shouldFetchConditions = (state = {}) => {
 	return conditions.length === 0;
 }
 
-export const fetchConditionsIfNeeded = (accessToken = {}) => {
+export const fetchConditionsIfNeeded = (accessToken = '') => {
 
 	return (dispatch, getState) => {
 		if(shouldFetchConditions(getState())){
@@ -175,7 +175,7 @@ const shouldFetchCondition = (state = {}, condition = {}) => {
 	}
 }
 
-export const fetchConditionIfNeeded = (condition = {}, accessToken = {}) => {
+export const fetchConditionIfNeeded = (condition = {}, accessToken = '') => {
 
 	return (dispatch, getState) => {
 		if(shouldFetchCondition(getState(), condition)){
@@ -202,7 +202,7 @@ const failConditionPut = (error = {}, condition = {}) => {
 	};
 }
 
-const debouncedPut = debounce((dispatch, condition = {}, accessToken = {}) => {
+const debouncedPut = debounce((dispatch, condition = {}, accessToken = '') => {
 
   dispatch(
     clearValidationErrors('condition')
@@ -237,7 +237,7 @@ const debouncedPut = debounce((dispatch, condition = {}, accessToken = {}) => {
 
 }, 1000);
 
-export const putCondition = (condition = {}, accessToken = {}) => {
+export const putCondition = (condition = {}, accessToken = '') => {
 	return (dispatch) => {
 
 		dispatch(
@@ -264,7 +264,7 @@ const failConditionPost = (error = {}, condition = {}) => {
 	};
 }
 
-export const postCondition = (condition = {}, accessToken = {}) => {
+export const postCondition = (condition = {}, accessToken = '') => {
 	return (dispatch) => {
 
     dispatch(
@@ -327,7 +327,7 @@ const failConditionDelete = (error = {}, condition = {}) => {
 	};
 }
 
-export const deleteCondition = (condition = {}, accessToken = {}) => {
+export const deleteCondition = (condition = {}, accessToken = '') => {
 	return (dispatch) => {
 
 		dispatch(

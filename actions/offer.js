@@ -15,7 +15,7 @@ export const invalidateOffers = () => {
 	};
 }
 
-const requestOffers = (accessToken = {}) => {
+const requestOffers = (accessToken = '') => {
 	return {
 		type: 'REQUEST_OFFERS',
 		accessToken
@@ -37,7 +37,7 @@ const receiveOffers = (offers = [], receivedAt = {}) => {
 	};
 }
 
-const fetchOffers = (accessToken = {}) => {
+const fetchOffers = (accessToken = '') => {
 	return (dispatch) => {
 
 		dispatch(
@@ -82,7 +82,7 @@ const shouldFetchOffers = (state = {}) => {
 	return offers.length === 0;
 }
 
-export const fetchOffersIfNeeded = (accessToken = {}) => {
+export const fetchOffersIfNeeded = (accessToken = '') => {
 
 	return (dispatch, getState) => {
 		if(shouldFetchOffers(getState())){
@@ -175,7 +175,7 @@ const shouldFetchOffer = (state = {}, offer = {}) => {
 	}
 }
 
-export const fetchOfferIfNeeded = (offer = {}, accessToken = {}) => {
+export const fetchOfferIfNeeded = (offer = {}, accessToken = '') => {
 
 	return (dispatch, getState) => {
 		if(shouldFetchOffer(getState(), offer)){
@@ -202,7 +202,7 @@ const failOfferPut = (error = {}, offer = {}) => {
 	};
 }
 
-const debouncedPut = debounce((dispatch, offer = {}, accessToken = {}) => {
+const debouncedPut = debounce((dispatch, offer = {}, accessToken = '') => {
 
   dispatch(
     clearValidationErrors('offer')
@@ -237,7 +237,7 @@ const debouncedPut = debounce((dispatch, offer = {}, accessToken = {}) => {
 
 }, 1000);
 
-export const putOffer = (offer = {}, accessToken = {}) => {
+export const putOffer = (offer = {}, accessToken = '') => {
 	return (dispatch) => {
 
 		dispatch(
@@ -264,7 +264,7 @@ const failOfferPost = (error = {}, offer = {}) => {
 	};
 }
 
-export const postOffer = (offer = {}, accessToken = {}) => {
+export const postOffer = (offer = {}, accessToken = '') => {
 	return (dispatch) => {
 
     dispatch(
@@ -327,7 +327,7 @@ const failOfferDelete = (error = {}, offer = {}) => {
 	};
 }
 
-export const deleteOffer = (offer = {}, accessToken = {}) => {
+export const deleteOffer = (offer = {}, accessToken = '') => {
 	return (dispatch) => {
 
 		dispatch(
@@ -381,7 +381,7 @@ const lookedUpOffers = (offers = []) => {
 	};
 };
 
-const debouncedLookup = debounce((dispatch, search = '', accessToken = {}) => {
+const debouncedLookup = debounce((dispatch, search = '', accessToken = '') => {
   dispatch(
     lookUpOffers_()
   );
@@ -413,7 +413,7 @@ const debouncedLookup = debounce((dispatch, search = '', accessToken = {}) => {
   });
 }, 300);
 
-export const lookUpOffers = (search = '', accessToken = {}) => {
+export const lookUpOffers = (search = '', accessToken = '') => {
 	return (dispatch) => {
     return debouncedLookup(dispatch, search, accessToken);
 	};

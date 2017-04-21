@@ -15,7 +15,7 @@ export const invalidateThumbnailTypes = () => {
 	};
 }
 
-const requestThumbnailTypes = (accessToken = {}) => {
+const requestThumbnailTypes = (accessToken = '') => {
 	return {
 		type: 'REQUEST_THUMBNAIL_TYPES',
 		accessToken
@@ -37,7 +37,7 @@ const receiveThumbnailTypes = (thumbnailTypes = [], receivedAt = {}) => {
 	};
 }
 
-const fetchThumbnailTypes = (accessToken = {}) => {
+const fetchThumbnailTypes = (accessToken = '') => {
 	return (dispatch) => {
 
 		dispatch(
@@ -82,7 +82,7 @@ const shouldFetchThumbnailTypes = (state = {}) => {
 	return thumbnailTypes.length === 0;
 }
 
-export const fetchThumbnailTypesIfNeeded = (accessToken = {}) => {
+export const fetchThumbnailTypesIfNeeded = (accessToken = '') => {
 
 	return (dispatch, getState) => {
 		if(shouldFetchThumbnailTypes(getState())){
@@ -175,7 +175,7 @@ const shouldFetchThumbnailType = (state = {}, thumbnailType = {}) => {
 	}
 }
 
-export const fetchThumbnailTypeIfNeeded = (thumbnailType = {}, accessToken = {}) => {
+export const fetchThumbnailTypeIfNeeded = (thumbnailType = {}, accessToken = '') => {
 
 	return (dispatch, getState) => {
 		if(shouldFetchThumbnailType(getState(), thumbnailType)){
@@ -202,7 +202,7 @@ const failThumbnailTypePut = (error = {}, thumbnailType = {}) => {
 	};
 }
 
-const debouncedPut = debounce((dispatch, thumbnailType = {}, accessToken = {}) => {
+const debouncedPut = debounce((dispatch, thumbnailType = {}, accessToken = '') => {
 
   dispatch(
     clearValidationErrors('thumbnailType')
@@ -237,7 +237,7 @@ const debouncedPut = debounce((dispatch, thumbnailType = {}, accessToken = {}) =
 
 }, 1000);
 
-export const putThumbnailType = (thumbnailType = {}, accessToken = {}) => {
+export const putThumbnailType = (thumbnailType = {}, accessToken = '') => {
 	return (dispatch) => {
 
 		dispatch(
@@ -264,7 +264,7 @@ const failThumbnailTypePost = (error = {}, thumbnailType = {}) => {
 	};
 }
 
-export const postThumbnailType = (thumbnailType = {}, accessToken = {}) => {
+export const postThumbnailType = (thumbnailType = {}, accessToken = '') => {
 	return (dispatch) => {
 
     dispatch(
@@ -327,7 +327,7 @@ const failThumbnailTypeDelete = (error = {}, thumbnailType = {}) => {
 	};
 }
 
-export const deleteThumbnailType = (thumbnailType = {}, accessToken = {}) => {
+export const deleteThumbnailType = (thumbnailType = {}, accessToken = '') => {
 	return (dispatch) => {
 
 		dispatch(

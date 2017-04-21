@@ -15,7 +15,7 @@ export const invalidateUsers = () => {
 	};
 }
 
-const requestUsers = (accessToken = {}) => {
+const requestUsers = (accessToken = '') => {
 	return {
 		type: 'REQUEST_USERS',
 		accessToken
@@ -37,7 +37,7 @@ const receiveUsers = (users = [], receivedAt = 0) => {
 	};
 }
 
-const fetchUsers = (accessToken = {}) => {
+const fetchUsers = (accessToken = '') => {
 	return (dispatch) => {
 
 		dispatch(
@@ -82,7 +82,7 @@ const shouldFetchUsers = (state = {}) => {
 	return users.length === 0;
 }
 
-export const fetchUsersIfNeeded = (accessToken = {}) => {
+export const fetchUsersIfNeeded = (accessToken = '') => {
 
 	return (dispatch, getState) => {
 		if(shouldFetchUsers(getState())){
@@ -138,7 +138,7 @@ const receiveUser = (user = {}, receivedAt = 0) => {
 }
 
 
-const fetchUser = (user = {}, accessToken = {}) => {
+const fetchUser = (user = {}, accessToken = '') => {
 	return (dispatch) => {
 
 		dispatch(
@@ -177,7 +177,7 @@ const shouldFetchUser = (state = {}, user = {}) => {
 	}
 }
 
-export const fetchUserIfNeeded = (user = {}, accessToken = {}) => {
+export const fetchUserIfNeeded = (user = {}, accessToken = '') => {
 
 	return (dispatch, getState) => {
 		if(shouldFetchUser(getState(), user)){
@@ -203,7 +203,7 @@ const failUserPut = (error = {}, user = {}) => {
 	};
 }
 
-const debouncedPut = debounce((dispatch, user = {}, accessToken = {}) => {
+const debouncedPut = debounce((dispatch, user = {}, accessToken = '') => {
 
   dispatch(
     clearValidationErrors('user')
@@ -238,7 +238,7 @@ const debouncedPut = debounce((dispatch, user = {}, accessToken = {}) => {
 
 }, 1000);
 
-export const putUser = (user = {}, accessToken = {}) => {
+export const putUser = (user = {}, accessToken = '') => {
 	return (dispatch) => {
 
 		dispatch(
@@ -265,7 +265,7 @@ const failUserPost = (error = {}, user = {}) => {
 	};
 }
 
-export const postUser = (user = {}, accessToken = {}) => {
+export const postUser = (user = {}, accessToken = '') => {
 	return (dispatch) => {
 
     dispatch(
@@ -328,7 +328,7 @@ const deletedUser = (user = {}, success = {}) => {
 	};
 }
 
-export const deleteUser = (user = {}, accessToken = {}) => {
+export const deleteUser = (user = {}, accessToken = '') => {
 	return (dispatch) => {
 
 		dispatch(

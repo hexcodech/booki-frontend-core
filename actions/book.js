@@ -15,7 +15,7 @@ export const invalidateBooks = () => {
 	};
 }
 
-const requestBooks = (accessToken = {}) => {
+const requestBooks = (accessToken = '') => {
 	return {
 		type: 'REQUEST_BOOKS',
 		accessToken
@@ -37,7 +37,7 @@ const receiveBooks = (books = [], receivedAt = {}) => {
 	};
 }
 
-const fetchBooks = (accessToken = {}) => {
+const fetchBooks = (accessToken = '') => {
 	return (dispatch) => {
 
 		dispatch(
@@ -82,7 +82,7 @@ const shouldFetchBooks = (state = {}) => {
 	return books.length === 0;
 }
 
-export const fetchBooksIfNeeded = (accessToken = {}) => {
+export const fetchBooksIfNeeded = (accessToken = '') => {
 
 	return (dispatch, getState) => {
 		if(shouldFetchBooks(getState())){
@@ -177,7 +177,7 @@ const shouldFetchBook = (state = {}, book = {}) => {
 	}
 }
 
-export const fetchBookIfNeeded = (book = {}, accessToken = {}) => {
+export const fetchBookIfNeeded = (book = {}, accessToken = '') => {
 
 	return (dispatch, getState) => {
 		if(shouldFetchBook(getState(), book)){
@@ -206,7 +206,7 @@ const failBookPut = (error = {}, book = {}) => {
 	};
 }
 
-const debouncedPut = debounce((dispatch, book = {}, accessToken = {}) => {
+const debouncedPut = debounce((dispatch, book = {}, accessToken = '') => {
 
   dispatch(
     clearValidationErrors('book')
@@ -241,7 +241,7 @@ const debouncedPut = debounce((dispatch, book = {}, accessToken = {}) => {
 
 }, 1000);
 
-export const putBook = (book = {}, accessToken = {}) => {
+export const putBook = (book = {}, accessToken = '') => {
 	return (dispatch) => {
 
 		dispatch(
@@ -268,7 +268,7 @@ const failBookPost = (error = {}, book = {}) => {
 	};
 }
 
-export const postBook = (book = {}, accessToken = {}) => {
+export const postBook = (book = {}, accessToken = '') => {
 	return (dispatch) => {
 
     dispatch(
@@ -331,7 +331,7 @@ const failBookDelete = (error = {}, book = {}) => {
 	};
 }
 
-export const deleteBook = (book = {}, accessToken = {}) => {
+export const deleteBook = (book = {}, accessToken = '') => {
 	return (dispatch) => {
 
 		dispatch(
@@ -389,7 +389,7 @@ const lookedUpBooks = (books = [], external = false) => {
 };
 
 const debouncedLookup = debounce((
-  dispatch, search = '', external = false, accessToken = {}
+  dispatch, search = '', external = false, accessToken = ''
 ) => {
   dispatch(
     lookUpBooks_(external)
@@ -423,7 +423,7 @@ const debouncedLookup = debounce((
 }, 300);
 
 export const lookUpBooks = (
-  search = '', external = false, accessToken = {}
+  search = '', external = false, accessToken = ''
 ) => {
 	return (dispatch) => {
     return debouncedLookup(dispatch, search, external, accessToken);

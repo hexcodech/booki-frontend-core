@@ -1,7 +1,7 @@
 import {fetchApi}
        from 'booki-frontend-core/utilities/rest';
 
-export const receiveAccessToken = (accessToken = {}) => {
+export const receiveAccessToken = (accessToken = '') => {
 	return {
 		type: 'RECEIVE_ACCESS_TOKEN',
 		accessToken
@@ -10,7 +10,7 @@ export const receiveAccessToken = (accessToken = {}) => {
 
 //user
 
-const updateAuthUser = (user = {}, accessToken = {}) => {
+const updateAuthUser = (user = {}, accessToken = '') => {
 	return {
 		type: 'UPDATE_AUTH_USER',
 		user,
@@ -24,7 +24,7 @@ export const invalidateAuthUser = () => {
 	};
 }
 
-const requestAuthUser = (accessToken = {}) => {
+const requestAuthUser = (accessToken = '') => {
 	return {
 		type: 'REQUEST_AUTH_USER',
 		accessToken
@@ -46,7 +46,7 @@ const receiveAuthUser = (user = {}, receivedAt = 0) => {
 	};
 }
 
-export const fetchAuthUser = (accessToken = {}) => {
+export const fetchAuthUser = (accessToken = '') => {
 	return (dispatch) => {
 
 		dispatch(

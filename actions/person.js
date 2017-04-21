@@ -14,7 +14,7 @@ export const invalidatePeople = () => {
 	};
 }
 
-const requestPeople = (accessToken = {}) => {
+const requestPeople = (accessToken = '') => {
 	return {
 		type: 'REQUEST_PEOPLE',
 		accessToken
@@ -36,7 +36,7 @@ const receivePeople = (people = [], receivedAt = {}) => {
 	};
 }
 
-const fetchPeople = (accessToken = {}) => {
+const fetchPeople = (accessToken = '') => {
 	return (dispatch) => {
 
 		dispatch(
@@ -81,7 +81,7 @@ const shouldFetchPeople = (state = {}) => {
 	return people.length === 0;
 }
 
-export const fetchPeopleIfNeeded = (accessToken = {}) => {
+export const fetchPeopleIfNeeded = (accessToken = '') => {
 
 	return (dispatch, getState) => {
 		if(shouldFetchPeople(getState())){
@@ -174,7 +174,7 @@ const shouldFetchPerson = (state = {}, person = {}) => {
 	}
 }
 
-export const fetchPersonIfNeeded = (person = {}, accessToken = {}) => {
+export const fetchPersonIfNeeded = (person = {}, accessToken = '') => {
 
 	return (dispatch, getState) => {
 		if(shouldFetchPerson(getState(), person)){
@@ -201,7 +201,7 @@ const failPersonPut = (error = {}, person = {}) => {
 	};
 }
 
-const debouncedPut = debounce((dispatch, person = {}, accessToken = {}) => {
+const debouncedPut = debounce((dispatch, person = {}, accessToken = '') => {
 
  dispatch(
    clearValidationErrors('person')
@@ -236,7 +236,7 @@ const debouncedPut = debounce((dispatch, person = {}, accessToken = {}) => {
 
 }, 1000);
 
-export const putPerson = (person = {}, accessToken = {}) => {
+export const putPerson = (person = {}, accessToken = '') => {
 	return (dispatch) => {
 
 		dispatch(
@@ -263,7 +263,7 @@ const failPersonPost = (error = {}, person = {}) => {
 	};
 }
 
-export const postPerson = (person = {}, accessToken = {}) => {
+export const postPerson = (person = {}, accessToken = '') => {
 	return (dispatch) => {
 
    dispatch(
@@ -326,7 +326,7 @@ const failPersonDelete = (error = {}, person = {}) => {
 	};
 }
 
-export const deletePerson = (person = {}, accessToken = {}) => {
+export const deletePerson = (person = {}, accessToken = '') => {
 	return (dispatch) => {
 
 		dispatch(
@@ -416,7 +416,7 @@ export const debouncedLookup = debounce((dispatch, name, accessToken) => {
   });
 }, 300);
 
-export const lookUpPeople = (name = '', accessToken = {}) => {
+export const lookUpPeople = (name = '', accessToken = '') => {
   return (dispatch) => {
     return debouncedLookup(dispatch, name, accessToken);
   };
