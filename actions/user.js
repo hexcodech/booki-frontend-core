@@ -44,7 +44,7 @@ const fetchUsers = (accessToken = {}) => {
 			requestUsers(accessToken)
 		);
 
-		return fetchApi('user', 'GET', {filter: {}}, accessToken)
+		return fetchApi('user', 'GET', {}, accessToken)
 		.then((users) => {
 
 			dispatch(

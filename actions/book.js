@@ -44,7 +44,7 @@ const fetchBooks = (accessToken = {}) => {
 			requestBooks(accessToken)
 		);
 
-		return fetchApi('book', 'GET', {filter: {}}, accessToken)
+		return fetchApi('book', 'GET', {}, accessToken)
 		.then((books) => {
 
 			dispatch(

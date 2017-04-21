@@ -44,7 +44,7 @@ const fetchClients = (accessToken = {}) => {
 			requestClients(accessToken)
 		);
 
-		return fetchApi('oauth2/client', 'GET', {filter: {}}, accessToken)
+		return fetchApi('oauth2/client', 'GET', {}, accessToken)
 		.then((clients) => {
 
 			dispatch(

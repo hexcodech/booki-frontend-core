@@ -43,7 +43,7 @@ const fetchPeople = (accessToken = {}) => {
 			requestPeople(accessToken)
 		);
 
-		return fetchApi('person', 'GET', {filter: {}}, accessToken)
+		return fetchApi('person', 'GET', {}, accessToken)
 		.then((people) => {
 
 			dispatch(

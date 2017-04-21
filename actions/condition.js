@@ -44,7 +44,7 @@ const fetchConditions = (accessToken = {}) => {
 			requestConditions(accessToken)
 		);
 
-		return fetchApi('condition', 'GET', {filter: {}}, accessToken)
+		return fetchApi('condition', 'GET', {}, accessToken)
 		.then((conditions) => {
 
 			dispatch(

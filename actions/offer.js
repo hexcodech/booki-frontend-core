@@ -44,7 +44,7 @@ const fetchOffers = (accessToken = {}) => {
 			requestOffers(accessToken)
 		);
 
-		return fetchApi('offer', 'GET', {filter: {}}, accessToken)
+		return fetchApi('offer', 'GET', {}, accessToken)
 		.then((offers) => {
 
 			dispatch(

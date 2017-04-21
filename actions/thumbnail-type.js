@@ -44,7 +44,7 @@ const fetchThumbnailTypes = (accessToken = {}) => {
 			requestThumbnailTypes(accessToken)
 		);
 
-		return fetchApi('thumbnail-type', 'GET', {filter: {}}, accessToken)
+		return fetchApi('thumbnail-type', 'GET', {}, accessToken)
 		.then((thumbnailTypes) => {
 
 			dispatch(
