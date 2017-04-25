@@ -1,7 +1,7 @@
 import {combineReducers}
        from 'redux';
 
-const lookedUpBooks = (state = {}, action) => {
+const lookedUpBooks = (state = {local: [], external: []}, action) => {
 
 	switch(action.type){
 
