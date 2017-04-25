@@ -138,14 +138,14 @@ const receiveBook = (book = {}, receivedAt = 0) => {
 	};
 }
 
-const fetchBook = (book = {}, accessToken = 0) => {
+const fetchBook = (book = {}) => {
 	return (dispatch) => {
 
 		dispatch(
 			requestBook(book)
 		);
 
-		return fetchApi('book/' + book.id, 'GET', {}, accessToken)
+		return fetchApi('book/' + book.id, 'GET', {})
 		.then((refreshedBook) => {
 
 			dispatch(
@@ -177,7 +177,7 @@ const shouldFetchBook = (state = {}, book = {}) => {
 	}
 }
 
-export const fetchBookIfNeeded = (book = {}, accessToken = '') => {
+export const fetchBookIfNeeded = (book = {}) => {
 
 	return (dispatch, getState) => {
 		if(shouldFetchBook(getState(), book)){
@@ -389,7 +389,7 @@ const lookedUpBooks = (books = [], external = false) => {
 };
 
 const debouncedLookup = debounce((
-  dispatch, search = '', external = false, accessToken = ''
+  dispatch, search = '', external = false
 ) => {
   dispatch(
     lookUpBooks_(external)
@@ -397,9 +397,7 @@ const debouncedLookup = debounce((
 
   return fetchApi(
     'book/lookup' + (external ? '/external' : '') + '?search=' + search,
-    'GET',
-    {},
-    accessToken
+    'GET', {}
   )
   .then((books) => {
 
@@ -423,9 +421,9 @@ const debouncedLookup = debounce((
 }, 300);
 
 export const lookUpBooks = (
-  search = '', external = false, accessToken = ''
+  search = '', external = false
 ) => {
 	return (dispatch) => {
-    return debouncedLookup(dispatch, search, external, accessToken);
+    return debouncedLookup(dispatch, search, external);
 	};
 };
