@@ -1,21 +1,18 @@
-import {combineReducers}
-       from 'redux';
+import { combineReducers } from "redux";
 
 const newOffer = (state = {}, action) => {
-
-	switch(action.type){
-		case 'CLEAR_NEW_OFFER':
+	switch (action.type) {
+		case "CLEAR_NEW_OFFER":
 			return {};
-		case 'UPDATE_NEW_OFFER':
-			return {...state, ...action.offer};
-		case 'POST_OFFER':
+		case "UPDATE_NEW_OFFER":
+			return { ...state, ...action.offer };
+		case "POST_OFFER":
 			return {
 				...state,
 				isFetching: true,
 				didInvalidate: false
 			};
-		case 'FAIL_OFFER_POST':
-
+		case "FAIL_OFFER_POST":
 			return {
 				...state,
 				isFetching: false,
@@ -24,8 +21,7 @@ const newOffer = (state = {}, action) => {
 
 		default:
 			return state;
-
-	};
+	}
 };
 
 export default newOffer;

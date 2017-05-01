@@ -1,29 +1,25 @@
-import {combineReducers}
-       from 'redux';
+import { combineReducers } from "redux";
 
-const lookedUpBooks = (state = {local: [], external: []}, action) => {
-
-	switch(action.type){
-
-		case 'LOOKUP_BOOKS':
+const lookedUpBooks = (state = { local: [], external: [] }, action) => {
+	switch (action.type) {
+		case "LOOKUP_BOOKS":
 			return state;
 
-		case 'FAIL_BOOK_LOOKUP':
-			return {local: [], external: []};
+		case "FAIL_BOOK_LOOKUP":
+			return { local: [], external: [] };
 
-		case 'LOOKED_UP_BOOKS':
+		case "LOOKED_UP_BOOKS":
 			let newState = {
-        ...state
-      };
+				...state
+			};
 
-      newState[action.external ? 'external' : 'local'] = action.books;
+			newState[action.external ? "external" : "local"] = action.books;
 
-      return newState;
+			return newState;
 
 		default:
 			return state;
-
-	};
+	}
 };
 
 export default lookedUpBooks;

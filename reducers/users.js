@@ -1,102 +1,111 @@
-import {combineReducers}
-       from 'redux';
+import { combineReducers } from "redux";
 
 const users = (state = [], action) => {
-
-	switch(action.type){
-		case 'INVALIDATE_USERS':
-			return state.map((user) => {
+	switch (action.type) {
+		case "INVALIDATE_USERS":
+			return state.map(user => {
 				return {
 					...user,
 					didInvalidate: true
-				}
+				};
 			});
-		case 'REQUEST_USERS':
-			return state.map((user) => {
+		case "REQUEST_USERS":
+			return state.map(user => {
 				return {
 					...user,
 					isFetching: true,
 					didInvalidate: false
-				}
+				};
 			});
-		case 'FAIL_USERS_REQUEST':
-
-			return state.map((user) => {
+		case "FAIL_USERS_REQUEST":
+			return state.map(user => {
 				return {
 					...user,
-					isFetching: false,
-				}
+					isFetching: false
+				};
 			});
-		case 'RECEIVE_USERS':
-
-			return action.users.map((user) => {
+		case "RECEIVE_USERS":
+			return action.users.map(user => {
 				return {
 					...user,
 					lastUpdated: action.receivedAt,
 
 					isFetching: false,
 					didInvalidate: false
-				}
+				};
 			});
-		case 'INVALIDATE_USER':
-			return [...state.filter((user) => {
+		case "INVALIDATE_USER":
+			return [
+				...state.filter(user => {
 					return user.id !== action.user.id;
-				}), {
+				}),
+				{
 					...action.user,
 					didInvalidate: true
-				}];
+				}
+			];
 
-		case 'REQUEST_USER':
-		case 'PUT_USER':
-			return [...state.filter((user) => {
+		case "REQUEST_USER":
+		case "PUT_USER":
+			return [
+				...state.filter(user => {
 					return user.id !== action.user.id;
-				}), {
+				}),
+				{
 					...action.user,
 					isFetching: true,
 					didInvalidate: false
-				}];
+				}
+			];
 
-		case 'DELETE_USER':
-			return [...state.filter((user) => {
+		case "DELETE_USER":
+			return [
+				...state.filter(user => {
 					return user.id !== action.user.id;
-				})];
+				})
+			];
 
-		case 'FAIL_USER_REQUEST':
-		case 'FAIL_USER_PUT':
-
-			return [...state.filter((user) => {
+		case "FAIL_USER_REQUEST":
+		case "FAIL_USER_PUT":
+			return [
+				...state.filter(user => {
 					return user.id !== action.user.id;
-				}), {
+				}),
+				{
 					...action.user,
 					isFetching: false
-				}];
+				}
+			];
 
-		case 'FAIL_USER_DELETE':
+		case "FAIL_USER_DELETE":
+			return [
+				...state,
+				{
+					...action.user,
+					isFetching: false,
+					didInvalidate: false
+				}
+			];
 
-			return [...state, {
-				...action.user,
-				isFetching: false,
-				didInvalidate: false
-			}];
-
-		case 'RECEIVE_USER':
-			return [...state.filter((user) => {
+		case "RECEIVE_USER":
+			return [
+				...state.filter(user => {
 					return user.id !== action.user.id;
-				}), {
+				}),
+				{
 					...action.user,
 					isFetching: false,
 					didInvalidate: false,
 					lastUpdated: action.receivedAt
-				}];
+				}
+			];
 
-		case 'DELETED_USER':
-
+		case "DELETED_USER":
 			return state;
 
 		default:
 			return state;
-
-	};
+	}
 };
 
 export default users;

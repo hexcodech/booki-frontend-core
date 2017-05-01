@@ -1,364 +1,286 @@
-import debounce
-       from 'lodash/debounce';
-import {fetchApi}
-       from 'booki-frontend-core/utilities/rest';
+import debounce from "lodash/debounce";
+import { fetchApi } from "booki-frontend-core/utilities/rest";
 
-import {isValidationError, addValidationError, clearValidationErrors}
-       from 'booki-frontend-core/actions/validation';
+import {
+	isValidationError,
+	addValidationError,
+	clearValidationErrors
+} from "booki-frontend-core/actions/validation";
 
-import {addErrorNotification}
-       from 'booki-frontend-core/actions/notification';
+import { addErrorNotification } from "booki-frontend-core/actions/notification";
 
 export const invalidateClients = () => {
 	return {
-		type: 'INVALIDATE_CLIENTS'
+		type: "INVALIDATE_CLIENTS"
 	};
-}
+};
 
-const requestClients = (accessToken = '') => {
+const requestClients = (accessToken = "") => {
 	return {
-		type: 'REQUEST_CLIENTS',
+		type: "REQUEST_CLIENTS",
 		accessToken
 	};
-}
+};
 
 const failClientsRequest = (error = {}) => {
 	return {
-		type: 'FAIL_CLIENTS_REQUEST',
+		type: "FAIL_CLIENTS_REQUEST",
 		error
-	}
-}
+	};
+};
 
 const receiveClients = (clients = [], receivedAt = 0) => {
 	return {
-		type: 'RECEIVE_CLIENTS',
+		type: "RECEIVE_CLIENTS",
 		clients,
 		receivedAt
 	};
-}
+};
 
-const fetchClients = (accessToken = '') => {
-	return (dispatch) => {
+const fetchClients = (accessToken = "") => {
+	return dispatch => {
+		dispatch(requestClients(accessToken));
 
-		dispatch(
-			requestClients(accessToken)
-		);
+		return fetchApi("oauth2/client", "GET", {}, accessToken)
+			.then(clients => {
+				dispatch(receiveClients(clients, Date.now()));
+			})
+			.catch(error => {
+				dispatch(failClientsRequest(error));
 
-		return fetchApi('oauth2/client', 'GET', {}, accessToken)
-		.then((clients) => {
-
-			dispatch(
-				receiveClients(clients, Date.now())
-			);
-
-		}).catch((error) => {
-
-			dispatch(
-				failClientsRequest(error)
-			);
-
-			dispatch(
-				addErrorNotification(error)
-			);
-
-		});
+				dispatch(addErrorNotification(error));
+			});
 	};
-}
+};
 
 const shouldFetchClients = (state = {}) => {
 	const clients = state.app.clients;
 
-	for(let i=0;i<clients.length;i++){
-
-		if(clients[i].isFetching){
+	for (let i = 0; i < clients.length; i++) {
+		if (clients[i].isFetching) {
 			return false;
 		}
 
-		if(clients[i].didInvalidate || clients[i].lastUpdated === 0){
+		if (clients[i].didInvalidate || clients[i].lastUpdated === 0) {
 			return true;
 		}
 	}
 
 	return clients.length === 0;
-}
+};
 
-export const fetchClientsIfNeeded = (accessToken = '') => {
-
+export const fetchClientsIfNeeded = (accessToken = "") => {
 	return (dispatch, getState) => {
-		if(shouldFetchClients(getState())){
+		if (shouldFetchClients(getState())) {
 			return dispatch(fetchClients(accessToken));
-		}else{
+		} else {
 			return Promise.resolve();
 		}
-	}
-}
+	};
+};
 
 export const invalidateClient = (client = {}) => {
 	return {
-		type: 'INVALIDATE_CLIENT',
+		type: "INVALIDATE_CLIENT",
 		client
 	};
-}
+};
 
 export const clearNewClient = () => {
 	return {
-		type: 'CLEAR_NEW_CLIENT'
+		type: "CLEAR_NEW_CLIENT"
 	};
-}
+};
 
 export const updateNewClient = (client = {}) => {
 	return {
-		type: 'UPDATE_NEW_CLIENT',
+		type: "UPDATE_NEW_CLIENT",
 		client
 	};
-}
+};
 
 const requestClient = (client = {}) => {
 	return {
-		type: 'REQUEST_CLIENT',
+		type: "REQUEST_CLIENT",
 		client
 	};
-}
+};
 
 const failClientRequest = (error = {}, client = {}) => {
 	return {
-		type: 'FAIL_CLIENT_REQUEST',
+		type: "FAIL_CLIENT_REQUEST",
 		error,
 		client
 	};
-}
+};
 
 const receiveClient = (client = {}, receivedAt = 0) => {
 	return {
-		type: 'RECEIVE_CLIENT',
+		type: "RECEIVE_CLIENT",
 		client,
 		receivedAt
 	};
-}
+};
 
+const fetchClient = (client = {}, accessToken = "") => {
+	return dispatch => {
+		dispatch(requestClient(client));
 
-const fetchClient = (client = {}, accessToken = '') => {
-	return (dispatch) => {
+		return fetchApi("oauth2/client/" + client.id, "GET", {}, accessToken)
+			.then(refreshedClient => {
+				dispatch(receiveClient(refreshedClient, Date.now()));
+			})
+			.catch(error => {
+				dispatch(failClientRequest(error));
 
-		dispatch(
-			requestClient(client)
-		);
-
-		return fetchApi('oauth2/client/' + client.id, 'GET', {}, accessToken)
-		.then((refreshedClient) => {
-
-			dispatch(
-				receiveClient(refreshedClient, Date.now())
-			);
-
-		}).catch((error) => {
-
-			dispatch(
-				failClientRequest(error)
-			);
-
-			dispatch(
-				addErrorNotification(error)
-			);
-
-		});
+				dispatch(addErrorNotification(error));
+			});
 	};
 };
 
 const shouldFetchClient = (state = {}, client = {}) => {
-
-	if(client.isFetching){
+	if (client.isFetching) {
 		return false;
-	}else if(!client || !client.lastUpdated || client.lastUpdated === 0){
+	} else if (!client || !client.lastUpdated || client.lastUpdated === 0) {
 		return true;
-	}else{
+	} else {
 		return client.didInvalidate;
 	}
-}
+};
 
-export const fetchClientIfNeeded = (client = {}, accessToken = '') => {
-
+export const fetchClientIfNeeded = (client = {}, accessToken = "") => {
 	return (dispatch, getState) => {
-		if(shouldFetchClient(getState(), client)){
+		if (shouldFetchClient(getState(), client)) {
 			return dispatch(fetchClient(client, accessToken));
-		}else{
+		} else {
 			return Promise.resolve();
 		}
-	}
-}
-
+	};
+};
 
 const putClient_ = (client = {}) => {
 	return {
-		type: 'PUT_CLIENT',
+		type: "PUT_CLIENT",
 		client
 	};
-}
+};
 
 const failClientPut = (error = {}, client = {}) => {
 	return {
-		type: 'FAIL_CLIENT_PUT',
+		type: "FAIL_CLIENT_PUT",
 		error,
 		client
 	};
-}
+};
 
-const debouncedPut = debounce((dispatch, client = {}, accessToken = '') => {
+const debouncedPut = debounce((dispatch, client = {}, accessToken = "") => {
+	dispatch(clearValidationErrors("client"));
 
-  dispatch(
-    clearValidationErrors('client')
-  );
+	return fetchApi("oauth2/client/" + client.id, "PUT", { client }, accessToken)
+		.then(updatedClient => {
+			dispatch(receiveClient(updatedClient, Date.now()));
 
-	return fetchApi('oauth2/client/' + client.id, 'PUT', {client}, accessToken)
-	.then((updatedClient) => {
+			return updatedClient;
+		})
+		.catch(error => {
+			dispatch(failClientPut(error, client));
 
-		dispatch(
-			receiveClient(updatedClient, Date.now())
-		);
-
-		return updatedClient;
-
-	}).catch((error) => {
-
-		dispatch(
-			failClientPut(error, client)
-		);
-
-    if(isValidationError(error)){
-      dispatch(
-        addValidationError(error)
-      );
-    }else{
-      dispatch(
-        addErrorNotification(error)
-      );
-    }
-
-	});
-
+			if (isValidationError(error)) {
+				dispatch(addValidationError(error));
+			} else {
+				dispatch(addErrorNotification(error));
+			}
+		});
 }, 1000);
 
-export const putClient = (client = {}, accessToken = '') => {
-	return (dispatch) => {
-
-		dispatch(
-			putClient_(client)
-		);
+export const putClient = (client = {}, accessToken = "") => {
+	return dispatch => {
+		dispatch(putClient_(client));
 
 		debouncedPut(dispatch, client, accessToken);
-
 	};
-}
+};
 
 const postClient_ = (client = {}) => {
 	return {
-		type: 'POST_CLIENT',
+		type: "POST_CLIENT",
 		client
 	};
-}
-
+};
 
 const failClientPost = (error = {}, client = {}) => {
 	return {
-		type: 'FAIL_CLIENT_POST',
+		type: "FAIL_CLIENT_POST",
 		error,
 		client
 	};
-}
+};
 
-export const postClient = (client = {}, accessToken = '') => {
-	return (dispatch) => {
+export const postClient = (client = {}, accessToken = "") => {
+	return dispatch => {
+		dispatch(clearValidationErrors("client"));
 
-    dispatch(
-      clearValidationErrors('client')
-    );
+		dispatch(postClient_(client));
 
-		dispatch(
-			postClient_(client)
-		);
+		return fetchApi("oauth2/client", "POST", { client }, accessToken)
+			.then(savedClient => {
+				dispatch(receiveClient(savedClient, Date.now()));
 
-		return fetchApi('oauth2/client', 'POST', {client}, accessToken)
-		.then((savedClient) => {
+				return savedClient;
+			})
+			.catch(error => {
+				dispatch(failClientPost(error, client));
 
-			dispatch(
-				receiveClient(savedClient, Date.now())
-			);
-
-			return savedClient;
-
-		}).catch((error) => {
-
-			dispatch(
-				failClientPost(error, client)
-			);
-
-      if(isValidationError(error)){
-        dispatch(
-          addValidationError(error)
-        );
-      }else{
-        dispatch(
-          addErrorNotification(error)
-        );
-      }
-
-		});
+				if (isValidationError(error)) {
+					dispatch(addValidationError(error));
+				} else {
+					dispatch(addErrorNotification(error));
+				}
+			});
 	};
-}
+};
 
 const deleteClient_ = (client = {}) => {
 	return {
-		type: 'DELETE_CLIENT',
+		type: "DELETE_CLIENT",
 		client
 	};
-}
+};
 
 const failClientDelete = (error = {}, client = {}) => {
 	return {
-		type: 'FAIL_CLIENT_DELETE',
+		type: "FAIL_CLIENT_DELETE",
 		error,
 		client
 	};
-}
+};
 
 const deletedClient = (client = {}, success = false) => {
 	return {
-		type: 'DELETED_CLIENT',
+		type: "DELETED_CLIENT",
 		client,
 		success
 	};
-}
+};
 
-export const deleteClient = (client = {}, accessToken = '') => {
-	return (dispatch) => {
+export const deleteClient = (client = {}, accessToken = "") => {
+	return dispatch => {
+		dispatch(deleteClient_(client));
 
-		dispatch(
-			deleteClient_(client)
-		);
+		return fetchApi("oauth2/client/" + client.id, "DELETE", {}, accessToken)
+			.then(response => {
+				dispatch(deletedClient(client, response.success));
 
-		return fetchApi('oauth2/client/' + client.id, 'DELETE', {}, accessToken)
-		.then((response) => {
+				if (!response.success) {
+					failClientDelete("The API couldn't delete the client!", client);
+				}
 
-			dispatch(
-				deletedClient(client, response.success)
-			);
+				return response.success;
+			})
+			.catch(error => {
+				dispatch(failClientDelete(error, client));
 
-			if(!response.success){
-				failClientDelete('The API couldn\'t delete the client!', client)
-			}
-
-			return response.success;
-
-		}).catch((error) => {
-
-			dispatch(
-				failClientDelete(error, client)
-			);
-
-			dispatch(
-				addErrorNotification(error)
-			);
-
-		});
+				dispatch(addErrorNotification(error));
+			});
 	};
-}
+};

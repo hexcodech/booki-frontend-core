@@ -1,39 +1,38 @@
-import {NOTIFICATION_ANIMATION_DURATION}
-       from 'booki-frontend-core/constants/animation';
-import {COLOR_FAILURE}
-       from 'booki-frontend-core/constants/color';
+import {
+	NOTIFICATION_ANIMATION_DURATION
+} from "booki-frontend-core/constants/animation";
+import { COLOR_FAILURE } from "booki-frontend-core/constants/color";
 
 const addNotification_ = (notification = {}) => {
 	return {
-		type: 'ADD_NOTIFICATION',
+		type: "ADD_NOTIFICATION",
 		notification
 	};
-}
+};
 
 export const updateNotification = (notification = {}) => {
 	return {
-		type: 'UPDATE_NOTIFICATION',
+		type: "UPDATE_NOTIFICATION",
 		notification
 	};
-}
+};
 
 const removeNotification_ = (uuid = 0) => {
 	return {
-		type: 'REMOVE_NOTIFICATION',
+		type: "REMOVE_NOTIFICATION",
 		uuid
-	}
-}
+	};
+};
 
-export const addNotification = (notification = {hideDelay: 2500}) => {
-	return (dispatch) => {
-
-		if(!notification.uuid){
-			notification.uuid = Date.now() + '/' + Math.random();
+export const addNotification = (notification = { hideDelay: 2500 }) => {
+	return dispatch => {
+		if (!notification.uuid) {
+			notification.uuid = Date.now() + "/" + Math.random();
 		}
 		notification.timestamp = Date.now();
 
 		//default actions
-		if(!notification.actions){
+		if (!notification.actions) {
 			notification.actions = [];
 		}
 
@@ -48,22 +47,18 @@ export const addNotification = (notification = {hideDelay: 2500}) => {
 			//Removal
 
 			setTimeout(() => {
-				dispatch(
-					removeNotification_(notification.uuid)
-				);
+				dispatch(removeNotification_(notification.uuid));
 			}, NOTIFICATION_ANIMATION_DURATION);
-		}
+		};
 
-		if(notification.hideAction !== false){
-
+		if (notification.hideAction !== false) {
 			notification.actions.unshift({
-				text: 'Hide',
+				text: "Hide",
 				color: COLOR_FAILURE,
 				action: (e, notification) => {
 					notification.hide();
 				}
 			});
-
 		}
 
 		dispatch(
@@ -75,8 +70,7 @@ export const addNotification = (notification = {hideDelay: 2500}) => {
 
 		//set timeout
 
-		if(notification.hideDelay){
-
+		if (notification.hideDelay) {
 			notification.hideDelay = Math.max(notification.hideDelay, 2500);
 
 			//FadeIn
@@ -88,7 +82,6 @@ export const addNotification = (notification = {hideDelay: 2500}) => {
 						fadeIn: false
 					})
 				);
-
 			}, NOTIFICATION_ANIMATION_DURATION);
 
 			//FadeOut
@@ -100,35 +93,29 @@ export const addNotification = (notification = {hideDelay: 2500}) => {
 						fadeOut: true
 					})
 				);
-
 			}, notification.hideDelay - NOTIFICATION_ANIMATION_DURATION);
 
 			//Removal
 
 			setTimeout(() => {
-				dispatch(
-					removeNotification_(notification.uuid)
-				);
+				dispatch(removeNotification_(notification.uuid));
 			}, notification.hideDelay);
-
 		}
-
-
-
 	};
-}
+};
 
 export const addErrorNotification = (error = {}) => {
 	return addNotification({
-		title		: (error.statusText ? error.statusText : 'Error') + (error.status ? '(' + error.status + ')' : ''),
-		text		: 'Something went wrong',
-		icon		: 'error_outline',
-		color		: COLOR_FAILURE,
-		actions		: [
+		title: (error.statusText ? error.statusText : "Error") +
+			(error.status ? "(" + error.status + ")" : ""),
+		text: "Something went wrong",
+		icon: "error_outline",
+		color: COLOR_FAILURE,
+		actions: [
 			{
-				text		: 'Log',
-				color		: '#000',
-				action		: function(){
+				text: "Log",
+				color: "#000",
+				action: function() {
 					console.log(error);
 				}
 			}

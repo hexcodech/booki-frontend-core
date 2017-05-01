@@ -1,46 +1,44 @@
-import {combineReducers}
-       from 'redux';
+import { combineReducers } from "redux";
 
-const user = (state =
-{
-	name: {
-		display: '',
-		first : '',
-		last : ''
+const user = (
+	state = {
+		name: {
+			display: "",
+			first: "",
+			last: ""
+		},
+		email: "",
+		profilePictureUrl: "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&s=512",
+
+		lastUpdated: 0,
+
+		isFetching: false,
+		didInvalidate: false
 	},
-	email : '',
-	profilePictureUrl : 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&s=512',
-
-	lastUpdated: 0,
-
-	isFetching: false,
-	didInvalidate: false
-
-}, action) => {
-
-	switch(action.type){
-		case 'UPDATE_AUTH_USER':
+	action
+) => {
+	switch (action.type) {
+		case "UPDATE_AUTH_USER":
 			return action.user;
-		case 'INVALIDATE_AUTH_USER':
+		case "INVALIDATE_AUTH_USER":
 			return {
 				...state,
 				didInvalidate: true
 			};
-		case 'REQUEST_AUTH_USER':
+		case "REQUEST_AUTH_USER":
 			return {
 				...state,
 				isFetching: true,
 				didInvalidate: false
 			};
-		case 'FAIL_AUTH_USER_REQUEST':
-
+		case "FAIL_AUTH_USER_REQUEST":
 			console.log(action.error);
 
 			return {
 				...state,
 				isFetching: false
 			};
-		case 'RECEIVE_AUTH_USER':
+		case "RECEIVE_AUTH_USER":
 			return {
 				...state,
 				...action.user,
@@ -50,8 +48,8 @@ const user = (state =
 				isFetching: false,
 				didInvalidate: false
 			};
-		case 'RECEIVE_USER':
-			if(state.id === action.user.id){
+		case "RECEIVE_USER":
+			if (state.id === action.user.id) {
 				return {
 					...state,
 					...action.user,
@@ -61,24 +59,25 @@ const user = (state =
 					isFetching: false,
 					didInvalidate: false
 				};
-			}else{
+			} else {
 				return state;
 			}
 		default:
 			return state;
-
-	};
+	}
 };
 
-const accessToken = (state = {
-	token: '',
-	clientId: '',
-	userId: '',
-	expires: ''
-}, action) => {
-
-	switch(action.type){
-		case 'RECEIVE_ACCESS_TOKEN':
+const accessToken = (
+	state = {
+		token: "",
+		clientId: "",
+		userId: "",
+		expires: ""
+	},
+	action
+) => {
+	switch (action.type) {
+		case "RECEIVE_ACCESS_TOKEN":
 			return {
 				...state,
 				...action.accessToken

@@ -11,5 +11,6 @@
   "dependencies": {
     "lodash": "^4.17.4",
     "redux": "^3.6.0"
-  }
+  },
+  "devDependencies": {}
 }

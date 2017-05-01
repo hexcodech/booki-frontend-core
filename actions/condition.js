@@ -1,362 +1,298 @@
-import debounce
-       from 'lodash/debounce';
-import {fetchApi}
-       from 'booki-frontend-core/utilities/rest';
+import debounce from "lodash/debounce";
+import { fetchApi } from "booki-frontend-core/utilities/rest";
 
-import {isValidationError, addValidationError, clearValidationErrors}
-       from 'booki-frontend-core/actions/validation';
+import {
+	isValidationError,
+	addValidationError,
+	clearValidationErrors
+} from "booki-frontend-core/actions/validation";
 
-import {addErrorNotification}
-       from 'booki-frontend-core/actions/notification';
+import { addErrorNotification } from "booki-frontend-core/actions/notification";
 
 export const invalidateConditions = () => {
 	return {
-		type: 'INVALIDATE_CONDITIONS'
+		type: "INVALIDATE_CONDITIONS"
 	};
-}
+};
 
-const requestConditions = (accessToken = '') => {
+const requestConditions = (accessToken = "") => {
 	return {
-		type: 'REQUEST_CONDITIONS',
+		type: "REQUEST_CONDITIONS",
 		accessToken
 	};
-}
+};
 
 const failConditionsRequest = (error = {}) => {
 	return {
-		type: 'FAIL_CONDITIONS_REQUEST',
+		type: "FAIL_CONDITIONS_REQUEST",
 		error
-	}
-}
+	};
+};
 
 const receiveConditions = (conditions = [], receivedAt = {}) => {
 	return {
-		type: 'RECEIVE_CONDITIONS',
+		type: "RECEIVE_CONDITIONS",
 		conditions,
 		receivedAt
 	};
-}
+};
 
-const fetchConditions = (accessToken = '') => {
-	return (dispatch) => {
+const fetchConditions = (accessToken = "") => {
+	return dispatch => {
+		dispatch(requestConditions(accessToken));
 
-		dispatch(
-			requestConditions(accessToken)
-		);
+		return fetchApi("condition", "GET", {}, accessToken)
+			.then(conditions => {
+				dispatch(receiveConditions(conditions, Date.now()));
+			})
+			.catch(error => {
+				dispatch(failConditionsRequest(error));
 
-		return fetchApi('condition', 'GET', {}, accessToken)
-		.then((conditions) => {
-
-			dispatch(
-				receiveConditions(conditions, Date.now())
-			);
-
-		}).catch((error) => {
-
-			dispatch(
-				failConditionsRequest(error)
-			);
-
-      dispatch(
-				addErrorNotification(error)
-			);
-
-		});
+				dispatch(addErrorNotification(error));
+			});
 	};
-}
+};
 
 const shouldFetchConditions = (state = {}) => {
 	const conditions = state.app.conditions;
 
-	for(let i=0;i<conditions.length;i++){
-
-		if(conditions[i].isFetching){
+	for (let i = 0; i < conditions.length; i++) {
+		if (conditions[i].isFetching) {
 			return false;
 		}
 
-		if(conditions[i].didInvalidate || conditions[i].lastUpdated === 0){
+		if (conditions[i].didInvalidate || conditions[i].lastUpdated === 0) {
 			return true;
 		}
 	}
 
 	return conditions.length === 0;
-}
+};
 
-export const fetchConditionsIfNeeded = (accessToken = '') => {
-
+export const fetchConditionsIfNeeded = (accessToken = "") => {
 	return (dispatch, getState) => {
-		if(shouldFetchConditions(getState())){
+		if (shouldFetchConditions(getState())) {
 			return dispatch(fetchConditions(accessToken));
-		}else{
+		} else {
 			return Promise.resolve();
 		}
-	}
-}
+	};
+};
 
 export const invalidateCondition = (condition = {}) => {
 	return {
-		type: 'INVALIDATE_CONDITION',
+		type: "INVALIDATE_CONDITION",
 		condition
 	};
-}
+};
 
 export const clearNewCondition = () => {
 	return {
-		type: 'CLEAR_NEW_CONDITION'
+		type: "CLEAR_NEW_CONDITION"
 	};
-}
+};
 
 export const updateNewCondition = (condition = {}) => {
 	return {
-		type: 'UPDATE_NEW_CONDITION',
+		type: "UPDATE_NEW_CONDITION",
 		condition
 	};
-}
+};
 
 const requestCondition = (condition = {}) => {
 	return {
-		type: 'REQUEST_CONDITION',
+		type: "REQUEST_CONDITION",
 		condition
 	};
-}
+};
 
 const failConditionRequest = (error = {}, condition = {}) => {
 	return {
-		type: 'FAIL_CONDITION_REQUEST',
+		type: "FAIL_CONDITION_REQUEST",
 		error,
 		condition
 	};
-}
+};
 
 const receiveCondition = (condition = {}, receivedAt = 0) => {
 	return {
-		type: 'RECEIVE_CONDITION',
+		type: "RECEIVE_CONDITION",
 		condition,
 		receivedAt
 	};
-}
+};
 
 const fetchCondition = (condition = {}, accessToken = 0) => {
-	return (dispatch) => {
+	return dispatch => {
+		dispatch(requestCondition(condition));
 
-		dispatch(
-			requestCondition(condition)
-		);
+		return fetchApi("condition/" + condition.id, "GET", {}, accessToken)
+			.then(refreshedCondition => {
+				dispatch(receiveCondition(refreshedCondition, Date.now()));
+			})
+			.catch(error => {
+				dispatch(failConditionRequest(error));
 
-		return fetchApi('condition/' + condition.id, 'GET', {}, accessToken)
-		.then((refreshedCondition) => {
-
-			dispatch(
-				receiveCondition(refreshedCondition, Date.now())
-			);
-
-		}).catch((error) => {
-
-			dispatch(
-				failConditionRequest(error)
-			);
-
-			dispatch(
-				addErrorNotification(error)
-			);
-
-		});
+				dispatch(addErrorNotification(error));
+			});
 	};
 };
 
 const shouldFetchCondition = (state = {}, condition = {}) => {
-
-	if(condition.isFetching){
+	if (condition.isFetching) {
 		return false;
-	}else if(!condition || !condition.lastUpdated || condition.lastUpdated === 0){
+	} else if (
+		!condition ||
+		!condition.lastUpdated ||
+		condition.lastUpdated === 0
+	) {
 		return true;
-	}else{
+	} else {
 		return condition.didInvalidate;
 	}
-}
+};
 
-export const fetchConditionIfNeeded = (condition = {}, accessToken = '') => {
-
+export const fetchConditionIfNeeded = (condition = {}, accessToken = "") => {
 	return (dispatch, getState) => {
-		if(shouldFetchCondition(getState(), condition)){
+		if (shouldFetchCondition(getState(), condition)) {
 			return dispatch(fetchCondition(condition, accessToken));
-		}else{
+		} else {
 			return Promise.resolve();
 		}
-	}
-}
-
+	};
+};
 
 const putCondition_ = (condition = {}) => {
 	return {
-		type: 'PUT_CONDITION',
+		type: "PUT_CONDITION",
 		condition
 	};
-}
+};
 
 const failConditionPut = (error = {}, condition = {}) => {
 	return {
-		type: 'FAIL_CONDITION_PUT',
+		type: "FAIL_CONDITION_PUT",
 		error,
 		condition
 	};
-}
+};
 
-const debouncedPut = debounce((dispatch, condition = {}, accessToken = '') => {
+const debouncedPut = debounce((dispatch, condition = {}, accessToken = "") => {
+	dispatch(clearValidationErrors("condition"));
 
-  dispatch(
-    clearValidationErrors('condition')
-  );
+	return fetchApi(
+		"condition/" + condition.id,
+		"PUT",
+		{ condition },
+		accessToken
+	)
+		.then(updatedCondition => {
+			dispatch(receiveCondition(updatedCondition, Date.now()));
 
-	return fetchApi('condition/' + condition.id, 'PUT', {condition}, accessToken)
-	.then((updatedCondition) => {
+			return updatedCondition;
+		})
+		.catch(error => {
+			dispatch(failConditionPut(error, condition));
 
-		dispatch(
-			receiveCondition(updatedCondition, Date.now())
-		);
-
-		return updatedCondition;
-
-	}).catch((error) => {
-
-		dispatch(
-			failConditionPut(error, condition)
-		);
-
-    if(isValidationError(error)){
-      dispatch(
-        addValidationError(error)
-      );
-    }else{
-      dispatch(
-        addErrorNotification(error)
-      );
-    }
-
-	});
-
+			if (isValidationError(error)) {
+				dispatch(addValidationError(error));
+			} else {
+				dispatch(addErrorNotification(error));
+			}
+		});
 }, 1000);
 
-export const putCondition = (condition = {}, accessToken = '') => {
-	return (dispatch) => {
-
-		dispatch(
-			putCondition_(condition)
-		);
+export const putCondition = (condition = {}, accessToken = "") => {
+	return dispatch => {
+		dispatch(putCondition_(condition));
 
 		debouncedPut(dispatch, condition, accessToken);
-
 	};
-}
+};
 
 const postCondition_ = (condition = {}) => {
 	return {
-		type: 'POST_CONDITION',
+		type: "POST_CONDITION",
 		condition
 	};
-}
+};
 
 const failConditionPost = (error = {}, condition = {}) => {
 	return {
-		type: 'FAIL_CONDITION_POST',
+		type: "FAIL_CONDITION_POST",
 		error,
 		condition
 	};
-}
+};
 
-export const postCondition = (condition = {}, accessToken = '') => {
-	return (dispatch) => {
+export const postCondition = (condition = {}, accessToken = "") => {
+	return dispatch => {
+		dispatch(clearValidationErrors("condition"));
 
-    dispatch(
-      clearValidationErrors('condition')
-    );
+		dispatch(postCondition_(condition));
 
-		dispatch(
-			postCondition_(condition)
-		);
+		return fetchApi("condition", "POST", { condition }, accessToken)
+			.then(savedCondition => {
+				dispatch(receiveCondition(savedCondition, Date.now()));
 
-		return fetchApi('condition', 'POST', {condition}, accessToken)
-		.then((savedCondition) => {
+				return savedCondition;
+			})
+			.catch(error => {
+				dispatch(failConditionPost(error, condition));
 
-			dispatch(
-				receiveCondition(savedCondition, Date.now())
-			);
-
-			return savedCondition;
-
-		}).catch((error) => {
-
-			dispatch(
-				failConditionPost(error, condition)
-			);
-
-      if(isValidationError(error)){
-        dispatch(
-          addValidationError(error)
-        );
-      }else{
-        dispatch(
-  				addErrorNotification(error)
-  			);
-      }
-
-		});
+				if (isValidationError(error)) {
+					dispatch(addValidationError(error));
+				} else {
+					dispatch(addErrorNotification(error));
+				}
+			});
 	};
-}
+};
 
 const deleteCondition_ = (condition = {}) => {
 	return {
-		type: 'DELETE_CONDITION',
+		type: "DELETE_CONDITION",
 		condition
 	};
-}
+};
 
 const deletedCondition = (condition = {}, success = false) => {
 	return {
-		type: 'DELETED_CONDITION',
+		type: "DELETED_CONDITION",
 		condition,
 		success
 	};
-}
+};
 
 const failConditionDelete = (error = {}, condition = {}) => {
 	return {
-		type: 'FAIL_CONDITION_DELETE',
+		type: "FAIL_CONDITION_DELETE",
 		error,
 		condition
 	};
-}
+};
 
-export const deleteCondition = (condition = {}, accessToken = '') => {
-	return (dispatch) => {
+export const deleteCondition = (condition = {}, accessToken = "") => {
+	return dispatch => {
+		dispatch(deleteCondition_(condition));
 
-		dispatch(
-			deleteCondition_(condition)
-		);
+		return fetchApi("condition/" + condition.id, "DELETE", {}, accessToken)
+			.then(response => {
+				dispatch(deletedCondition(condition, response.success));
 
-		return fetchApi('condition/' + condition.id, 'DELETE', {}, accessToken)
-		.then((response) => {
+				if (!response.success) {
+					failConditionDelete(
+						"The API couldn't delete the condition!",
+						condition
+					);
+				}
 
-			dispatch(
-				deletedCondition(condition, response.success)
-			);
+				return response.success;
+			})
+			.catch(error => {
+				dispatch(failConditionDelete(error, condition));
 
-			if(!response.success){
-				failConditionDelete('The API couldn\'t delete the condition!', condition)
-			}
-
-			return response.success;
-
-		}).catch((error) => {
-
-			dispatch(
-				failConditionDelete(error, condition)
-			);
-
-			dispatch(
-				addErrorNotification(error)
-			);
-
-		});
+				dispatch(addErrorNotification(error));
+			});
 	};
-}
+};

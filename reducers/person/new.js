@@ -1,21 +1,18 @@
-import {combineReducers}
-       from 'redux';
+import { combineReducers } from "redux";
 
 const newPerson = (state = {}, action) => {
-
-	switch(action.type){
-		case 'CLEAR_NEW_PERSON':
+	switch (action.type) {
+		case "CLEAR_NEW_PERSON":
 			return {};
-		case 'UPDATE_NEW_PERSON':
-			return {...state, ...action.person};
-		case 'POST_PERSON':
+		case "UPDATE_NEW_PERSON":
+			return { ...state, ...action.person };
+		case "POST_PERSON":
 			return {
 				...state,
 				isFetching: true,
 				didInvalidate: false
 			};
-		case 'FAIL_PERSON_POST':
-
+		case "FAIL_PERSON_POST":
 			return {
 				...state,
 				isFetching: false,
@@ -24,8 +21,7 @@ const newPerson = (state = {}, action) => {
 
 		default:
 			return state;
-
-	};
+	}
 };
 
 export default newPerson;

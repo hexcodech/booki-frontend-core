@@ -1,429 +1,339 @@
-import debounce
-       from 'lodash/debounce';
-import {fetchApi}
-       from 'booki-frontend-core/utilities/rest';
+import debounce from "lodash/debounce";
+import { fetchApi } from "booki-frontend-core/utilities/rest";
 
-import {isValidationError, addValidationError, clearValidationErrors}
-       from 'booki-frontend-core/actions/validation';
+import {
+	isValidationError,
+	addValidationError,
+	clearValidationErrors
+} from "booki-frontend-core/actions/validation";
 
-import {addErrorNotification}
-       from 'booki-frontend-core/actions/notification';
+import { addErrorNotification } from "booki-frontend-core/actions/notification";
 
 export const invalidateBooks = () => {
 	return {
-		type: 'INVALIDATE_BOOKS'
+		type: "INVALIDATE_BOOKS"
 	};
-}
+};
 
-const requestBooks = (accessToken = '') => {
+const requestBooks = (accessToken = "") => {
 	return {
-		type: 'REQUEST_BOOKS',
+		type: "REQUEST_BOOKS",
 		accessToken
 	};
-}
+};
 
 const failBooksRequest = (error = {}) => {
 	return {
-		type: 'FAIL_BOOKS_REQUEST',
+		type: "FAIL_BOOKS_REQUEST",
 		error
-	}
-}
+	};
+};
 
 const receiveBooks = (books = [], receivedAt = {}) => {
 	return {
-		type: 'RECEIVE_BOOKS',
+		type: "RECEIVE_BOOKS",
 		books,
 		receivedAt
 	};
-}
+};
 
-const fetchBooks = (accessToken = '') => {
-	return (dispatch) => {
+const fetchBooks = (accessToken = "") => {
+	return dispatch => {
+		dispatch(requestBooks(accessToken));
 
-		dispatch(
-			requestBooks(accessToken)
-		);
+		return fetchApi("book", "GET", {}, accessToken)
+			.then(books => {
+				dispatch(receiveBooks(books, Date.now()));
+			})
+			.catch(error => {
+				dispatch(failBooksRequest(error));
 
-		return fetchApi('book', 'GET', {}, accessToken)
-		.then((books) => {
-
-			dispatch(
-				receiveBooks(books, Date.now())
-			);
-
-		}).catch((error) => {
-
-			dispatch(
-				failBooksRequest(error)
-			);
-
-      dispatch(
-				addErrorNotification(error)
-			);
-
-		});
+				dispatch(addErrorNotification(error));
+			});
 	};
-}
+};
 
 const shouldFetchBooks = (state = {}) => {
 	const books = state.app.books;
 
-	for(let i=0;i<books.length;i++){
-
-		if(books[i].isFetching){
+	for (let i = 0; i < books.length; i++) {
+		if (books[i].isFetching) {
 			return false;
 		}
 
-		if(books[i].didInvalidate || books[i].lastUpdated === 0){
+		if (books[i].didInvalidate || books[i].lastUpdated === 0) {
 			return true; //if at least one invalidated or wasn't loaded yet, shouldFetchBooks is called -> update all
 		}
 	}
 
 	return books.length === 0;
-}
+};
 
-export const fetchBooksIfNeeded = (accessToken = '') => {
-
+export const fetchBooksIfNeeded = (accessToken = "") => {
 	return (dispatch, getState) => {
-		if(shouldFetchBooks(getState())){
+		if (shouldFetchBooks(getState())) {
 			// Dispatch a thunk from thunk!
 			return dispatch(fetchBooks(accessToken));
-		}else{
+		} else {
 			// Let the calling code know there's nothing to wait for.
 			return Promise.resolve();
 		}
-	}
-}
+	};
+};
 
 export const invalidateBook = (book = {}) => {
 	return {
-		type: 'INVALIDATE_BOOK',
+		type: "INVALIDATE_BOOK",
 		book
 	};
-}
+};
 
 export const clearNewBook = () => {
 	return {
-		type: 'CLEAR_NEW_BOOK'
+		type: "CLEAR_NEW_BOOK"
 	};
-}
+};
 
 export const updateNewBook = (book = {}) => {
 	return {
-		type: 'UPDATE_NEW_BOOK',
+		type: "UPDATE_NEW_BOOK",
 		book
 	};
-}
+};
 
 const requestBook = (book = {}) => {
 	return {
-		type: 'REQUEST_BOOK',
+		type: "REQUEST_BOOK",
 		book
 	};
-}
+};
 
 const failBookRequest = (error = {}, book = {}) => {
 	return {
-		type: 'FAIL_BOOK_REQUEST',
+		type: "FAIL_BOOK_REQUEST",
 		error,
 		book
 	};
-}
+};
 
 const receiveBook = (book = {}, receivedAt = 0) => {
 	return {
-		type: 'RECEIVE_BOOK',
+		type: "RECEIVE_BOOK",
 		book,
 		receivedAt
 	};
-}
+};
 
 const fetchBook = (book = {}) => {
-	return (dispatch) => {
+	return dispatch => {
+		dispatch(requestBook(book));
 
-		dispatch(
-			requestBook(book)
-		);
+		return fetchApi("book/" + book.id, "GET", {})
+			.then(refreshedBook => {
+				dispatch(receiveBook(refreshedBook, Date.now()));
+			})
+			.catch(error => {
+				dispatch(failBookRequest(error));
 
-		return fetchApi('book/' + book.id, 'GET', {})
-		.then((refreshedBook) => {
-
-			dispatch(
-				receiveBook(refreshedBook, Date.now())
-			);
-
-		}).catch((error) => {
-
-			dispatch(
-				failBookRequest(error)
-			);
-
-			dispatch(
-				addErrorNotification(error)
-			);
-
-		});
+				dispatch(addErrorNotification(error));
+			});
 	};
 };
 
 const shouldFetchBook = (state = {}, book = {}) => {
-
-	if(book.isFetching){
+	if (book.isFetching) {
 		return false;
-	}else if(!book || !book.lastUpdated || book.lastUpdated === 0){
+	} else if (!book || !book.lastUpdated || book.lastUpdated === 0) {
 		return true;
-	}else{
+	} else {
 		return book.didInvalidate;
 	}
-}
+};
 
 export const fetchBookIfNeeded = (book = {}) => {
-
 	return (dispatch, getState) => {
-		if(shouldFetchBook(getState(), book)){
+		if (shouldFetchBook(getState(), book)) {
 			// Dispatch a thunk from thunk!
 			return dispatch(fetchBook(book, accessToken));
-		}else{
+		} else {
 			// Let the calling code know there's nothing to wait for.
 			return Promise.resolve();
 		}
-	}
-}
-
+	};
+};
 
 const putBook_ = (book = {}) => {
 	return {
-		type: 'PUT_BOOK',
+		type: "PUT_BOOK",
 		book
 	};
-}
+};
 
 const failBookPut = (error = {}, book = {}) => {
 	return {
-		type: 'FAIL_BOOK_PUT',
+		type: "FAIL_BOOK_PUT",
 		error,
 		book
 	};
-}
+};
 
-const debouncedPut = debounce((dispatch, book = {}, accessToken = '') => {
+const debouncedPut = debounce((dispatch, book = {}, accessToken = "") => {
+	dispatch(clearValidationErrors("book"));
 
-  dispatch(
-    clearValidationErrors('book')
-  );
+	return fetchApi("book/" + book.id, "PUT", { book }, accessToken)
+		.then(updatedBook => {
+			dispatch(receiveBook(updatedBook, Date.now()));
 
-	return fetchApi('book/' + book.id, 'PUT', {book}, accessToken)
-	.then((updatedBook) => {
+			return updatedBook;
+		})
+		.catch(error => {
+			dispatch(failBookPut(error, book));
 
-		dispatch(
-			receiveBook(updatedBook, Date.now())
-		);
-
-		return updatedBook;
-
-	}).catch((error) => {
-
-		dispatch(
-			failBookPut(error, book)
-		);
-
-    if(isValidationError(error)){
-      dispatch(
-        addValidationError(error)
-      );
-    }else{
-      dispatch(
-        addErrorNotification(error)
-      );
-    }
-
-	});
-
+			if (isValidationError(error)) {
+				dispatch(addValidationError(error));
+			} else {
+				dispatch(addErrorNotification(error));
+			}
+		});
 }, 1000);
 
-export const putBook = (book = {}, accessToken = '') => {
-	return (dispatch) => {
-
-		dispatch(
-			putBook_(book)
-		);
+export const putBook = (book = {}, accessToken = "") => {
+	return dispatch => {
+		dispatch(putBook_(book));
 
 		debouncedPut(dispatch, book, accessToken);
-
 	};
-}
+};
 
 const postBook_ = (book = {}) => {
 	return {
-		type: 'POST_BOOK',
+		type: "POST_BOOK",
 		book
 	};
-}
+};
 
 const failBookPost = (error = {}, book = {}) => {
 	return {
-		type: 'FAIL_BOOK_POST',
+		type: "FAIL_BOOK_POST",
 		error,
 		book
 	};
-}
+};
 
-export const postBook = (book = {}, accessToken = '') => {
-	return (dispatch) => {
+export const postBook = (book = {}, accessToken = "") => {
+	return dispatch => {
+		dispatch(clearValidationErrors("book"));
 
-    dispatch(
-      clearValidationErrors('book')
-    );
+		dispatch(postBook_(book));
 
-		dispatch(
-			postBook_(book)
-		);
+		return fetchApi("book", "POST", { book }, accessToken)
+			.then(savedBook => {
+				dispatch(receiveBook(savedBook, Date.now()));
 
-		return fetchApi('book', 'POST', {book}, accessToken)
-		.then((savedBook) => {
+				return savedBook;
+			})
+			.catch(error => {
+				dispatch(failBookPost(error, book));
 
-			dispatch(
-				receiveBook(savedBook, Date.now())
-			);
-
-			return savedBook;
-
-		}).catch((error) => {
-
-			dispatch(
-				failBookPost(error, book)
-			);
-
-      if(isValidationError(error)){
-        dispatch(
-          addValidationError(error)
-        );
-      }else{
-        dispatch(
-  				addErrorNotification(error)
-  			);
-      }
-
-		});
+				if (isValidationError(error)) {
+					dispatch(addValidationError(error));
+				} else {
+					dispatch(addErrorNotification(error));
+				}
+			});
 	};
-}
+};
 
 const deleteBook_ = (book = {}) => {
 	return {
-		type: 'DELETE_BOOK',
+		type: "DELETE_BOOK",
 		book
 	};
-}
+};
 
 const deletedBook = (book = {}, success = false) => {
 	return {
-		type: 'DELETED_BOOK',
+		type: "DELETED_BOOK",
 		book,
 		success
 	};
-}
+};
 
 const failBookDelete = (error = {}, book = {}) => {
 	return {
-		type: 'FAIL_BOOK_DELETE',
+		type: "FAIL_BOOK_DELETE",
 		error,
 		book
 	};
-}
+};
 
-export const deleteBook = (book = {}, accessToken = '') => {
-	return (dispatch) => {
+export const deleteBook = (book = {}, accessToken = "") => {
+	return dispatch => {
+		dispatch(deleteBook_(book));
 
-		dispatch(
-			deleteBook_(book)
-		);
+		return fetchApi("book/" + book.id, "DELETE", {}, accessToken)
+			.then(response => {
+				dispatch(deletedBook(book, response.success));
 
-		return fetchApi('book/' + book.id, 'DELETE', {}, accessToken)
-		.then((response) => {
+				if (!response.success) {
+					failBookDelete("The API couldn't delete the book!", book);
+				}
 
-			dispatch(
-				deletedBook(book, response.success)
-			);
+				return response.success;
+			})
+			.catch(error => {
+				dispatch(failBookDelete(error, book));
 
-			if(!response.success){
-				failBookDelete('The API couldn\'t delete the book!', book)
-			}
-
-			return response.success;
-
-		}).catch((error) => {
-
-			dispatch(
-				failBookDelete(error, book)
-			);
-
-			dispatch(
-				addErrorNotification(error)
-			);
-
-		});
+				dispatch(addErrorNotification(error));
+			});
 	};
-}
+};
 
 const lookUpBooks_ = (external = false) => {
 	return {
-		type: 'LOOKUP_BOOKS',
-    external
+		type: "LOOKUP_BOOKS",
+		external
 	};
 };
 
 const failBookLookup = (error = {}, external = false) => {
 	return {
-		type: 'FAIL_BOOK_LOOKUP',
+		type: "FAIL_BOOK_LOOKUP",
 		error,
-    external
+		external
 	};
 };
 
 const lookedUpBooks = (books = [], external = false) => {
 	return {
-		type: 'LOOKED_UP_BOOKS',
+		type: "LOOKED_UP_BOOKS",
 		books,
-    external
+		external
 	};
 };
 
-const debouncedLookup = debounce((
-  dispatch, search = '', external = false
-) => {
-  dispatch(
-    lookUpBooks_(external)
-  );
+const debouncedLookup = debounce((dispatch, search = "", external = false) => {
+	dispatch(lookUpBooks_(external));
 
-  return fetchApi(
-    'book/lookup' + (external ? '/external' : '') + '?search=' + search,
-    'GET', {}
-  )
-  .then((books) => {
+	return fetchApi(
+		"book/lookup" + (external ? "/external" : "") + "?search=" + search,
+		"GET",
+		{}
+	)
+		.then(books => {
+			dispatch(lookedUpBooks(books, external));
 
-    dispatch(
-      lookedUpBooks(books, external)
-    );
+			return books;
+		})
+		.catch(error => {
+			dispatch(failBookLookup(error, external));
 
-    return books;
-
-  }).catch((error) => {
-
-    dispatch(
-      failBookLookup(error, external)
-    );
-
-    dispatch(
-      addErrorNotification(error)
-    );
-
-  });
+			dispatch(addErrorNotification(error));
+		});
 }, 300);
 
-export const lookUpBooks = (
-  search = '', external = false
-) => {
-	return (dispatch) => {
-    return debouncedLookup(dispatch, search, external);
+export const lookUpBooks = (search = "", external = false) => {
+	return dispatch => {
+		return debouncedLookup(dispatch, search, external);
 	};
 };

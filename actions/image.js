@@ -1,287 +1,227 @@
-import debounce
-       from 'lodash/debounce';
-import {fetchApi, uploadFile}
-       from 'booki-frontend-core/utilities/rest';
+import debounce from "lodash/debounce";
+import { fetchApi, uploadFile } from "booki-frontend-core/utilities/rest";
 
-import {isValidationError, addValidationError, clearValidationErrors}
-       from 'booki-frontend-core/actions/validation';
+import {
+	isValidationError,
+	addValidationError,
+	clearValidationErrors
+} from "booki-frontend-core/actions/validation";
 
-import {addErrorNotification}
-       from 'booki-frontend-core/actions/notification';
+import { addErrorNotification } from "booki-frontend-core/actions/notification";
 
 export const invalidateImages = () => {
 	return {
-		type: 'INVALIDATE_IMAGES'
+		type: "INVALIDATE_IMAGES"
 	};
-}
+};
 
-const requestImages = (accessToken = '') => {
+const requestImages = (accessToken = "") => {
 	return {
-		type: 'REQUEST_Images',
+		type: "REQUEST_Images",
 		accessToken
 	};
-}
+};
 
 const failImagesRequest = (error = {}) => {
 	return {
-		type: 'FAIL_IMAGES_REQUEST',
+		type: "FAIL_IMAGES_REQUEST",
 		error
-	}
-}
+	};
+};
 
 const receiveImages = (images = [], receivedAt = 0) => {
 	return {
-		type: 'RECEIVE_IMAGES',
+		type: "RECEIVE_IMAGES",
 		images,
 		receivedAt
 	};
-}
+};
 
-const fetchImages = (accessToken = '') => {
-	return (dispatch) => {
+const fetchImages = (accessToken = "") => {
+	return dispatch => {
+		dispatch(requestImages(accessToken));
 
-		dispatch(
-			requestImages(accessToken)
-		);
+		return fetchApi("image", "GET", {}, accessToken)
+			.then(images => {
+				dispatch(receiveImages(images, Date.now()));
+			})
+			.catch(error => {
+				dispatch(failImagesRequest(error));
 
-		return fetchApi('image', 'GET', {}, accessToken)
-		.then((images) => {
-
-			dispatch(
-				receiveImages(images, Date.now())
-			);
-
-		}).catch((error) => {
-
-			dispatch(
-				failImagesRequest(error)
-			);
-
-			dispatch(
-				addErrorNotification(error)
-			);
-
-		});
+				dispatch(addErrorNotification(error));
+			});
 	};
-}
+};
 
 const shouldFetchImages = (state = {}) => {
 	const images = state.app.images;
 
-	for(let i=0;i<images.length;i++){
-
-		if(images[i].isFetching){
+	for (let i = 0; i < images.length; i++) {
+		if (images[i].isFetching) {
 			return false;
 		}
 
-		if(images[i].didInvalidate || images[i].lastUpdated === 0){
+		if (images[i].didInvalidate || images[i].lastUpdated === 0) {
 			return true;
 		}
 	}
 
 	return images.length === 0;
-}
+};
 
-export const fetchImagesIfNeeded = (accessToken = '') => {
-
+export const fetchImagesIfNeeded = (accessToken = "") => {
 	return (dispatch, getState) => {
-		if(shouldFetchImages(getState())){
+		if (shouldFetchImages(getState())) {
 			return dispatch(fetchImages(accessToken));
-		}else{
+		} else {
 			return Promise.resolve();
 		}
-	}
-}
+	};
+};
 
 export const invalidateImage = (image = {}) => {
 	return {
-		type: 'INVALIDATE_IMAGE',
+		type: "INVALIDATE_IMAGE",
 		image
 	};
-}
+};
 
 //single images cannot be 'GET'ed, we're not a public image api ^^
 
 const receiveImage = (image = {}, receivedAt = 0) => {
 	return {
-		type: 'RECEIVE_IMAGE',
+		type: "RECEIVE_IMAGE",
 		image,
 		receivedAt
 	};
-}
-
+};
 
 const putImage_ = (image = {}) => {
 	return {
-		type: 'PUT_IMAGE',
+		type: "PUT_IMAGE",
 		image
 	};
-}
+};
 
 const failImagePut = (error = {}, image = {}) => {
 	return {
-		type: 'FAIL_IMAGE_PUT',
+		type: "FAIL_IMAGE_PUT",
 		error,
 		image
 	};
-}
+};
 
-const debouncedPut = debounce((dispatch, imageFile = null, accessToken = '') => {
+const debouncedPut = debounce(
+	(dispatch, imageFile = null, accessToken = "") => {
+		dispatch(clearValidationErrors("image"));
 
-  dispatch(
-    clearValidationErrors('image')
-  );
+		return uploadFile("image/" + image.id, "PUT", imageFile, accessToken)
+			.then(updatedImage => {
+				dispatch(receiveImage(updatedImage, Date.now()));
 
-	return uploadFile('image/' + image.id, 'PUT', imageFile, accessToken)
-	.then((updatedImage) => {
+				return updatedImage;
+			})
+			.catch(error => {
+				dispatch(failImagePut(error, image));
 
-		dispatch(
-			receiveImage(updatedImage, Date.now())
-		);
+				if (isValidationError(error)) {
+					dispatch(addValidationError(error));
+				} else {
+					dispatch(addErrorNotification(error));
+				}
+			});
+	},
+	1000
+);
 
-		return updatedImage;
-
-	}).catch((error) => {
-
-		dispatch(
-			failImagePut(error, image)
-		);
-
-    if(isValidationError(error)){
-      dispatch(
-        addValidationError(error)
-      );
-    }else{
-      dispatch(
-        addErrorNotification(error)
-      );
-    }
-
-	});
-
-}, 1000);
-
-export const putImage = (image = {}, accessToken = '') => {
-	return (dispatch) => {
-
-		dispatch(
-			putImage_(image)
-		);
+export const putImage = (image = {}, accessToken = "") => {
+	return dispatch => {
+		dispatch(putImage_(image));
 
 		debouncedPut(dispatch, image, accessToken);
-
 	};
-}
+};
 
 const postImage_ = (image = {}) => {
 	return {
-		type: 'POST_IMAGE',
+		type: "POST_IMAGE",
 		image
 	};
-}
-
+};
 
 const failImagePost = (error = {}, image = {}) => {
 	return {
-		type: 'FAIL_IMAGE_POST',
+		type: "FAIL_IMAGE_POST",
 		error,
 		image
 	};
-}
+};
 
-export const postImage = (image = {}, accessToken = '') => {
-	return (dispatch) => {
+export const postImage = (image = {}, accessToken = "") => {
+	return dispatch => {
+		dispatch(clearValidationErrors("image"));
 
-    dispatch(
-      clearValidationErrors('image')
-    );
+		dispatch(postImage_(image));
 
-		dispatch(
-			postImage_(image)
-		);
+		return uploadFile("image", "POST", image, accessToken)
+			.then(savedImage => {
+				dispatch(receiveImage(savedImage, Date.now()));
 
-		return uploadFile('image', 'POST', image, accessToken)
-		.then((savedImage) => {
+				return savedImage;
+			})
+			.catch(error => {
+				dispatch(failImagePost(error, image));
 
-			dispatch(
-				receiveImage(savedImage, Date.now())
-			);
-
-			return savedImage;
-
-		}).catch((error) => {
-
-			dispatch(
-				failImagePost(error, image)
-			);
-
-      if(isValidationError(error)){
-        dispatch(
-          addValidationError(error)
-        );
-      }else{
-        dispatch(
-          addErrorNotification(error)
-        );
-      }
-
-		});
+				if (isValidationError(error)) {
+					dispatch(addValidationError(error));
+				} else {
+					dispatch(addErrorNotification(error));
+				}
+			});
 	};
-}
+};
 
 const deleteImage_ = (image = {}) => {
 	return {
-		type: 'DELETE_IMAGE',
+		type: "DELETE_IMAGE",
 		image
 	};
-}
+};
 
 const failImageDelete = (error = {}, image = {}) => {
 	return {
-		type: 'FAIL_IMAGE_DELETE',
+		type: "FAIL_IMAGE_DELETE",
 		error,
 		image
 	};
-}
+};
 
 const deletedImage = (image = {}, success = false) => {
 	return {
-		type: 'DELETED_IMAGE',
+		type: "DELETED_IMAGE",
 		image,
 		success
 	};
-}
+};
 
-export const deleteImage = (image = {}, accessToken = '') => {
-	return (dispatch) => {
+export const deleteImage = (image = {}, accessToken = "") => {
+	return dispatch => {
+		dispatch(deleteImage_(image));
 
-		dispatch(
-			deleteImage_(image)
-		);
+		return fetchApi("image/" + image.id, "DELETE", {}, accessToken)
+			.then(response => {
+				dispatch(deletedImage(image, response.success));
 
-		return fetchApi('image/' + image.id, 'DELETE', {}, accessToken)
-		.then((response) => {
+				if (!response.success) {
+					failImageDelete("The API couldn't delete the image!", image);
+				}
 
-			dispatch(
-				deletedImage(image, response.success)
-			);
+				return response.success;
+			})
+			.catch(error => {
+				dispatch(failImageDelete(error, image));
 
-			if(!response.success){
-				failImageDelete('The API couldn\'t delete the image!', image)
-			}
-
-			return response.success;
-
-		}).catch((error) => {
-
-			dispatch(
-				failImageDelete(error, image)
-			);
-
-			dispatch(
-				addErrorNotification(error)
-			);
-
-		});
+				dispatch(addErrorNotification(error));
+			});
 	};
-}
+};

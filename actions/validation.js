@@ -1,17 +1,17 @@
-export const isValidationError = (error) => {
-  return (error.status == 400 && error.statusText == 'Bad Request');
+export const isValidationError = error => {
+	return error.status == 400 && error.statusText == "Bad Request";
 };
 
-export const addValidationError = (error) => {
+export const addValidationError = error => {
 	return {
-		type: 'ADD_VALIDATION_ERROR',
+		type: "ADD_VALIDATION_ERROR",
 		error
 	};
-}
+};
 
-export const clearValidationErrors = (key) => {
+export const clearValidationErrors = key => {
 	return {
-		type: 'CLEAR_VALIDATION_ERRORS',
-    key
+		type: "CLEAR_VALIDATION_ERRORS",
+		key
 	};
-}
+};
