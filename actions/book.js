@@ -338,11 +338,11 @@ const debouncedLookup = debounce(
 
 		return Promise.all(promises)
 			.then(books => {
-				let flattened = [].concat.apply([], books);
+				books = [].concat.apply([], books);
 
-				dispatch(lookedUpBooks(flattened, where));
+				dispatch(lookedUpBooks(books, where));
 
-				return flattened;
+				return books;
 			})
 			.catch(error => {
 				dispatch(failBookLookup(error, where));
