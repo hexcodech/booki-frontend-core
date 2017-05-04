@@ -313,8 +313,13 @@ const lookedUpBooks = (books = [], where = false) => {
 	};
 };
 
-const debouncedLookup = debounce(
-	(dispatch, search = "", where = "local", accessToken = "") => {
+const lookUpBooks = (
+	dispatch,
+	search = "",
+	where = "local",
+	accessToken = ""
+) => {
+	return dispatch => {
 		dispatch(lookUpBooks_(where, accessToken));
 
 		let promises = [];
@@ -349,12 +354,5 @@ const debouncedLookup = debounce(
 
 				dispatch(addErrorNotification(error));
 			});
-	},
-	300
-);
-
-export const lookUpBooks = (search = "", where = false, accessToken = "") => {
-	return dispatch => {
-		return debouncedLookup(dispatch, search, where, accessToken);
 	};
 };
