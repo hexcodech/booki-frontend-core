@@ -313,7 +313,7 @@ const lookedUpBooks = (books = [], where = false) => {
 	};
 };
 
-const lookUpBooks = (
+export const lookUpBooks = (
 	dispatch,
 	search = "",
 	where = "local",
