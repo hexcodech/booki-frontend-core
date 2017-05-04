@@ -289,10 +289,11 @@ export const deleteBook = (book = {}, accessToken = "") => {
 	};
 };
 
-const lookUpBooks_ = (external = false) => {
+const lookUpBooks_ = (external = false, accessToken = "") => {
 	return {
 		type: "LOOKUP_BOOKS",
-		external
+		external,
+		accessToken
 	};
 };
 
@@ -312,28 +313,36 @@ const lookedUpBooks = (books = [], external = false) => {
 	};
 };
 
-const debouncedLookup = debounce((dispatch, search = "", external = false) => {
-	dispatch(lookUpBooks_(external));
+const debouncedLookup = debounce(
+	(dispatch, search = "", accessToken = "", external = false) => {
+		dispatch(lookUpBooks_(external, accessToken));
 
-	return fetchApi(
-		"book/lookup" + (external ? "/external" : "") + "?search=" + search,
-		"GET",
-		{}
-	)
-		.then(books => {
-			dispatch(lookedUpBooks(books, external));
+		return fetchApi(
+			"book/lookup" + (external ? "/external" : "") + "?search=" + search,
+			"GET",
+			{},
+			accessToken
+		)
+			.then(books => {
+				dispatch(lookedUpBooks(books, external));
 
-			return books;
-		})
-		.catch(error => {
-			dispatch(failBookLookup(error, external));
+				return books;
+			})
+			.catch(error => {
+				dispatch(failBookLookup(error, external));
 
-			dispatch(addErrorNotification(error));
-		});
-}, 300);
+				dispatch(addErrorNotification(error));
+			});
+	},
+	300
+);
 
-export const lookUpBooks = (search = "", external = false) => {
+export const lookUpBooks = (
+	search = "",
+	accessToken = "",
+	external = false
+) => {
 	return dispatch => {
-		return debouncedLookup(dispatch, search, external);
+		return debouncedLookup(dispatch, search, accessToken, external);
 	};
 };
