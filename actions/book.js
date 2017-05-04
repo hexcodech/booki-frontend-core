@@ -313,12 +313,7 @@ const lookedUpBooks = (books = [], where = false) => {
 	};
 };
 
-export const lookUpBooks = (
-	dispatch,
-	search = "",
-	where = "local",
-	accessToken = ""
-) => {
+export const lookUpBooks = (search = "", where = "local", accessToken = "") => {
 	return dispatch => {
 		dispatch(lookUpBooks_(where, accessToken));
 
