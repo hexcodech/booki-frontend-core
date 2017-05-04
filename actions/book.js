@@ -289,37 +289,37 @@ export const deleteBook = (book = {}, accessToken = "") => {
 	};
 };
 
-const lookUpBooks_ = (external = false, accessToken = "") => {
+const lookUpBooks_ = (where = false, accessToken = "") => {
 	return {
 		type: "LOOKUP_BOOKS",
-		external,
+		where,
 		accessToken
 	};
 };
 
-const failBookLookup = (error = {}, external = false) => {
+const failBookLookup = (error = {}, where = false) => {
 	return {
 		type: "FAIL_BOOK_LOOKUP",
 		error,
-		external
+		where
 	};
 };
 
-const lookedUpBooks = (books = [], external = false) => {
+const lookedUpBooks = (books = [], where = false) => {
 	return {
 		type: "LOOKED_UP_BOOKS",
 		books,
-		external
+		where
 	};
 };
 
 const debouncedLookup = debounce(
-	(dispatch, search = "", external = false, accessToken = "") => {
-		dispatch(lookUpBooks_(external, accessToken));
+	(dispatch, search = "", where = "local", accessToken = "") => {
+		dispatch(lookUpBooks_(where, accessToken));
 
 		let promises = [];
 
-		if (external === "all" || external === true) {
+		if (where === "all" || where === "external") {
 			promises.push(
 				fetchApi(
 					"book/lookup/external?search=" + search,
@@ -330,7 +330,7 @@ const debouncedLookup = debounce(
 			);
 		}
 
-		if (external === "all" || external === false) {
+		if (where === "all" || where === "local") {
 			promises.push(
 				fetchApi("book/lookup?search=" + search, "GET", {}, accessToken)
 			);
@@ -340,12 +340,12 @@ const debouncedLookup = debounce(
 			.then(books => {
 				books = [].concat.apply([], books);
 
-				dispatch(lookedUpBooks(books, external));
+				dispatch(lookedUpBooks(books, where));
 
 				return books;
 			})
 			.catch(error => {
-				dispatch(failBookLookup(error, external));
+				dispatch(failBookLookup(error, where));
 
 				dispatch(addErrorNotification(error));
 			});
@@ -353,12 +353,8 @@ const debouncedLookup = debounce(
 	300
 );
 
-export const lookUpBooks = (
-	search = "",
-	external = false,
-	accessToken = ""
-) => {
+export const lookUpBooks = (search = "", where = false, accessToken = "") => {
 	return dispatch => {
-		return debouncedLookup(dispatch, search, external, accessToken);
+		return debouncedLookup(dispatch, search, where, accessToken);
 	};
 };
