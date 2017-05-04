@@ -317,13 +317,29 @@ const debouncedLookup = debounce(
 	(dispatch, search = "", external = false, accessToken = "") => {
 		dispatch(lookUpBooks_(external, accessToken));
 
-		return fetchApi(
-			"book/lookup" + (external ? "/external" : "") + "?search=" + search,
-			"GET",
-			{},
-			accessToken
-		)
+		let promises = [];
+
+		if (external === "all" || external === true) {
+			promises.push(
+				fetchApi(
+					"book/lookup/external?search=" + search,
+					"GET",
+					{},
+					accessToken
+				)
+			);
+		}
+
+		if (external === "all" || external === false) {
+			promises.push(
+				fetchApi("book/lookup?search=" + search, "GET", {}, accessToken)
+			);
+		}
+
+		return Promise.all(promises)
 			.then(books => {
+				books = [].concat.apply([], books);
+
 				dispatch(lookedUpBooks(books, external));
 
 				return books;
