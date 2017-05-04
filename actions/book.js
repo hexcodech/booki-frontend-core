@@ -314,7 +314,7 @@ const lookedUpBooks = (books = [], external = false) => {
 };
 
 const debouncedLookup = debounce(
-	(dispatch, search = "", accessToken = "", external = false) => {
+	(dispatch, search = "", external = false, accessToken = "") => {
 		dispatch(lookUpBooks_(external, accessToken));
 
 		return fetchApi(
@@ -339,10 +339,10 @@ const debouncedLookup = debounce(
 
 export const lookUpBooks = (
 	search = "",
-	accessToken = "",
-	external = false
+	external = false,
+	accessToken = ""
 ) => {
 	return dispatch => {
-		return debouncedLookup(dispatch, search, accessToken, external);
+		return debouncedLookup(dispatch, search, external, accessToken);
 	};
 };
