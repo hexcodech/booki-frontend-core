@@ -46,6 +46,7 @@ const thumbnailTypes = (state = [], action) => {
 			];
 
 		case "REQUEST_THUMBNAIL_TYPE":
+		case "UPDATE_THUMBNAIL_TYPE":
 		case "PUT_THUMBNAIL_TYPE":
 			return [
 				...state.filter(thumbnailType => {

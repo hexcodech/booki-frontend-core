@@ -1,4 +1,3 @@
-import debounce from "lodash/debounce";
 import { fetchApi, uploadFile } from "booki-frontend-core/utilities/rest";
 
 import {
@@ -96,6 +95,13 @@ const receiveImage = (image = {}, receivedAt = 0) => {
 	};
 };
 
+export const updateImage = (image = {}) => {
+	return {
+		type: "UPDATE_IMAGE",
+		image
+	};
+};
+
 const putImage_ = (image = {}) => {
 	return {
 		type: "PUT_IMAGE",
@@ -111,9 +117,10 @@ const failImagePut = (error = {}, image = {}) => {
 	};
 };
 
-const debouncedPut = debounce(
-	(dispatch, imageFile = null, accessToken = "") => {
+export const putImage = (imageFile = null, accessToken = "") => {
+	return dispatch => {
 		dispatch(clearValidationErrors("image"));
+		dispatch(putImage_(image));
 
 		return uploadFile("image/" + image.id, "PUT", imageFile, accessToken)
 			.then(updatedImage => {
@@ -130,15 +137,6 @@ const debouncedPut = debounce(
 					dispatch(addErrorNotification(error));
 				}
 			});
-	},
-	1000
-);
-
-export const putImage = (image = {}, accessToken = "") => {
-	return dispatch => {
-		dispatch(putImage_(image));
-
-		debouncedPut(dispatch, image, accessToken);
 	};
 };
 

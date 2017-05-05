@@ -46,6 +46,7 @@ const conditions = (state = [], action) => {
 			];
 
 		case "REQUEST_CONDITION":
+		case "UPDATE_CONDITION":
 		case "PUT_CONDITION":
 			return [
 				...state.filter(condition => {

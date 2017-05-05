@@ -1,4 +1,3 @@
-import debounce from "lodash/debounce";
 import { fetchApi } from "booki-frontend-core/utilities/rest";
 
 import {
@@ -158,6 +157,13 @@ export const fetchOfferIfNeeded = (offer = {}, accessToken = "") => {
 	};
 };
 
+export const updateOffer = (offer = {}) => {
+	return {
+		type: "UPDATE_OFFER",
+		offer
+	};
+};
+
 const putOffer_ = (offer = {}) => {
 	return {
 		type: "PUT_OFFER",
@@ -173,31 +179,26 @@ const failOfferPut = (error = {}, offer = {}) => {
 	};
 };
 
-const debouncedPut = debounce((dispatch, offer = {}, accessToken = "") => {
-	dispatch(clearValidationErrors("offer"));
-
-	return fetchApi("offer/" + offer.id, "PUT", { offer }, accessToken)
-		.then(updatedOffer => {
-			dispatch(receiveOffer(updatedOffer, Date.now()));
-
-			return updatedOffer;
-		})
-		.catch(error => {
-			dispatch(failOfferPut(error, offer));
-
-			if (isValidationError(error)) {
-				dispatch(addValidationError(error));
-			} else {
-				dispatch(addErrorNotification(error));
-			}
-		});
-}, 1000);
-
 export const putOffer = (offer = {}, accessToken = "") => {
 	return dispatch => {
+		dispatch(clearValidationErrors("offer"));
 		dispatch(putOffer_(offer));
 
-		debouncedPut(dispatch, offer, accessToken);
+		return fetchApi("offer/" + offer.id, "PUT", { offer }, accessToken)
+			.then(updatedOffer => {
+				dispatch(receiveOffer(updatedOffer, Date.now()));
+
+				return updatedOffer;
+			})
+			.catch(error => {
+				dispatch(failOfferPut(error, offer));
+
+				if (isValidationError(error)) {
+					dispatch(addValidationError(error));
+				} else {
+					dispatch(addErrorNotification(error));
+				}
+			});
 	};
 };
 

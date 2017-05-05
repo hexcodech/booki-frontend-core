@@ -1,4 +1,3 @@
-import debounce from "lodash/debounce";
 import { fetchApi } from "booki-frontend-core/utilities/rest";
 
 import {
@@ -162,6 +161,13 @@ export const fetchConditionIfNeeded = (condition = {}, accessToken = "") => {
 	};
 };
 
+export const updatedCondition = (condition = {}) => {
+	return {
+		type: "UPDATE_CONDITION",
+		condition
+	};
+};
+
 const putCondition_ = (condition = {}) => {
 	return {
 		type: "PUT_CONDITION",
@@ -177,36 +183,31 @@ const failConditionPut = (error = {}, condition = {}) => {
 	};
 };
 
-const debouncedPut = debounce((dispatch, condition = {}, accessToken = "") => {
-	dispatch(clearValidationErrors("condition"));
-
-	return fetchApi(
-		"condition/" + condition.id,
-		"PUT",
-		{ condition },
-		accessToken
-	)
-		.then(updatedCondition => {
-			dispatch(receiveCondition(updatedCondition, Date.now()));
-
-			return updatedCondition;
-		})
-		.catch(error => {
-			dispatch(failConditionPut(error, condition));
-
-			if (isValidationError(error)) {
-				dispatch(addValidationError(error));
-			} else {
-				dispatch(addErrorNotification(error));
-			}
-		});
-}, 1000);
-
 export const putCondition = (condition = {}, accessToken = "") => {
 	return dispatch => {
+		dispatch(clearValidationErrors("condition"));
 		dispatch(putCondition_(condition));
 
-		debouncedPut(dispatch, condition, accessToken);
+		return fetchApi(
+			"condition/" + condition.id,
+			"PUT",
+			{ condition },
+			accessToken
+		)
+			.then(updatedCondition => {
+				dispatch(receiveCondition(updatedCondition, Date.now()));
+
+				return updatedCondition;
+			})
+			.catch(error => {
+				dispatch(failConditionPut(error, condition));
+
+				if (isValidationError(error)) {
+					dispatch(addValidationError(error));
+				} else {
+					dispatch(addErrorNotification(error));
+				}
+			});
 	};
 };
 

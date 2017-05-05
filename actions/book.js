@@ -1,4 +1,3 @@
-import debounce from "lodash/debounce";
 import { fetchApi } from "booki-frontend-core/utilities/rest";
 
 import {
@@ -162,6 +161,13 @@ export const fetchBookIfNeeded = (book = {}) => {
 	};
 };
 
+export const updateBook = (book = {}) => {
+	return {
+		type: "UPDATE_BOOK",
+		book
+	};
+};
+
 const putBook_ = (book = {}) => {
 	return {
 		type: "PUT_BOOK",
@@ -177,31 +183,26 @@ const failBookPut = (error = {}, book = {}) => {
 	};
 };
 
-const debouncedPut = debounce((dispatch, book = {}, accessToken = "") => {
-	dispatch(clearValidationErrors("book"));
-
-	return fetchApi("book/" + book.id, "PUT", { book }, accessToken)
-		.then(updatedBook => {
-			dispatch(receiveBook(updatedBook, Date.now()));
-
-			return updatedBook;
-		})
-		.catch(error => {
-			dispatch(failBookPut(error, book));
-
-			if (isValidationError(error)) {
-				dispatch(addValidationError(error));
-			} else {
-				dispatch(addErrorNotification(error));
-			}
-		});
-}, 1000);
-
 export const putBook = (book = {}, accessToken = "") => {
 	return dispatch => {
+		dispatch(clearValidationErrors("book"));
 		dispatch(putBook_(book));
 
-		debouncedPut(dispatch, book, accessToken);
+		return fetchApi("book/" + book.id, "PUT", { book }, accessToken)
+			.then(updatedBook => {
+				dispatch(receiveBook(updatedBook, Date.now()));
+
+				return updatedBook;
+			})
+			.catch(error => {
+				dispatch(failBookPut(error, book));
+
+				if (isValidationError(error)) {
+					dispatch(addValidationError(error));
+				} else {
+					dispatch(addErrorNotification(error));
+				}
+			});
 	};
 };
 

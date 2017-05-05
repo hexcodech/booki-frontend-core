@@ -46,6 +46,7 @@ const users = (state = [], action) => {
 			];
 
 		case "REQUEST_USER":
+		case "UPDATE_USER":
 		case "PUT_USER":
 			return [
 				...state.filter(user => {

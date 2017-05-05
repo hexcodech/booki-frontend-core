@@ -46,6 +46,7 @@ const books = (state = [], action) => {
 			];
 
 		case "REQUEST_BOOK":
+		case "UPDATE_BOOK":
 		case "PUT_BOOK":
 			return [
 				...state.filter(book => {

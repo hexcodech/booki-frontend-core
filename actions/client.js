@@ -1,4 +1,3 @@
-import debounce from "lodash/debounce";
 import { fetchApi } from "booki-frontend-core/utilities/rest";
 
 import {
@@ -158,6 +157,13 @@ export const fetchClientIfNeeded = (client = {}, accessToken = "") => {
 	};
 };
 
+export const updateClient = (client = {}) => {
+	return {
+		type: "UPDATE_CLIENT",
+		client
+	};
+};
+
 const putClient_ = (client = {}) => {
 	return {
 		type: "PUT_CLIENT",
@@ -173,31 +179,31 @@ const failClientPut = (error = {}, client = {}) => {
 	};
 };
 
-const debouncedPut = debounce((dispatch, client = {}, accessToken = "") => {
-	dispatch(clearValidationErrors("client"));
-
-	return fetchApi("oauth2/client/" + client.id, "PUT", { client }, accessToken)
-		.then(updatedClient => {
-			dispatch(receiveClient(updatedClient, Date.now()));
-
-			return updatedClient;
-		})
-		.catch(error => {
-			dispatch(failClientPut(error, client));
-
-			if (isValidationError(error)) {
-				dispatch(addValidationError(error));
-			} else {
-				dispatch(addErrorNotification(error));
-			}
-		});
-}, 1000);
-
 export const putClient = (client = {}, accessToken = "") => {
 	return dispatch => {
+		dispatch(clearValidationErrors("client"));
 		dispatch(putClient_(client));
 
-		debouncedPut(dispatch, client, accessToken);
+		return fetchApi(
+			"oauth2/client/" + client.id,
+			"PUT",
+			{ client },
+			accessToken
+		)
+			.then(updatedClient => {
+				dispatch(receiveClient(updatedClient, Date.now()));
+
+				return updatedClient;
+			})
+			.catch(error => {
+				dispatch(failClientPut(error, client));
+
+				if (isValidationError(error)) {
+					dispatch(addValidationError(error));
+				} else {
+					dispatch(addErrorNotification(error));
+				}
+			});
 	};
 };
 

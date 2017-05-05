@@ -46,6 +46,7 @@ const images = (state = [], action) => {
 			];
 
 		case "REQUEST_IMAGE":
+		case "UPDATE_IMAGE":
 		case "PUT_IMAGE":
 			return [
 				...state.filter(image => {

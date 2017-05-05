@@ -1,4 +1,3 @@
-import debounce from "lodash/debounce";
 import { fetchApi } from "booki-frontend-core/utilities/rest";
 
 import {
@@ -165,6 +164,13 @@ export const fetchOfferRequestIfNeeded = (
 	};
 };
 
+export const updateOfferRequest = (offerRequest = {}) => {
+	return {
+		type: "UPDATE_OFFER_REQUEST",
+		offerRequest
+	};
+};
+
 const putOfferRequest_ = (offerRequest = {}) => {
 	return {
 		type: "PUT_OFFER_REQUEST",
@@ -180,9 +186,10 @@ const failOfferRequestPut = (error = {}, offerRequest = {}) => {
 	};
 };
 
-const debouncedPut = debounce(
-	(dispatch, offerRequest = {}, accessToken = "") => {
+export const putOfferRequest = (offerRequest = {}, accessToken = "") => {
+	return dispatch => {
 		dispatch(clearValidationErrors("offerRequest"));
+		dispatch(putOfferRequest_(offerRequest));
 
 		return fetchApi(
 			"offer-request/" + offerRequest.id,
@@ -204,15 +211,6 @@ const debouncedPut = debounce(
 					dispatch(addErrorNotification(error));
 				}
 			});
-	},
-	1000
-);
-
-export const putOfferRequest = (offerRequest = {}, accessToken = "") => {
-	return dispatch => {
-		dispatch(putOfferRequest_(offerRequest));
-
-		debouncedPut(dispatch, offerRequest, accessToken);
 	};
 };
 

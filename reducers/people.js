@@ -46,6 +46,7 @@ const people = (state = [], action) => {
 			];
 
 		case "REQUEST_PERSON":
+		case "UPDATE_PERSON":
 		case "PUT_PERSON":
 			return [
 				...state.filter(person => {

@@ -46,6 +46,7 @@ const clients = (state = [], action) => {
 			];
 
 		case "REQUEST_CLIENT":
+		case "UPDATE_CLIENT":
 		case "PUT_CLIENT":
 			return [
 				...state.filter(client => {

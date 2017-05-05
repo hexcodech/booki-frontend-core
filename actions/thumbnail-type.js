@@ -1,4 +1,3 @@
-import debounce from "lodash/debounce";
 import { fetchApi } from "booki-frontend-core/utilities/rest";
 
 import {
@@ -173,6 +172,13 @@ export const fetchThumbnailTypeIfNeeded = (
 	};
 };
 
+export const updateThumbnailType = (thumbnailType = {}) => {
+	return {
+		type: "UPDATE_THUMBNAIL_TYPE",
+		thumbnailType
+	};
+};
+
 const putThumbnailType_ = (thumbnailType = {}) => {
 	return {
 		type: "PUT_THUMBNAIL_TYPE",
@@ -188,9 +194,10 @@ const failThumbnailTypePut = (error = {}, thumbnailType = {}) => {
 	};
 };
 
-const debouncedPut = debounce(
-	(dispatch, thumbnailType = {}, accessToken = "") => {
+export const putThumbnailType = (thumbnailType = {}, accessToken = "") => {
+	return dispatch => {
 		dispatch(clearValidationErrors("thumbnailType"));
+		dispatch(putThumbnailType_(thumbnailType));
 
 		return fetchApi(
 			"thumbnail-type/" + thumbnailType.id,
@@ -212,15 +219,6 @@ const debouncedPut = debounce(
 					dispatch(addErrorNotification(error));
 				}
 			});
-	},
-	1000
-);
-
-export const putThumbnailType = (thumbnailType = {}, accessToken = "") => {
-	return dispatch => {
-		dispatch(putThumbnailType_(thumbnailType));
-
-		debouncedPut(dispatch, thumbnailType, accessToken);
 	};
 };
 

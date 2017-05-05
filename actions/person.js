@@ -1,4 +1,3 @@
-import debounce from "lodash/debounce";
 import { fetchApi } from "booki-frontend-core/utilities/rest";
 import {
 	isValidationError,
@@ -157,6 +156,13 @@ export const fetchPersonIfNeeded = (person = {}, accessToken = "") => {
 	};
 };
 
+export const updatePerson = (person = {}) => {
+	return {
+		type: "UPDATE_PERSON",
+		person
+	};
+};
+
 const putPerson_ = (person = {}) => {
 	return {
 		type: "PUT_PERSON",
@@ -172,31 +178,26 @@ const failPersonPut = (error = {}, person = {}) => {
 	};
 };
 
-const debouncedPut = debounce((dispatch, person = {}, accessToken = "") => {
-	dispatch(clearValidationErrors("person"));
-
-	return fetchApi("person/" + person.id, "PUT", { person }, accessToken)
-		.then(updatedPerson => {
-			dispatch(receivePerson(updatedPerson, Date.now()));
-
-			return updatedPerson;
-		})
-		.catch(error => {
-			dispatch(failPersonPut(error, person));
-
-			if (isValidationError(error)) {
-				dispatch(addValidationError(error));
-			} else {
-				dispatch(addErrorNotification(error));
-			}
-		});
-}, 1000);
-
 export const putPerson = (person = {}, accessToken = "") => {
 	return dispatch => {
+		dispatch(clearValidationErrors("person"));
 		dispatch(putPerson_(person));
 
-		debouncedPut(dispatch, person, accessToken);
+		return fetchApi("person/" + person.id, "PUT", { person }, accessToken)
+			.then(updatedPerson => {
+				dispatch(receivePerson(updatedPerson, Date.now()));
+
+				return updatedPerson;
+			})
+			.catch(error => {
+				dispatch(failPersonPut(error, person));
+
+				if (isValidationError(error)) {
+					dispatch(addValidationError(error));
+				} else {
+					dispatch(addErrorNotification(error));
+				}
+			});
 	};
 };
 

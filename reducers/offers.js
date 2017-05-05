@@ -46,6 +46,7 @@ const offers = (state = [], action) => {
 			];
 
 		case "REQUEST_OFFER":
+		case "UPDATE_OFFER":
 		case "PUT_OFFER":
 			return [
 				...state.filter(offer => {
