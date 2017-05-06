@@ -48,6 +48,8 @@ const fetchConditions = () => {
 				dispatch(failConditionsRequest(error));
 
 				dispatch(addErrorNotification(error));
+
+				return Promise.reject(error);
 			});
 	};
 };
@@ -133,6 +135,8 @@ const fetchCondition = (condition = {}, accessToken = 0) => {
 				dispatch(failConditionRequest(error));
 
 				dispatch(addErrorNotification(error));
+
+				return Promise.reject(error);
 			});
 	};
 };
@@ -207,6 +211,8 @@ export const putCondition = (condition = {}, accessToken = "") => {
 				} else {
 					dispatch(addErrorNotification(error));
 				}
+
+				return Promise.reject(error);
 			});
 	};
 };
@@ -246,6 +252,8 @@ export const postCondition = (condition = {}, accessToken = "") => {
 				} else {
 					dispatch(addErrorNotification(error));
 				}
+
+				return Promise.reject(error);
 			});
 	};
 };
@@ -294,6 +302,8 @@ export const deleteCondition = (condition = {}, accessToken = "") => {
 				dispatch(failConditionDelete(error, condition));
 
 				dispatch(addErrorNotification(error));
+
+				return Promise.reject(error);
 			});
 	};
 };

@@ -47,6 +47,8 @@ const fetchPeople = (accessToken = "") => {
 				dispatch(failPeopleRequest(error));
 
 				dispatch(addErrorNotification(error));
+
+				return Promise.reject(error);
 			});
 	};
 };
@@ -132,6 +134,8 @@ const fetchPerson = (person = {}, accessToken = 0) => {
 				dispatch(failPersonRequest(error));
 
 				dispatch(addErrorNotification(error));
+
+				return Promise.reject(error);
 			});
 	};
 };
@@ -197,6 +201,8 @@ export const putPerson = (person = {}, accessToken = "") => {
 				} else {
 					dispatch(addErrorNotification(error));
 				}
+
+				return Promise.reject(error);
 			});
 	};
 };
@@ -236,6 +242,8 @@ export const postPerson = (person = {}, accessToken = "") => {
 				} else {
 					dispatch(addErrorNotification(error));
 				}
+
+				return Promise.reject(error);
 			});
 	};
 };
@@ -281,6 +289,8 @@ export const deletePerson = (person = {}, accessToken = "") => {
 				dispatch(failPersonDelete(error, person));
 
 				dispatch(addErrorNotification(error));
+
+				return Promise.reject(error);
 			});
 	};
 };
@@ -320,6 +330,8 @@ export const lookUpPeople = (name, accessToken) => {
 				dispatch(failPeopleLookup(error));
 
 				dispatch(addErrorNotification(error));
+
+				return Promise.reject(error);
 			});
 	};
 };

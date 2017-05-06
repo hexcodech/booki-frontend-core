@@ -48,6 +48,8 @@ const fetchImages = (accessToken = "") => {
 				dispatch(failImagesRequest(error));
 
 				dispatch(addErrorNotification(error));
+
+				return Promise.reject(error);
 			});
 	};
 };
@@ -136,6 +138,8 @@ export const putImage = (id, imageFile = null, accessToken = "") => {
 				} else {
 					dispatch(addErrorNotification(error));
 				}
+
+				return Promise.reject(error);
 			});
 	};
 };
@@ -174,6 +178,8 @@ export const postImage = (image = {}, accessToken = "") => {
 				} else {
 					dispatch(addErrorNotification(error));
 				}
+
+				return Promise.reject(error);
 			});
 	};
 };
@@ -219,6 +225,8 @@ export const deleteImage = (image = {}, accessToken = "") => {
 				dispatch(failImageDelete(error, image));
 
 				dispatch(addErrorNotification(error));
+
+				return Promise.reject(error);
 			});
 	};
 };

@@ -48,6 +48,8 @@ const fetchBooks = (accessToken = "") => {
 				dispatch(failBooksRequest(error));
 
 				dispatch(addErrorNotification(error));
+
+				return Promise.reject(error);
 			});
 	};
 };
@@ -135,6 +137,8 @@ const fetchBook = (book = {}) => {
 				dispatch(failBookRequest(error));
 
 				dispatch(addErrorNotification(error));
+
+				return Promise.reject(error);
 			});
 	};
 };
@@ -202,6 +206,8 @@ export const putBook = (book = {}, accessToken = "") => {
 				} else {
 					dispatch(addErrorNotification(error));
 				}
+
+				return Promise.reject(error);
 			});
 	};
 };
@@ -241,6 +247,8 @@ export const postBook = (book = {}, accessToken = "") => {
 				} else {
 					dispatch(addErrorNotification(error));
 				}
+
+				return Promise.reject(error);
 			});
 	};
 };
@@ -286,6 +294,8 @@ export const deleteBook = (book = {}, accessToken = "") => {
 				dispatch(failBookDelete(error, book));
 
 				dispatch(addErrorNotification(error));
+
+				return Promise.reject(error);
 			});
 	};
 };
@@ -349,6 +359,8 @@ export const lookUpBooks = (search = "", where = "local", accessToken = "") => {
 				dispatch(failBookLookup(error, where));
 
 				dispatch(addErrorNotification(error));
+
+				return Promise.reject(error);
 			});
 	};
 };

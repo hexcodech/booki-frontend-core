@@ -48,6 +48,8 @@ const fetchThumbnailTypes = (accessToken = "") => {
 				dispatch(failThumbnailTypesRequest(error));
 
 				dispatch(addErrorNotification(error));
+
+				return Promise.reject(error);
 			});
 	};
 };
@@ -141,6 +143,8 @@ const fetchThumbnailType = (thumbnailType = {}, accessToken = 0) => {
 				dispatch(failThumbnailTypeRequest(error));
 
 				dispatch(addErrorNotification(error));
+
+				return Promise.reject(error);
 			});
 	};
 };
@@ -218,6 +222,8 @@ export const putThumbnailType = (thumbnailType = {}, accessToken = "") => {
 				} else {
 					dispatch(addErrorNotification(error));
 				}
+
+				return Promise.reject(error);
 			});
 	};
 };
@@ -257,6 +263,8 @@ export const postThumbnailType = (thumbnailType = {}, accessToken = "") => {
 				} else {
 					dispatch(addErrorNotification(error));
 				}
+
+				return Promise.reject(error);
 			});
 	};
 };
@@ -310,6 +318,8 @@ export const deleteThumbnailType = (thumbnailType = {}, accessToken = "") => {
 				dispatch(failThumbnailTypeDelete(error, thumbnailType));
 
 				dispatch(addErrorNotification(error));
+
+				return Promise.reject(error);
 			});
 	};
 };

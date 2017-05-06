@@ -48,6 +48,8 @@ const fetchUsers = (accessToken = "") => {
 				dispatch(failUsersRequest(error));
 
 				dispatch(addErrorNotification(error));
+
+				return Promise.reject(error);
 			});
 	};
 };
@@ -133,6 +135,8 @@ const fetchUser = (user = {}, accessToken = "") => {
 				dispatch(failUsersRequest(error));
 
 				dispatch(addErrorNotification(error));
+
+				return Promise.reject(error);
 			});
 	};
 };
@@ -198,6 +202,8 @@ export const putUser = (user = {}, accessToken = "") => {
 				} else {
 					dispatch(addErrorNotification(error));
 				}
+
+				return Promise.reject(error);
 			});
 	};
 };
@@ -237,6 +243,8 @@ export const postUser = (user = {}, accessToken = "") => {
 				} else {
 					dispatch(addErrorNotification(error));
 				}
+
+				return Promise.reject(error);
 			});
 	};
 };
@@ -282,6 +290,8 @@ export const deleteUser = (user = {}, accessToken = "") => {
 				dispatch(failUserDelete(error, user));
 
 				dispatch(addErrorNotification(error));
+
+				return Promise.reject(error);
 			});
 	};
 };

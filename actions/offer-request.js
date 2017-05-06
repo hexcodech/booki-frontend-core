@@ -48,6 +48,8 @@ const fetchOfferRequests = (accessToken = "") => {
 				dispatch(failOfferRequestsRequest(error));
 
 				dispatch(addErrorNotification(error));
+
+				return Promise.reject(error);
 			});
 	};
 };
@@ -133,6 +135,8 @@ const fetchOfferRequest = (offerRequest = {}, accessToken = 0) => {
 				dispatch(failOfferRequestRequest(error));
 
 				dispatch(addErrorNotification(error));
+
+				return Promise.reject(error);
 			});
 	};
 };
@@ -210,6 +214,8 @@ export const putOfferRequest = (offerRequest = {}, accessToken = "") => {
 				} else {
 					dispatch(addErrorNotification(error));
 				}
+
+				return Promise.reject(error);
 			});
 	};
 };
@@ -249,6 +255,8 @@ export const postOfferRequest = (offerRequest = {}, accessToken = "") => {
 				} else {
 					dispatch(addErrorNotification(error));
 				}
+
+				return Promise.reject(error);
 			});
 	};
 };
@@ -302,6 +310,8 @@ export const deleteOfferRequest = (offerRequest = {}, accessToken = "") => {
 				dispatch(failOfferRequestDelete(error, offerRequest));
 
 				dispatch(addErrorNotification(error));
+
+				return Promise.reject(error);
 			});
 	};
 };

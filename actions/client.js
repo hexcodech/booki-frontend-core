@@ -48,6 +48,8 @@ const fetchClients = (accessToken = "") => {
 				dispatch(failClientsRequest(error));
 
 				dispatch(addErrorNotification(error));
+
+				return Promise.reject(error);
 			});
 	};
 };
@@ -133,6 +135,8 @@ const fetchClient = (client = {}, accessToken = "") => {
 				dispatch(failClientRequest(error));
 
 				dispatch(addErrorNotification(error));
+
+				return Promise.reject(error);
 			});
 	};
 };
@@ -203,6 +207,8 @@ export const putClient = (client = {}, accessToken = "") => {
 				} else {
 					dispatch(addErrorNotification(error));
 				}
+
+				return Promise.reject(error);
 			});
 	};
 };
@@ -242,6 +248,8 @@ export const postClient = (client = {}, accessToken = "") => {
 				} else {
 					dispatch(addErrorNotification(error));
 				}
+
+				return Promise.reject(error);
 			});
 	};
 };
@@ -287,6 +295,8 @@ export const deleteClient = (client = {}, accessToken = "") => {
 				dispatch(failClientDelete(error, client));
 
 				dispatch(addErrorNotification(error));
+
+				return Promise.reject(error);
 			});
 	};
 };
