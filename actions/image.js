@@ -117,19 +117,19 @@ const failImagePut = (error = {}, image = {}) => {
 	};
 };
 
-export const putImage = (imageFile = null, accessToken = "") => {
+export const putImage = (id, imageFile = null, accessToken = "") => {
 	return dispatch => {
 		dispatch(clearValidationErrors("image"));
-		dispatch(putImage_(image));
+		dispatch(putImage_(id));
 
-		return uploadFile("image/" + image.id, "PUT", imageFile, accessToken)
+		return uploadFile("image/" + id, "PUT", imageFile, accessToken)
 			.then(updatedImage => {
 				dispatch(receiveImage(updatedImage, Date.now()));
 
 				return updatedImage;
 			})
 			.catch(error => {
-				dispatch(failImagePut(error, image));
+				dispatch(failImagePut(error, id));
 
 				if (isValidationError(error)) {
 					dispatch(addValidationError(error));
@@ -158,7 +158,6 @@ const failImagePost = (error = {}, image = {}) => {
 export const postImage = (image = {}, accessToken = "") => {
 	return dispatch => {
 		dispatch(clearValidationErrors("image"));
-
 		dispatch(postImage_(image));
 
 		return uploadFile("image", "POST", image, accessToken)
