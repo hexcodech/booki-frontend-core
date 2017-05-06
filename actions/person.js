@@ -306,24 +306,20 @@ const lookedUpPeople = (people = []) => {
 	};
 };
 
-export const debouncedLookup = debounce((dispatch, name, accessToken) => {
-	dispatch(lookUpPeople_(name));
-
-	return fetchApi("person/lookup?search=" + name, "GET", {}, accessToken)
-		.then(people => {
-			dispatch(lookedUpPeople(people));
-
-			return people;
-		})
-		.catch(error => {
-			dispatch(failPeopleLookup(error));
-
-			dispatch(addErrorNotification(error));
-		});
-}, 300);
-
-export const lookUpPeople = (name = "", accessToken = "") => {
+export const lookUpPeople = (name, accessToken) => {
 	return dispatch => {
-		return debouncedLookup(dispatch, name, accessToken);
+		dispatch(lookUpPeople_(name));
+
+		return fetchApi("person/lookup?search=" + name, "GET", {}, accessToken)
+			.then(people => {
+				dispatch(lookedUpPeople(people));
+
+				return people;
+			})
+			.catch(error => {
+				dispatch(failPeopleLookup(error));
+
+				dispatch(addErrorNotification(error));
+			});
 	};
 };

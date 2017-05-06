@@ -306,24 +306,20 @@ const lookedUpOffers = (offers = []) => {
 	};
 };
 
-const debouncedLookup = debounce((dispatch, search = "", accessToken = "") => {
-	dispatch(lookUpOffers_());
-
-	return fetchApi("offer/lookup?search=" + search, "GET", {}, accessToken)
-		.then(offers => {
-			dispatch(lookedUpOffers(offers));
-
-			return offers;
-		})
-		.catch(error => {
-			dispatch(failOfferLookup(error));
-
-			dispatch(addErrorNotification(error));
-		});
-}, 300);
-
 export const lookUpOffers = (search = "", accessToken = "") => {
 	return dispatch => {
-		return debouncedLookup(dispatch, search, accessToken);
+		dispatch(lookUpOffers_());
+
+		return fetchApi("offer/lookup?search=" + search, "GET", {}, accessToken)
+			.then(offers => {
+				dispatch(lookedUpOffers(offers));
+
+				return offers;
+			})
+			.catch(error => {
+				dispatch(failOfferLookup(error));
+
+				dispatch(addErrorNotification(error));
+			});
 	};
 };
