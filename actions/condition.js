@@ -36,11 +36,11 @@ const receiveConditions = (conditions = [], receivedAt = {}) => {
 	};
 };
 
-const fetchConditions = (accessToken = "") => {
+const fetchConditions = () => {
 	return dispatch => {
-		dispatch(requestConditions(accessToken));
+		dispatch(requestConditions());
 
-		return fetchApi("condition", "GET", {}, accessToken)
+		return fetchApi("condition", "GET", {})
 			.then(conditions => {
 				dispatch(receiveConditions(conditions, Date.now()));
 			})
@@ -68,10 +68,10 @@ const shouldFetchConditions = (state = {}) => {
 	return conditions.length === 0;
 };
 
-export const fetchConditionsIfNeeded = (accessToken = "") => {
+export const fetchConditionsIfNeeded = () => {
 	return (dispatch, getState) => {
 		if (shouldFetchConditions(getState())) {
-			return dispatch(fetchConditions(accessToken));
+			return dispatch(fetchConditions());
 		} else {
 			return Promise.resolve();
 		}
