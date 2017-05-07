@@ -37,7 +37,7 @@ const people = (state = [], action) => {
 		case "INVALIDATE_PERSON":
 			return [
 				...state.filter(person => {
-					return person.id !== action.person.id;
+					return person.id != action.person.id;
 				}),
 				{
 					...action.person,
@@ -50,7 +50,7 @@ const people = (state = [], action) => {
 		case "PUT_PERSON":
 			return [
 				...state.filter(person => {
-					return person.id !== action.person.id;
+					return person.id != action.person.id;
 				}),
 				{
 					...action.person,
@@ -62,7 +62,7 @@ const people = (state = [], action) => {
 		case "DELETE_PERSON":
 			return [
 				...state.filter(person => {
-					return person.id !== action.person.id;
+					return person.id != action.person.id;
 				})
 			];
 
@@ -70,7 +70,7 @@ const people = (state = [], action) => {
 		case "FAIL_PERSON_PUT":
 			return [
 				...state.filter(person => {
-					return person.id !== action.person.id;
+					return person.id != action.person.id;
 				}),
 				{
 					...action.person,
@@ -91,7 +91,7 @@ const people = (state = [], action) => {
 		case "RECEIVE_PERSON":
 			return [
 				...state.filter(person => {
-					return person.id !== action.person.id;
+					return person.id != action.person.id;
 				}),
 				{
 					...action.person,

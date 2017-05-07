@@ -37,7 +37,7 @@ const images = (state = [], action) => {
 		case "INVALIDATE_IMAGE":
 			return [
 				...state.filter(image => {
-					return image.id !== action.image.id;
+					return image.id != action.image.id;
 				}),
 				{
 					...action.image,
@@ -50,7 +50,7 @@ const images = (state = [], action) => {
 		case "PUT_IMAGE":
 			return [
 				...state.filter(image => {
-					return image.id !== action.image.id;
+					return image.id != action.image.id;
 				}),
 				{
 					...action.image,
@@ -62,7 +62,7 @@ const images = (state = [], action) => {
 		case "DELETE_IMAGE":
 			return [
 				...state.filter(image => {
-					return image.id !== action.image.id;
+					return image.id != action.image.id;
 				})
 			];
 
@@ -70,7 +70,7 @@ const images = (state = [], action) => {
 		case "FAIL_IMAGE_PUT":
 			return [
 				...state.filter(image => {
-					return image.id !== action.image.id;
+					return image.id != action.image.id;
 				}),
 				{
 					...action.image,
@@ -91,7 +91,7 @@ const images = (state = [], action) => {
 		case "RECEIVE_IMAGE":
 			return [
 				...state.filter(image => {
-					return image.id !== action.image.id;
+					return image.id != action.image.id;
 				}),
 				{
 					...action.image,

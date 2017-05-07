@@ -37,7 +37,7 @@ const books = (state = [], action) => {
 		case "INVALIDATE_BOOK":
 			return [
 				...state.filter(book => {
-					return book.id !== action.book.id;
+					return book.id != action.book.id;
 				}),
 				{
 					...action.book,
@@ -50,7 +50,7 @@ const books = (state = [], action) => {
 		case "PUT_BOOK":
 			return [
 				...state.filter(book => {
-					return book.id !== action.book.id;
+					return book.id != action.book.id;
 				}),
 				{
 					...action.book,
@@ -62,7 +62,7 @@ const books = (state = [], action) => {
 		case "DELETE_BOOK":
 			return [
 				...state.filter(book => {
-					return book.id !== action.book.id;
+					return book.id != action.book.id;
 				})
 			];
 
@@ -70,7 +70,7 @@ const books = (state = [], action) => {
 		case "FAIL_BOOK_PUT":
 			return [
 				...state.filter(book => {
-					return book.id !== action.book.id;
+					return book.id != action.book.id;
 				}),
 				{
 					...action.book,
@@ -91,7 +91,7 @@ const books = (state = [], action) => {
 		case "RECEIVE_BOOK":
 			return [
 				...state.filter(book => {
-					return book.id !== action.book.id;
+					return book.id != action.book.id;
 				}),
 				{
 					...action.book,

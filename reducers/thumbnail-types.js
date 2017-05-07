@@ -37,7 +37,7 @@ const thumbnailTypes = (state = [], action) => {
 		case "INVALIDATE_THUMBNAIL_TYPE":
 			return [
 				...state.filter(thumbnailType => {
-					return thumbnailType.id !== action.thumbnailType.id;
+					return thumbnailType.id != action.thumbnailType.id;
 				}),
 				{
 					...action.thumbnailType,
@@ -50,7 +50,7 @@ const thumbnailTypes = (state = [], action) => {
 		case "PUT_THUMBNAIL_TYPE":
 			return [
 				...state.filter(thumbnailType => {
-					return thumbnailType.id !== action.thumbnailType.id;
+					return thumbnailType.id != action.thumbnailType.id;
 				}),
 				{
 					...action.thumbnailType,
@@ -62,7 +62,7 @@ const thumbnailTypes = (state = [], action) => {
 		case "DELETE_THUMBNAIL_TYPE":
 			return [
 				...state.filter(thumbnailType => {
-					return thumbnailType.id !== action.thumbnailType.id;
+					return thumbnailType.id != action.thumbnailType.id;
 				})
 			];
 
@@ -70,7 +70,7 @@ const thumbnailTypes = (state = [], action) => {
 		case "FAIL_THUMBNAIL_TYPE_PUT":
 			return [
 				...state.filter(thumbnailType => {
-					return thumbnailType.id !== action.thumbnailType.id;
+					return thumbnailType.id != action.thumbnailType.id;
 				}),
 				{
 					...action.thumbnailType,
@@ -91,7 +91,7 @@ const thumbnailTypes = (state = [], action) => {
 		case "RECEIVE_THUMBNAIL_TYPE":
 			return [
 				...state.filter(thumbnailType => {
-					return thumbnailType.id !== action.thumbnailType.id;
+					return thumbnailType.id != action.thumbnailType.id;
 				}),
 				{
 					...action.thumbnailType,

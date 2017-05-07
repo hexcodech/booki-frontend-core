@@ -37,7 +37,7 @@ const clients = (state = [], action) => {
 		case "INVALIDATE_CLIENT":
 			return [
 				...state.filter(client => {
-					return client.id !== action.client.id;
+					return client.id != action.client.id;
 				}),
 				{
 					...action.client,
@@ -50,7 +50,7 @@ const clients = (state = [], action) => {
 		case "PUT_CLIENT":
 			return [
 				...state.filter(client => {
-					return client.id !== action.client.id;
+					return client.id != action.client.id;
 				}),
 				{
 					...action.client,
@@ -62,7 +62,7 @@ const clients = (state = [], action) => {
 		case "DELETE_CLIENT":
 			return [
 				...state.filter(client => {
-					return client.id !== action.client.id;
+					return client.id != action.client.id;
 				})
 			];
 
@@ -70,7 +70,7 @@ const clients = (state = [], action) => {
 		case "FAIL_CLIENT_PUT":
 			return [
 				...state.filter(client => {
-					return client.id !== action.client.id;
+					return client.id != action.client.id;
 				}),
 				{
 					...action.client,
@@ -91,7 +91,7 @@ const clients = (state = [], action) => {
 		case "RECEIVE_CLIENT":
 			return [
 				...state.filter(client => {
-					return client.id !== action.client.id;
+					return client.id != action.client.id;
 				}),
 				{
 					...action.client,
@@ -108,7 +108,7 @@ const clients = (state = [], action) => {
 			//cascade delete related clients
 
 			return state.filter(client => {
-				return client.userId !== action.user.id;
+				return client.userId != action.user.id;
 			});
 
 		default:

@@ -37,7 +37,7 @@ const conditions = (state = [], action) => {
 		case "INVALIDATE_CONDITION":
 			return [
 				...state.filter(condition => {
-					return condition.id !== action.condition.id;
+					return condition.id != action.condition.id;
 				}),
 				{
 					...action.condition,
@@ -50,7 +50,7 @@ const conditions = (state = [], action) => {
 		case "PUT_CONDITION":
 			return [
 				...state.filter(condition => {
-					return condition.id !== action.condition.id;
+					return condition.id != action.condition.id;
 				}),
 				{
 					...action.condition,
@@ -62,7 +62,7 @@ const conditions = (state = [], action) => {
 		case "DELETE_CONDITION":
 			return [
 				...state.filter(condition => {
-					return condition.id !== action.condition.id;
+					return condition.id != action.condition.id;
 				})
 			];
 
@@ -70,7 +70,7 @@ const conditions = (state = [], action) => {
 		case "FAIL_CONDITION_PUT":
 			return [
 				...state.filter(condition => {
-					return condition.id !== action.condition.id;
+					return condition.id != action.condition.id;
 				}),
 				{
 					...action.condition,
@@ -91,7 +91,7 @@ const conditions = (state = [], action) => {
 		case "RECEIVE_CONDITION":
 			return [
 				...state.filter(condition => {
-					return condition.id !== action.condition.id;
+					return condition.id != action.condition.id;
 				}),
 				{
 					...action.condition,

@@ -37,7 +37,7 @@ const offers = (state = [], action) => {
 		case "INVALIDATE_OFFER":
 			return [
 				...state.filter(offer => {
-					return offer.id !== action.offer.id;
+					return offer.id != action.offer.id;
 				}),
 				{
 					...action.offer,
@@ -50,7 +50,7 @@ const offers = (state = [], action) => {
 		case "PUT_OFFER":
 			return [
 				...state.filter(offer => {
-					return offer.id !== action.offer.id;
+					return offer.id != action.offer.id;
 				}),
 				{
 					...action.offer,
@@ -62,7 +62,7 @@ const offers = (state = [], action) => {
 		case "DELETE_OFFER":
 			return [
 				...state.filter(offer => {
-					return offer.id !== action.offer.id;
+					return offer.id != action.offer.id;
 				})
 			];
 
@@ -70,7 +70,7 @@ const offers = (state = [], action) => {
 		case "FAIL_OFFER_PUT":
 			return [
 				...state.filter(offer => {
-					return offer.id !== action.offer.id;
+					return offer.id != action.offer.id;
 				}),
 				{
 					...action.offer,
@@ -91,7 +91,7 @@ const offers = (state = [], action) => {
 		case "RECEIVE_OFFER":
 			return [
 				...state.filter(offer => {
-					return offer.id !== action.offer.id;
+					return offer.id != action.offer.id;
 				}),
 				{
 					...action.offer,

@@ -37,7 +37,7 @@ const offerRequests = (state = [], action) => {
 		case "INVALIDATE_OFFER_REQUEST":
 			return [
 				...state.filter(offerRequest => {
-					return offerRequest.id !== action.offerRequest.id;
+					return offerRequest.id != action.offerRequest.id;
 				}),
 				{
 					...action.offerRequest,
@@ -50,7 +50,7 @@ const offerRequests = (state = [], action) => {
 		case "PUT_OFFER_REQUEST":
 			return [
 				...state.filter(offerRequest => {
-					return offerRequest.id !== action.offerRequest.id;
+					return offerRequest.id != action.offerRequest.id;
 				}),
 				{
 					...action.offerRequest,
@@ -62,7 +62,7 @@ const offerRequests = (state = [], action) => {
 		case "DELETE_OFFER_REQUEST":
 			return [
 				...state.filter(offerRequest => {
-					return offerRequest.id !== action.offerRequest.id;
+					return offerRequest.id != action.offerRequest.id;
 				})
 			];
 
@@ -70,7 +70,7 @@ const offerRequests = (state = [], action) => {
 		case "FAIL_OFFER_REQUEST_PUT":
 			return [
 				...state.filter(offerRequest => {
-					return offerRequest.id !== action.offerRequest.id;
+					return offerRequest.id != action.offerRequest.id;
 				}),
 				{
 					...action.offerRequest,
@@ -91,7 +91,7 @@ const offerRequests = (state = [], action) => {
 		case "RECEIVE_OFFER_REQUEST":
 			return [
 				...state.filter(offerRequest => {
-					return offerRequest.id !== action.offerRequest.id;
+					return offerRequest.id != action.offerRequest.id;
 				}),
 				{
 					...action.offerRequest,

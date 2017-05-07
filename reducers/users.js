@@ -37,7 +37,7 @@ const users = (state = [], action) => {
 		case "INVALIDATE_USER":
 			return [
 				...state.filter(user => {
-					return user.id !== action.user.id;
+					return user.id != action.user.id;
 				}),
 				{
 					...action.user,
@@ -50,7 +50,7 @@ const users = (state = [], action) => {
 		case "PUT_USER":
 			return [
 				...state.filter(user => {
-					return user.id !== action.user.id;
+					return user.id != action.user.id;
 				}),
 				{
 					...action.user,
@@ -62,7 +62,7 @@ const users = (state = [], action) => {
 		case "DELETE_USER":
 			return [
 				...state.filter(user => {
-					return user.id !== action.user.id;
+					return user.id != action.user.id;
 				})
 			];
 
@@ -70,7 +70,7 @@ const users = (state = [], action) => {
 		case "FAIL_USER_PUT":
 			return [
 				...state.filter(user => {
-					return user.id !== action.user.id;
+					return user.id != action.user.id;
 				}),
 				{
 					...action.user,
@@ -91,7 +91,7 @@ const users = (state = [], action) => {
 		case "RECEIVE_USER":
 			return [
 				...state.filter(user => {
-					return user.id !== action.user.id;
+					return user.id != action.user.id;
 				}),
 				{
 					...action.user,
