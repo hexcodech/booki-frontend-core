@@ -157,7 +157,7 @@ export const fetchBookIfNeeded = (book = {}) => {
 	return (dispatch, getState) => {
 		if (shouldFetchBook(getState(), book)) {
 			// Dispatch a thunk from thunk!
-			return dispatch(fetchBook(book, accessToken));
+			return dispatch(fetchBook(book));
 		} else {
 			// Let the calling code know there's nothing to wait for.
 			return Promise.resolve();
