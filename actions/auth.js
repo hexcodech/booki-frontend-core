@@ -9,11 +9,10 @@ export const receiveAccessToken = (accessToken = "") => {
 
 //user
 
-const updateAuthUser = (user = {}, accessToken = "") => {
+const updateAuthUser = (user = {}) => {
 	return {
 		type: "UPDATE_AUTH_USER",
-		user,
-		accessToken
+		user
 	};
 };
 
