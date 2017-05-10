@@ -16,7 +16,10 @@ const user = (
 ) => {
 	switch (action.type) {
 		case "UPDATE_AUTH_USER":
-			return action.user;
+			return {
+				...state,
+				...action.user
+			};
 		case "INVALIDATE_AUTH_USER":
 			return {
 				...state,
