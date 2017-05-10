@@ -2,16 +2,13 @@ import { combineReducers } from "redux";
 
 const user = (
 	state = {
-		name: {
-			display: "",
-			first: "",
-			last: ""
-		},
+		nameDisplay: "",
+		nameFirst: "",
+		nameLast: "",
 		email: "",
-		profilePictureUrl: "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&s=512",
+		thumbnails: [],
 
 		lastUpdated: 0,
-
 		isFetching: false,
 		didInvalidate: false
 	},
