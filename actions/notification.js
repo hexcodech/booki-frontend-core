@@ -1,6 +1,4 @@
-import {
-	NOTIFICATION_ANIMATION_DURATION
-} from "booki-frontend-core/constants/animation";
+import { NOTIFICATION_ANIMATION_DURATION } from "booki-frontend-core/constants/animation";
 import { COLOR_FAILURE } from "booki-frontend-core/constants/color";
 
 const addNotification_ = (notification = {}) => {
@@ -106,10 +104,10 @@ export const addNotification = (notification = { hideDelay: 2500 }) => {
 
 export const addErrorNotification = (error = {}) => {
 	return addNotification({
-		title: (error.statusText ? error.statusText : "Error") +
-			(error.status ? "(" + error.status + ")" : ""),
+		title:
+			(error.statusText ? error.statusText : "Error") +
+				(error.status ? "(" + error.status + ")" : ""),
 		text: "Something went wrong",
-		icon: "error_outline",
 		color: COLOR_FAILURE,
 		actions: [
 			{
