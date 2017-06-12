@@ -165,7 +165,7 @@ export const fetchConditionIfNeeded = (condition = {}, accessToken = "") => {
 	};
 };
 
-export const updatedCondition = (condition = {}) => {
+export const updateCondition = (condition = {}) => {
 	return {
 		type: "UPDATE_CONDITION",
 		condition
