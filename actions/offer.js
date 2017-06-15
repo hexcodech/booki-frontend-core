@@ -36,11 +36,22 @@ const receiveOffers = (offers = [], receivedAt = {}) => {
 	};
 };
 
-const fetchOffers = (accessToken = "") => {
+const fetchOffers = (accessToken = "", filters = {}) => {
 	return dispatch => {
 		dispatch(requestOffers(accessToken));
 
-		return fetchApi("offer", "GET", {}, accessToken)
+		let queryString = Object.keys(filters)
+			.reduce((a, b) => {
+				return a + "&filters[" + b + "]=" + filters[b];
+			}, "")
+			.substring(1);
+
+		return fetchApi(
+			"offer" + (queryString.length > 0 ? "?" + queryString : ""),
+			"GET",
+			{},
+			accessToken
+		)
 			.then(offers => {
 				dispatch(receiveOffers(offers, Date.now()));
 			})
