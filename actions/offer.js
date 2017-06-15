@@ -138,7 +138,7 @@ const fetchLatestOffers = (accessToken = "") => {
 	return dispatch => {
 		dispatch(requestLatestOffers(accessToken));
 
-		return fetchApi("offer?filters[latest]=true", "GET", {}, accessToken)
+		return fetchApi("offer?filter[latest]=true", "GET", {}, accessToken)
 			.then(offers => {
 				dispatch(receiveLatestOffers(offers, Date.now()));
 			})
