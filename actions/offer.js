@@ -36,22 +36,11 @@ const receiveOffers = (offers = [], receivedAt = {}) => {
 	};
 };
 
-const fetchOffers = (accessToken = "", filters = {}) => {
+const fetchOffers = (accessToken = "") => {
 	return dispatch => {
 		dispatch(requestOffers(accessToken));
 
-		let queryString = Object.keys(filters)
-			.reduce((a, b) => {
-				return a + "&filters[" + b + "]=" + filters[b];
-			}, "")
-			.substring(1);
-
-		return fetchApi(
-			"offer" + (queryString.length > 0 ? "?" + queryString : ""),
-			"GET",
-			{},
-			accessToken
-		)
+		return fetchApi("offer", "GET", {}, accessToken)
 			.then(offers => {
 				dispatch(receiveOffers(offers, Date.now()));
 			})
@@ -88,6 +77,78 @@ export const fetchOffersIfNeeded = (accessToken = "") => {
 		} else {
 			return Promise.resolve();
 		}
+	};
+};
+
+export const invalidateLatestOffers = () => {
+	return {
+		type: "INVALIDATE_LATEST_OFFERS"
+	};
+};
+
+const requestLatestOffers = (accessToken = "") => {
+	return {
+		type: "REQUEST_LATEST_OFFERS",
+		accessToken
+	};
+};
+
+const failLatestOffersRequest = (error = {}) => {
+	return {
+		type: "FAIL_LATEST_OFFERS_REQUEST",
+		error
+	};
+};
+
+const receiveLatestOffers = (offers = [], receivedAt = {}) => {
+	return {
+		type: "RECEIVE_LATEST_OFFERS",
+		offers,
+		receivedAt
+	};
+};
+
+const shouldFetchLatestOffers = (state = {}) => {
+	const offers = state.app.latestOffers;
+
+	for (let i = 0; i < offers.length; i++) {
+		if (offers[i].isFetching) {
+			return false;
+		}
+
+		if (offers[i].didInvalidate || offers[i].lastUpdated === 0) {
+			return true;
+		}
+	}
+
+	return offers.length === 0;
+};
+
+export const fetchLatestOffersIfNeeded = (accessToken = "") => {
+	return (dispatch, getState) => {
+		if (shouldFetchLatestOffers(getState())) {
+			return dispatch(fetchLatestOffers(accessToken));
+		} else {
+			return Promise.resolve();
+		}
+	};
+};
+
+const fetchLatestOffers = (accessToken = "") => {
+	return dispatch => {
+		dispatch(requestLatestOffers(accessToken));
+
+		return fetchApi("offer?latest=true", "GET", {}, accessToken)
+			.then(offers => {
+				dispatch(receiveLatestOffers(offers, Date.now()));
+			})
+			.catch(error => {
+				dispatch(failLatestOffersRequest(error));
+
+				dispatch(addErrorNotification(error));
+
+				return Promise.reject(error);
+			});
 	};
 };
 
