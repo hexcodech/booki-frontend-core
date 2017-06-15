@@ -1,6 +1,6 @@
 {
   "name": "booki-frontend-core",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "The core functions (action creators, reducers, ...) of the booki frontend and dashboard",
   "main": "core.js",
   "scripts": {
