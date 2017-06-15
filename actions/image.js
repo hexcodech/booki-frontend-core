@@ -16,7 +16,7 @@ export const invalidateImages = () => {
 
 const requestImages = (accessToken = "") => {
 	return {
-		type: "REQUEST_Images",
+		type: "REQUEST_IMAGES",
 		accessToken
 	};
 };
