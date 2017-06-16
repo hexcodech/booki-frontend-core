@@ -13,12 +13,16 @@ export const logoutUserIfNeeded = (accessToken = "") => {
 			.then(response => {
 				if (!response.loggedIn) {
 					dispatch(logoutUser());
+
+					return false;
 				}
 
-				return user;
+				return true;
 			})
 			.catch(error => {
 				dispatch(logoutUser(error));
+
+				return false;
 			});
 	};
 };
