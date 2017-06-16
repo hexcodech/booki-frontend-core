@@ -1,20 +1,21 @@
 import { combineReducers } from "redux";
 
-const user = (
-	state = {
-		nameDisplay: "",
-		nameFirst: "",
-		nameLast: "",
-		email: "",
-		thumbnails: [],
+const defaultAuthUserState = {
+	nameDisplay: "",
+	nameFirst: "",
+	nameLast: "",
+	email: "",
+	thumbnails: [],
 
-		lastUpdated: 0,
-		isFetching: false,
-		didInvalidate: false
-	},
-	action
-) => {
+	lastUpdated: 0,
+	isFetching: false,
+	didInvalidate: false
+};
+
+const user = (state = defaultAuthUserState, action) => {
 	switch (action.type) {
+		case "LOGOUT_USER":
+			return Object.assign({}, defaultAuthUserState);
 		case "UPDATE_AUTH_USER":
 			return {
 				...state,
@@ -67,16 +68,17 @@ const user = (
 	}
 };
 
-const accessToken = (
-	state = {
-		token: "",
-		clientId: "",
-		userId: "",
-		expires: ""
-	},
-	action
-) => {
+const defaultAccessTokenState = {
+	token: "",
+	clientId: "",
+	userId: "",
+	expires: ""
+};
+
+const accessToken = (state = defaultAccessTokenState, action) => {
 	switch (action.type) {
+		case "LOGOUT_USER":
+			return Object.assign({}, defaultAccessTokenState);
 		case "RECEIVE_ACCESS_TOKEN":
 			return {
 				...state,

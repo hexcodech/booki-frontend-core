@@ -1,5 +1,28 @@
 import { fetchApi } from "booki-frontend-core/utilities/rest";
 
+export const logoutUser = error => {
+	return {
+		type: "LOGOUT_USER",
+		error
+	};
+};
+
+export const logoutUserIfNeeded = (accessToken = "") => {
+	return dispatch => {
+		return fetchApi("auth/logged-in", "GET", {}, accessToken)
+			.then(response => {
+				if (!response.loggedIn) {
+					dispatch(logoutUser());
+				}
+
+				return user;
+			})
+			.catch(error => {
+				dispatch(logoutUser(error));
+			});
+	};
+};
+
 export const receiveAccessToken = (accessToken = "") => {
 	return {
 		type: "RECEIVE_ACCESS_TOKEN",
