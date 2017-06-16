@@ -86,10 +86,9 @@ export const invalidateLatestOffers = () => {
 	};
 };
 
-const requestLatestOffers = (accessToken = "") => {
+const requestLatestOffers = () => {
 	return {
-		type: "REQUEST_LATEST_OFFERS",
-		accessToken
+		type: "REQUEST_LATEST_OFFERS"
 	};
 };
 
@@ -124,21 +123,21 @@ const shouldFetchLatestOffers = (state = {}) => {
 	return offers.length === 0;
 };
 
-export const fetchLatestOffersIfNeeded = (accessToken = "") => {
+export const fetchLatestOffersIfNeeded = () => {
 	return (dispatch, getState) => {
 		if (shouldFetchLatestOffers(getState())) {
-			return dispatch(fetchLatestOffers(accessToken));
+			return dispatch(fetchLatestOffers());
 		} else {
 			return Promise.resolve();
 		}
 	};
 };
 
-const fetchLatestOffers = (accessToken = "") => {
+const fetchLatestOffers = () => {
 	return dispatch => {
-		dispatch(requestLatestOffers(accessToken));
+		dispatch(requestLatestOffers());
 
-		return fetchApi("offer?filter[latest]=true", "GET", {}, accessToken)
+		return fetchApi("offer?filter[latest]=true", "GET", {})
 			.then(offers => {
 				dispatch(receiveLatestOffers(offers, Date.now()));
 			})
