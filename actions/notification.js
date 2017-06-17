@@ -105,9 +105,9 @@ export const addNotification = (notification = { hideDelay: 2500 }) => {
 export const addErrorNotification = (error = {}) => {
 	return addNotification({
 		title:
-			(error.statusText ? error.statusText : "Error") +
+			(error.name ? error.name : "Error") +
 				(error.status ? "(" + error.status + ")" : ""),
-		text: "Something went wrong",
+		text: error.message,
 		color: COLOR_FAILURE,
 		actions: [
 			{

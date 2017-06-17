@@ -24,15 +24,25 @@ export const fetchApi = (
 		http.onreadystatechange = () => {
 			if (http.readyState === 4) {
 				if (http.status === 200) {
-					let data = JSON.parse(http.responseText);
-
-					if (data.status && data.status != 200) {
-						reject(data);
-					} else {
+					try {
+						let data = JSON.parse(http.responseText);
 						resolve(data);
+					} catch (e) {
+						console.log("Invalid json response!");
+						console.log(http.responseText);
+
+						reject(new Error("Invalid json response!"));
 					}
 				} else {
-					reject("Error Code: " + http.status);
+					try {
+						let error = JSON.parse(http.responseText);
+						reject(error);
+					} catch (e) {
+						console.log("Invalid json response!");
+						console.log(http.responseText);
+
+						reject(new Error("Invalid json response!"));
+					}
 				}
 			}
 		};
