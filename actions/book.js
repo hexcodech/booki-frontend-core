@@ -82,6 +82,77 @@ export const fetchBooksIfNeeded = (accessToken = "") => {
 	};
 };
 
+export const invalidateLatestBookOffers = () => {
+	return {
+		type: "INVALIDATE_LATEST_BOOK_OFFERS"
+	};
+};
+
+const requestLatestBookOffers = () => {
+	return {
+		type: "REQUEST_LATEST_BOOK_OFFERS"
+	};
+};
+
+const failLatestBookOffersRequest = (error = {}) => {
+	return {
+		type: "FAIL_LATEST_BOOK_OFFERS_REQUEST",
+		error
+	};
+};
+
+const receiveLatestBookOffers = (books = [], receivedAt = {}) => {
+	return {
+		type: "RECEIVE_LATEST_BOOK_OFFERS",
+		books,
+		receivedAt
+	};
+};
+
+const shouldFetchLatestBookOffers = (state = {}) => {
+	const books = state.app.latestBookOffers;
+
+	for (let i = 0; i < books.length; i++) {
+		if (books[i].isFetching) {
+			return false;
+		}
+
+		if (books[i].didInvalidate || books[i].lastUpdated === 0) {
+			return true;
+		}
+	}
+
+	return books.length === 0;
+};
+
+export const fetchLatestBookOffersIfNeeded = () => {
+	return (dispatch, getState) => {
+		if (shouldFetchLatestBookOffers(getState())) {
+			return dispatch(fetchLatestBookOffers());
+		} else {
+			return Promise.resolve();
+		}
+	};
+};
+
+const fetchLatestBookOffers = () => {
+	return dispatch => {
+		dispatch(requestLatestBookOffers());
+
+		return fetchApi("book?filter[latestOffers]=true", "GET", {})
+			.then(books => {
+				dispatch(receiveLatestBookOffers(books, Date.now()));
+			})
+			.catch(error => {
+				dispatch(failLatestBookOffersRequest(error));
+
+				dispatch(addErrorNotification(error));
+
+				return Promise.reject(error);
+			});
+	};
+};
+
 export const invalidateBook = (book = {}) => {
 	return {
 		type: "INVALIDATE_BOOK",
