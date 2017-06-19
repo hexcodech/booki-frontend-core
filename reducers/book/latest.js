@@ -25,7 +25,7 @@ const latestBookOffers = (state = [], action) => {
 				};
 			});
 		case "RECEIVE_LATEST_BOOK_OFFERS":
-			return action.offers.map(book => {
+			return action.books.map(book => {
 				return {
 					...book,
 					lastUpdated: action.receivedAt,

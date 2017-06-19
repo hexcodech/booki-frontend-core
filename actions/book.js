@@ -125,16 +125,6 @@ const shouldFetchLatestBookOffers = (state = {}) => {
 	return books.length === 0;
 };
 
-export const fetchLatestBookOffersIfNeeded = () => {
-	return (dispatch, getState) => {
-		if (shouldFetchLatestBookOffers(getState())) {
-			return dispatch(fetchLatestBookOffers());
-		} else {
-			return Promise.resolve();
-		}
-	};
-};
-
 const fetchLatestBookOffers = () => {
 	return dispatch => {
 		dispatch(requestLatestBookOffers());
@@ -150,6 +140,16 @@ const fetchLatestBookOffers = () => {
 
 				return Promise.reject(error);
 			});
+	};
+};
+
+export const fetchLatestBookOffersIfNeeded = () => {
+	return (dispatch, getState) => {
+		if (shouldFetchLatestBookOffers(getState())) {
+			return dispatch(fetchLatestBookOffers());
+		} else {
+			return Promise.resolve();
+		}
 	};
 };
 
