@@ -235,7 +235,8 @@ const failOfferRequestPost = (error = {}, offerRequest = {}) => {
 	};
 };
 
-export const postOfferRequest = (offerRequest = {}, accessToken = "") => {
+//no default value for accessToken because it can also be called if you're not logged in
+export const postOfferRequest = (offerRequest = {}, accessToken) => {
 	return dispatch => {
 		dispatch(clearValidationErrors("offerRequest"));
 
